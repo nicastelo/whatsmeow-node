@@ -242,9 +242,9 @@ describe("WhatsmeowClient", () => {
       const uploadResp = {
         url: "https://mmg.whatsapp.net/...",
         directPath: "/v/...",
-        mediaKey: [1, 2],
-        fileEncSha256: [3, 4],
-        fileSha256: [5, 6],
+        mediaKey: "AQID", // base64 for [1,2,3]
+        fileEncSha256: "BAUG",
+        fileSha256: "BwgJ",
         fileLength: 1024,
       };
       mockResolve(send, uploadResp);
@@ -632,6 +632,9 @@ describe("WhatsmeowClient", () => {
         readReceipts: "all",
         callAdd: "all",
         online: "all",
+        messages: "all",
+        defense: "on_standard",
+        stickers: "contacts",
       };
       mockResolve(send, settings);
       const result = await client.getPrivacySettings();
@@ -639,12 +642,30 @@ describe("WhatsmeowClient", () => {
       expect(result).toEqual(settings);
     });
 
-    it("setPrivacySetting sends name and value", async () => {
+    it("setPrivacySetting sends whatsmeow wire-format name", async () => {
       mockResolve(send, { groupAdd: "contacts" });
-      await client.setPrivacySetting("groupAdd", "contacts");
+      await client.setPrivacySetting("groupadd", "contacts");
       expect(send).toHaveBeenCalledWith("setPrivacySetting", {
-        name: "groupAdd",
+        name: "groupadd",
         value: "contacts",
+      });
+    });
+
+    it("setPrivacySetting accepts 'last' for lastSeen", async () => {
+      mockResolve(send, { lastSeen: "none" });
+      await client.setPrivacySetting("last", "none");
+      expect(send).toHaveBeenCalledWith("setPrivacySetting", {
+        name: "last",
+        value: "none",
+      });
+    });
+
+    it("setPrivacySetting accepts 'known' value for callAdd", async () => {
+      mockResolve(send, { callAdd: "known" });
+      await client.setPrivacySetting("calladd", "known");
+      expect(send).toHaveBeenCalledWith("setPrivacySetting", {
+        name: "calladd",
+        value: "known",
       });
     });
 

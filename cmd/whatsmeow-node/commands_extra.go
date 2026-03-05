@@ -956,6 +956,9 @@ func (a *App) cmdGetPrivacySettings(cmd Command) {
 		"readReceipts":   string(settings.ReadReceipts),
 		"callAdd":        string(settings.CallAdd),
 		"online":         string(settings.Online),
+		"messages":       string(settings.Messages),
+		"defense":        string(settings.Defense),
+		"stickers":       string(settings.Stickers),
 	})
 }
 
@@ -989,6 +992,9 @@ func (a *App) cmdSetPrivacySetting(cmd Command) {
 		"readReceipts":   string(settings.ReadReceipts),
 		"callAdd":        string(settings.CallAdd),
 		"online":         string(settings.Online),
+		"messages":       string(settings.Messages),
+		"defense":        string(settings.Defense),
+		"stickers":       string(settings.Stickers),
 	})
 }
 

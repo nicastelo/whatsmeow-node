@@ -132,17 +132,33 @@ export interface PrivacySettings {
   readReceipts: string;
   callAdd: string;
   online: string;
+  messages: string;
+  defense: string;
+  stickers: string;
 }
 
+// Wire values expected by whatsmeow (NOT camelCase)
 export type PrivacySettingName =
-  | "groupAdd"
-  | "lastSeen"
+  | "groupadd"
+  | "last"
   | "status"
   | "profile"
-  | "readReceipts"
-  | "callAdd"
-  | "online";
-export type PrivacySettingValue = "all" | "contacts" | "contact_blacklist" | "none" | "match_last_seen";
+  | "readreceipts"
+  | "calladd"
+  | "online"
+  | "messages"
+  | "defense"
+  | "stickers";
+export type PrivacySettingValue =
+  | "all"
+  | "contacts"
+  | "contact_allowlist"
+  | "contact_blacklist"
+  | "match_last_seen"
+  | "known"
+  | "none"
+  | "on_standard"
+  | "off";
 
 // ── Blocklist ──────────────────────────────────────
 export interface Blocklist {
@@ -155,9 +171,9 @@ export type MediaType = "image" | "video" | "audio" | "document";
 export interface UploadResponse {
   url: string;
   directPath: string;
-  mediaKey: number[];
-  fileEncSha256: number[];
-  fileSha256: number[];
+  mediaKey: string; // base64
+  fileEncSha256: string; // base64
+  fileSha256: string; // base64
   fileLength: number;
 }
 
