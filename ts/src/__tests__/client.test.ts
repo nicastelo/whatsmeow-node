@@ -1,10 +1,26 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-// Mock GoProcess before importing client
-vi.mock("../process.js", async () => {
-  const { EventEmitter } = await import("node:events");
+// vi.hoisted runs before imports, safe to use in vi.mock factories
+const { MockGoProcess } = vi.hoisted(() => {
+  // Inline minimal EventEmitter — node:events can't be imported here
+  type Listener = (...args: unknown[]) => void;
+  class MinimalEmitter {
+    private _listeners: Record<string, Listener[]> = {};
+    on(event: string, fn: Listener) {
+      (this._listeners[event] ??= []).push(fn);
+      return this;
+    }
+    emit(event: string, ...args: unknown[]) {
+      for (const fn of this._listeners[event] ?? []) fn(...args);
+      return true;
+    }
+    removeAllListeners() {
+      this._listeners = {};
+      return this;
+    }
+  }
 
-  class MockGoProcess extends EventEmitter {
+  class MockGoProcess extends MinimalEmitter {
     send = vi.fn();
     start = vi.fn();
     kill = vi.fn();
@@ -13,14 +29,18 @@ vi.mock("../process.js", async () => {
     }
   }
 
-  return { GoProcess: MockGoProcess };
+  return { MockGoProcess };
 });
 
-// Mock resolveBinary (statSync + createRequire)
+vi.mock("../process.js", () => ({ GoProcess: MockGoProcess }));
+
+// Mock resolveBinary (statSync)
 vi.mock("node:fs", async (importOriginal) => {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-  const actual = await importOriginal<typeof import("node:fs")>();
-  return { ...actual, statSync: vi.fn(() => ({ isFile: () => true })) };
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    statSync: vi.fn(() => ({ isFile: () => true })),
+  };
 });
 
 import { WhatsmeowClient } from "../client.js";
@@ -30,9 +50,8 @@ function createTestClient() {
     store: "test.db",
     binaryPath: "/fake/binary",
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const proc = (client as any).proc;
-  return { client, send: proc.send as ReturnType<typeof vi.fn> };
+  const proc = (client as unknown as { proc: { send: ReturnType<typeof vi.fn> } }).proc;
+  return { client, send: proc.send };
 }
 
 // Helper: set up send mock to resolve with given data
