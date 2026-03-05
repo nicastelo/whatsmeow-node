@@ -95,11 +95,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          registry-url: "https://registry.npmjs.org"
-
-      # Clear the auth token placeholder so npm falls through to OIDC
-      - run: npm config delete //registry.npmjs.org/:_authToken || true
+          node-version: "24"
 
       - uses: actions/download-artifact@v4
         with:
