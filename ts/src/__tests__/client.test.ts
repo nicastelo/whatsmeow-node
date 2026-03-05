@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // Mock GoProcess before importing client
-vi.mock("../process.js", () => {
-  const { EventEmitter } = require("node:events");
+vi.mock("../process.js", async () => {
+  const { EventEmitter } = await import("node:events");
 
   class MockGoProcess extends EventEmitter {
     send = vi.fn();
@@ -18,6 +18,7 @@ vi.mock("../process.js", () => {
 
 // Mock resolveBinary (statSync + createRequire)
 vi.mock("node:fs", async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
   const actual = await importOriginal<typeof import("node:fs")>();
   return { ...actual, statSync: vi.fn(() => ({ isFile: () => true })) };
 });
@@ -29,6 +30,7 @@ function createTestClient() {
     store: "test.db",
     binaryPath: "/fake/binary",
   });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const proc = (client as any).proc;
   return { client, send: proc.send as ReturnType<typeof vi.fn> };
 }
@@ -268,7 +270,9 @@ describe("WhatsmeowClient", () => {
     });
 
     it("getUserInfo sends jids", async () => {
-      mockResolve(send, { "123@s.whatsapp.net": { status: "hey", pictureID: "", verifiedName: "" } });
+      mockResolve(send, {
+        "123@s.whatsapp.net": { status: "hey", pictureID: "", verifiedName: "" },
+      });
       await client.getUserInfo(["123@s.whatsapp.net"]);
       expect(send).toHaveBeenCalledWith("getUserInfo", { jids: ["123@s.whatsapp.net"] });
     });
@@ -368,7 +372,10 @@ describe("WhatsmeowClient", () => {
     it("setGroupPhoto sends jid and path, extracts pictureId", async () => {
       mockResolve(send, { pictureId: "pic123" });
       const id = await client.setGroupPhoto("g@g.us", "/path/photo.jpg");
-      expect(send).toHaveBeenCalledWith("setGroupPhoto", { jid: "g@g.us", path: "/path/photo.jpg" });
+      expect(send).toHaveBeenCalledWith("setGroupPhoto", {
+        jid: "g@g.us",
+        path: "/path/photo.jpg",
+      });
       expect(id).toBe("pic123");
     });
 
@@ -570,23 +577,23 @@ describe("WhatsmeowClient", () => {
       expect(send).toHaveBeenCalledWith("unfollowNewsletter", { jid: "nl@newsletter" });
     });
 
-    it("getNewsletterMessages sends jid, count, defaults since to 0", async () => {
+    it("getNewsletterMessages sends jid, count, defaults before to 0", async () => {
       mockResolve(send, []);
       await client.getNewsletterMessages("nl@newsletter", 10);
       expect(send).toHaveBeenCalledWith("getNewsletterMessages", {
         jid: "nl@newsletter",
         count: 10,
-        since: 0,
+        before: 0,
       });
     });
 
-    it("getNewsletterMessages passes since when provided", async () => {
+    it("getNewsletterMessages passes before for backward pagination", async () => {
       mockResolve(send, []);
       await client.getNewsletterMessages("nl@newsletter", 10, 500);
       expect(send).toHaveBeenCalledWith("getNewsletterMessages", {
         jid: "nl@newsletter",
         count: 10,
-        since: 500,
+        before: 500,
       });
     });
 

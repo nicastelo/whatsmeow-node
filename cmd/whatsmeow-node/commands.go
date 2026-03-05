@@ -218,7 +218,11 @@ func (a *App) cmdSendMessage(cmd Command) {
 		return
 	}
 
-	msg := buildProtoMessage(args.Message)
+	msg, err := buildProtoMessage(args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
 
 	resp, err := client.SendMessage(a.ctx, jid, msg)
 	if err != nil {
@@ -1020,14 +1024,16 @@ func serializeGroupInfo(g *types.GroupInfo) map[string]interface{} {
 }
 
 // buildProtoMessage converts a JSON map to a waE2E.Message via protojson.
-func buildProtoMessage(m map[string]interface{}) *waProto.Message {
+func buildProtoMessage(m map[string]interface{}) (*waProto.Message, error) {
 	msg := &waProto.Message{}
 	data, err := json.Marshal(m)
 	if err != nil {
-		return msg
+		return nil, fmt.Errorf("failed to marshal message JSON: %w", err)
 	}
-	_ = protojson.UnmarshalOptions{DiscardUnknown: true}.Unmarshal(data, msg)
-	return msg
+	if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(data, msg); err != nil {
+		return nil, fmt.Errorf("failed to parse message proto: %w", err)
+	}
+	return msg, nil
 }
 
 // downloadableMsg implements whatsmeow.DownloadableMessage for media downloads.

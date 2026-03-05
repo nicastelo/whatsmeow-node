@@ -198,7 +198,7 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 - `getNewsletterInfoWithInvite(key)` -- Get newsletter info from invite link
 - `followNewsletter(jid)` -- Follow a newsletter
 - `unfollowNewsletter(jid)` -- Unfollow a newsletter
-- `getNewsletterMessages(jid, count, since?)` -- Fetch newsletter messages
+- `getNewsletterMessages(jid, count, before?)` -- Fetch newsletter messages (paginate backward from server ID)
 - `newsletterMarkViewed(jid, serverIds)` -- Mark messages as viewed
 - `newsletterSendReaction(jid, serverId, reaction, messageId)` -- React to a newsletter message
 - `newsletterToggleMute(jid, mute)` -- Mute/unmute a newsletter

@@ -77,7 +77,11 @@ func (a *App) cmdEditMessage(cmd Command) {
 		return
 	}
 
-	newContent := buildProtoMessage(args.Message)
+	newContent, err := buildProtoMessage(args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
 	msg := client.BuildEdit(chat, args.ID, newContent)
 	resp, err := client.SendMessage(a.ctx, chat, msg)
 	if err != nil {
@@ -691,9 +695,9 @@ func (a *App) cmdUnfollowNewsletter(cmd Command) {
 // Maps to: client.GetNewsletterMessages()
 func (a *App) cmdGetNewsletterMessages(cmd Command) {
 	args, ok := parseArgs[struct {
-		JID   string `json:"jid"`
-		Count int    `json:"count"`
-		Since int    `json:"since"` // server ID to start from
+		JID    string `json:"jid"`
+		Count  int    `json:"count"`
+		Before int    `json:"before"` // fetch messages before this server ID (for backward pagination)
 	}](cmd)
 	if !ok {
 		return
@@ -713,9 +717,8 @@ func (a *App) cmdGetNewsletterMessages(cmd Command) {
 	params := &whatsmeow.GetNewsletterMessagesParams{
 		Count: args.Count,
 	}
-	if args.Since > 0 {
-		since := types.MessageServerID(args.Since)
-		params.Before = since
+	if args.Before > 0 {
+		params.Before = types.MessageServerID(args.Before)
 	}
 
 	msgs, err := client.GetNewsletterMessages(a.ctx, jid, params)

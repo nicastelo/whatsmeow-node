@@ -352,7 +352,9 @@ export class WhatsmeowClient extends EventEmitter {
   }
 
   async getGroupRequestParticipants(jid: JID): Promise<GroupRequestParticipant[]> {
-    return (await this.proc.send("getGroupRequestParticipants", { jid })) as GroupRequestParticipant[];
+    return (await this.proc.send("getGroupRequestParticipants", {
+      jid,
+    })) as GroupRequestParticipant[];
   }
 
   async updateGroupRequestParticipants(
@@ -417,11 +419,11 @@ export class WhatsmeowClient extends EventEmitter {
     await this.proc.send("unfollowNewsletter", { jid });
   }
 
-  async getNewsletterMessages(jid: JID, count: number, since = 0): Promise<NewsletterMessage[]> {
+  async getNewsletterMessages(jid: JID, count: number, before = 0): Promise<NewsletterMessage[]> {
     return (await this.proc.send("getNewsletterMessages", {
       jid,
       count,
-      since,
+      before,
     })) as NewsletterMessage[];
   }
 
@@ -462,7 +464,10 @@ export class WhatsmeowClient extends EventEmitter {
     return (await this.proc.send("getPrivacySettings")) as PrivacySettings;
   }
 
-  async setPrivacySetting(name: PrivacySettingName, value: PrivacySettingValue): Promise<PrivacySettings> {
+  async setPrivacySetting(
+    name: PrivacySettingName,
+    value: PrivacySettingValue,
+  ): Promise<PrivacySettings> {
     return (await this.proc.send("setPrivacySetting", { name, value })) as PrivacySettings;
   }
 
@@ -496,7 +501,9 @@ export class WhatsmeowClient extends EventEmitter {
   }
 
   async resolveBusinessMessageLink(code: string): Promise<BusinessMessageLinkTarget> {
-    return (await this.proc.send("resolveBusinessMessageLink", { code })) as BusinessMessageLinkTarget;
+    return (await this.proc.send("resolveBusinessMessageLink", {
+      code,
+    })) as BusinessMessageLinkTarget;
   }
 
   // ── Media Upload ────────────────────────────────
