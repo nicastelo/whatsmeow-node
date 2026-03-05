@@ -145,6 +145,7 @@ jobs:
 
       - name: Publish main package
         run: |
+          cp README.md LICENSE ts/
           cd ts
           npm install --ignore-scripts
           npm run build
