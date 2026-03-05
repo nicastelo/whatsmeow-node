@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   build-go:
@@ -85,6 +86,10 @@ jobs:
   publish:
     needs: [build-go, build-go-musl]
     runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -131,24 +136,20 @@ jobs:
           "
 
       - name: Publish platform packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           for dir in npm/*/; do
             echo "Publishing $(basename $dir)..."
             cd "$dir"
-            npm publish --access public || true
+            npm publish --access public --provenance || true
             cd ../..
           done
 
       - name: Publish main package
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           cd ts
           npm install --ignore-scripts
           npm run build
-          npm publish --access public
+          npm publish --access public --provenance
 
       - name: Create GitHub Release
         env:
