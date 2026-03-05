@@ -1,6 +1,6 @@
 {
   "name": "@whatsmeow-node/whatsmeow-node",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "whatsmeowVersion": "0.0.0-20260227",
   "description": "TypeScript bindings for whatsmeow (Go WhatsApp library) via subprocess IPC",
   "type": "module",
@@ -36,7 +36,7 @@
   "bugs": {
     "url": "https://github.com/nicastelo/whatsmeow-node/issues"
   },
-  "author": "Nicolas Castelo (https://github.com/nicastelo)",
+  "author": "Nicolas Castellanos (https://github.com/nicastelo)",
   "keywords": [
     "whatsapp",
     "whatsmeow",
@@ -53,13 +53,13 @@
     "access": "public"
   },
   "optionalDependencies": {
-    "@whatsmeow-node/darwin-arm64": "0.2.2",
-    "@whatsmeow-node/darwin-x64": "0.2.2",
-    "@whatsmeow-node/linux-arm64": "0.2.2",
-    "@whatsmeow-node/linux-x64": "0.2.2",
-    "@whatsmeow-node/linux-x64-musl": "0.2.2",
-    "@whatsmeow-node/win32-arm64": "0.2.2",
-    "@whatsmeow-node/win32-x64": "0.2.2"
+    "@whatsmeow-node/darwin-arm64": "0.2.3",
+    "@whatsmeow-node/darwin-x64": "0.2.3",
+    "@whatsmeow-node/linux-arm64": "0.2.3",
+    "@whatsmeow-node/linux-x64": "0.2.3",
+    "@whatsmeow-node/linux-x64-musl": "0.2.3",
+    "@whatsmeow-node/win32-arm64": "0.2.3",
+    "@whatsmeow-node/win32-x64": "0.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
