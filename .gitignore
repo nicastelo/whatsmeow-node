@@ -6,6 +6,7 @@
 ts/dist/
 ts/node_modules/
 ts/*.db
+ts/*.db-*
 
 # Platform packages (populated at release time)
 npm/*/bin/
