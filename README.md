@@ -29,21 +29,27 @@ Supported platforms:
 ```typescript
 import { createClient } from "@whatsmeow-node/whatsmeow-node";
 
-const client = createClient({
-  store: "file:session.db",
-});
+const client = createClient({ store: "session.db" });
 
+// Listen for events
 client.on("qr", ({ code }) => {
-  console.log("Scan this QR code:", code);
+  // Use any QR renderer — e.g. `npm install qrcode-terminal`
+  // import qrcode from "qrcode-terminal";
+  // qrcode.generate(code, { small: true });
+  console.log("QR code:", code);
 });
-
-client.on("connected", ({ jid }) => {
-  console.log("Connected as", jid);
-});
-
+client.on("connected", ({ jid }) => console.log("Connected as", jid));
 client.on("message", ({ info, message }) => {
   console.log(`${info.pushName}: ${message.conversation ?? JSON.stringify(message)}`);
 });
+
+// Initialize and connect
+const { jid } = await client.init();
+
+if (!jid) {
+  // Not paired yet — set up QR channel before connecting
+  await client.getQRChannel();
+}
 
 await client.connect();
 ```
@@ -56,16 +62,21 @@ Returns a `WhatsmeowClient` instance.
 
 | Option           | Type     | Default   | Description                              |
 |------------------|----------|-----------|------------------------------------------|
-| `store`          | `string` | required  | Database DSN (`file:session.db` or `postgres://...`) |
+| `store`          | `string` | required  | SQLite path (`session.db`) or Postgres URL (`postgres://...`) |
 | `binaryPath`     | `string` | auto      | Path to the Go binary (auto-resolved from platform package) |
 | `commandTimeout` | `number` | `30000`   | IPC command timeout in milliseconds      |
 
 ### Connection
 
-- `connect()` -- Connect and return `{ jid }` if already paired, or `{ needsPairing: true }`
-- `disconnect()` -- Disconnect and stop the subprocess
-- `logout()` -- Log out (removes device from WhatsApp) and stop
-- `status()` -- Get current connection status
+- `init()` -- Open store and create whatsmeow client. Returns `{ jid }` if already paired.
+- `getQRChannel()` -- Set up QR pairing channel. Call before `connect()`. QR codes arrive as `qr` events.
+- `pairCode(phone)` -- Pair via phone number (alternative to QR). Call after `connect()`.
+- `connect()` -- Connect to WhatsApp (`client.Connect()`)
+- `disconnect()` -- Disconnect from WhatsApp (`client.Disconnect()`)
+- `logout()` -- Log out and remove device from WhatsApp (`client.Logout()`)
+- `isConnected()` -- Check connection status (`client.IsConnected()`)
+- `isLoggedIn()` -- Check login status (`client.IsLoggedIn()`)
+- `close()` -- Kill the Go subprocess (for cleanup)
 
 ### Messaging
 
@@ -136,10 +147,31 @@ client.on("call:offer", ({ from, callId }) => { /* ... */ });
 
 The `store` option accepts:
 
-- **SQLite**: `file:session.db` -- Creates a local database file. Recommended for single-process usage.
+- **SQLite**: `session.db` or `./data/wa.db` -- Creates a local database file. Recommended for single-process usage. Plain paths are auto-prefixed with `file:` (you can also pass `file:session.db?_pragma=...` for explicit SQLite URI parameters).
 - **PostgreSQL**: `postgres://user:pass@host/db` -- For multi-instance deployments or serverless.
 
 SQLite is configured automatically with WAL mode, foreign keys, and busy timeout for reliable concurrent access during WhatsApp's initial sync.
+
+## Usage with Next.js
+
+Next.js (Turbopack/Webpack) bundles server code by default and will try to parse the Go binary as JavaScript. Add all `@whatsmeow-node` packages to `serverExternalPackages` in your `next.config.ts`:
+
+```typescript
+const nextConfig: NextConfig = {
+  serverExternalPackages: [
+    "@whatsmeow-node/whatsmeow-node",
+    "@whatsmeow-node/darwin-arm64",
+    "@whatsmeow-node/darwin-x64",
+    "@whatsmeow-node/linux-arm64",
+    "@whatsmeow-node/linux-x64",
+    "@whatsmeow-node/linux-x64-musl",
+    "@whatsmeow-node/win32-arm64",
+    "@whatsmeow-node/win32-x64",
+  ],
+};
+```
+
+Only your deployment platform's package will be installed (npm resolves by `os`/`cpu`), but listing all of them ensures it works in any environment.
 
 ## Differences from whatsmeow
 
@@ -147,7 +179,6 @@ The API maps closely to whatsmeow's Go API. Most methods have a 1:1 TypeScript e
 
 - **Session storage is internal** -- The Go binary manages the whatsmeow `store.Device` internally. You can't implement a custom store from TypeScript; you choose SQLite or Postgres via the connection string.
 - **Messages are JSON, not protobuf** -- You send/receive plain JSON objects instead of `waE2E.Message` protobuf structs. Simpler, but some proto edge cases may be lossy.
-- **QR pairing is automatic** -- `connect()` detects if pairing is needed and sets up the QR channel automatically. QR codes arrive as events.
 - **Auto-reconnect is enabled** -- whatsmeow's built-in reconnection is always on. You see `disconnected` + `connected` events but don't manage reconnect logic.
 - **One client per process** -- Each `createClient()` spawns one Go binary. For multiple accounts, create multiple clients.
 - **Network configuration not yet exposed** -- `SetProxy`, `SetMediaHTTPClient`, etc. are not available. The Go binary uses default networking.

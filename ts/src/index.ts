@@ -16,8 +16,7 @@ export type {
   ChatPresence,
   ChatPresenceMedia,
   NewsletterInfo,
-  StatusResult,
-  ConnectResult,
+  InitResult,
   WhatsmeowEvents,
   ClientOptions,
 } from "./types.js";

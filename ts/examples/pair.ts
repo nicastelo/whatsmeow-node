@@ -6,7 +6,7 @@ const binaryPath = path.resolve(import.meta.dirname, "../../whatsmeow-node");
 const storePath = path.resolve(import.meta.dirname, "../session.db");
 
 const client = createClient({
-  store: `file:${storePath}`,
+  store: storePath,
   binaryPath,
 });
 
@@ -26,6 +26,7 @@ client.on("connected", ({ jid }) => {
   setTimeout(async () => {
     console.log("Sync wait done. Disconnecting.");
     await client.disconnect();
+    client.close();
     process.exit(0);
   }, 15000);
 });
@@ -36,15 +37,20 @@ client.on("error", (err) => {
 
 async function main() {
   console.log("Connecting...");
-  const result = await client.connect();
+  const result = await client.init();
 
   if (result.jid) {
+    // Already paired — just connect
     console.log(`Already paired! JID: ${result.jid}`);
+    await client.connect();
     await client.disconnect();
+    client.close();
     process.exit(0);
   }
 
-  // Not paired — QR codes will arrive as events automatically
+  // Not paired — set up QR channel, then connect
+  await client.getQRChannel();
+  await client.connect();
   console.log("Waiting for QR code...");
 }
 

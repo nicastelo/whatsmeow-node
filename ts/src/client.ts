@@ -9,8 +9,7 @@ import type {
   JID,
   MessageContent,
   SendResponse,
-  StatusResult,
-  ConnectResult,
+  InitResult,
   IsOnWhatsAppResult,
   UserInfo,
   ProfilePicture,
@@ -80,32 +79,55 @@ export class WhatsmeowClient extends EventEmitter {
   }
 
   // ── Connection & Auth ────────────────────────────
+  // Maps to: whatsmeow.NewClient() + store setup
 
-  async connect(): Promise<ConnectResult> {
+  async init(): Promise<InitResult> {
     this.proc.start();
-    return (await this.proc.send("connect", { store: this.store })) as ConnectResult;
+    return (await this.proc.send("init", { store: normalizeStore(this.store) })) as InitResult;
   }
 
+  // Maps to: client.Connect()
+  async connect(): Promise<void> {
+    await this.proc.send("connect");
+  }
+
+  // Maps to: client.Disconnect()
   async disconnect(): Promise<void> {
     await this.proc.send("disconnect");
-    this.proc.kill();
   }
 
+  // Maps to: client.Logout()
   async logout(): Promise<void> {
     await this.proc.send("logout");
+  }
+
+  // Maps to: client.IsConnected()
+  async isConnected(): Promise<boolean> {
+    const result = (await this.proc.send("isConnected")) as { connected: boolean };
+    return result.connected;
+  }
+
+  // Maps to: client.IsLoggedIn()
+  async isLoggedIn(): Promise<boolean> {
+    const result = (await this.proc.send("isLoggedIn")) as { loggedIn: boolean };
+    return result.loggedIn;
+  }
+
+  // Kill the Go subprocess. Called automatically if the Node process exits.
+  close(): void {
     this.proc.kill();
   }
 
-  async status(): Promise<StatusResult> {
-    return (await this.proc.send("status")) as StatusResult;
+  // ── Pairing ────────────────────────────────────────
+
+  // Maps to: client.GetQRChannel() — call before connect()
+  async getQRChannel(): Promise<void> {
+    await this.proc.send("getQRChannel");
   }
 
-  async pairQR(): Promise<void> {
-    await this.proc.send("pair:qr");
-  }
-
+  // Maps to: client.PairPhone() — call after connect()
   async pairCode(phone: string): Promise<string> {
-    const result = (await this.proc.send("pair:code", { phone })) as { code: string };
+    const result = (await this.proc.send("pairCode", { phone })) as { code: string };
     return result.code;
   }
 
@@ -261,6 +283,19 @@ export class WhatsmeowClient extends EventEmitter {
   async call(method: string, args: Record<string, unknown> = {}): Promise<unknown> {
     return this.proc.send(method, args);
   }
+}
+
+function normalizeStore(store: string): string {
+  // Already a connection string
+  if (
+    store.startsWith("file:") ||
+    store.startsWith("postgres://") ||
+    store.startsWith("postgresql://")
+  ) {
+    return store;
+  }
+  // Plain file path — wrap as SQLite URI
+  return `file:${store}`;
 }
 
 const BINARY_NAME = process.platform === "win32" ? "whatsmeow-node.exe" : "whatsmeow-node";
