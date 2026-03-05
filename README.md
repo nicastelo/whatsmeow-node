@@ -8,6 +8,34 @@ Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CG
 
 **Current upstream**: whatsmeow [`0.0.0-20260227`](https://pkg.go.dev/go.mau.fi/whatsmeow)
 
+## Why whatsmeow?
+
+Several open-source libraries exist for the WhatsApp Web protocol. They fall into two categories:
+
+**Direct protocol** (reimplement the WebSocket protocol):
+
+| | [whatsmeow](https://github.com/tulir/whatsmeow) | [Baileys](https://github.com/WhiskeySockets/Baileys) |
+|---|---|---|
+| Language | Go | Node.js |
+| Memory | ~10-20 MB | ~50 MB |
+| Maintainer | [tulir](https://github.com/tulir) (Mautrix bridges) | WhiskeySockets community |
+
+**Browser automation** (drive WhatsApp Web via Puppeteer/Selenium):
+[whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js), [WPPConnect](https://github.com/wppconnect-team/wppconnect), [OpenWA](https://github.com/open-wa/wa-automate-nodejs) -- these require a headless browser (~200-500 MB) and are more fragile.
+
+Higher-level platforms like [Evolution API](https://github.com/EvolutionAPI/evolution-api) and [WAHA](https://github.com/devlikeapro/waha) wrap one or more of the above.
+
+We chose whatsmeow because:
+
+- **Reliability** -- Powers the [Mautrix WhatsApp bridge](https://github.com/mautrix/whatsapp) (24/7 for thousands of users), [wacli](https://github.com/steipete/wacli), and many other projects. Arguably the most battle-tested implementation.
+- **Resource efficiency** -- A single Go binary uses far less memory than a Node.js or Puppeteer process.
+- **Protocol correctness** -- Meticulous about protocol compliance, reducing the risk of bans.
+- **Stability** -- Consistent maintainership. Baileys has gone through multiple forks and breaking changes; browser-based libraries depend on a full browser engine.
+
+The tradeoff is the IPC layer between Node.js and Go, but the subprocess approach keeps things simple: no CGo, no native addons, no WebSocket reimplementation in JavaScript.
+
+Huge thanks to [@tulir](https://github.com/tulir) and the [whatsmeow contributors](https://github.com/tulir/whatsmeow/graphs/contributors) for building and maintaining such a solid foundation.
+
 ## Install
 
 ```bash
@@ -217,6 +245,10 @@ npx tsx examples/pair.ts
 ```
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full development setup.
+
+## Acknowledgments
+
+This project is entirely built on [whatsmeow](https://github.com/tulir/whatsmeow) by [@tulir](https://github.com/tulir) and [contributors](https://github.com/tulir/whatsmeow/graphs/contributors). Thank you for building and maintaining such a reliable library.
 
 ## License
 
