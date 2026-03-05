@@ -310,10 +310,20 @@ describe("WhatsmeowClient", () => {
     });
 
     it("getBusinessProfile sends jid", async () => {
-      mockResolve(send, { jid: "biz@s.whatsapp.net", address: "123 Main St" });
+      mockResolve(send, {
+        jid: "biz@s.whatsapp.net",
+        address: "123 Main St",
+        profileOptions: { cart_enabled: "true" },
+        businessHoursTimeZone: "America/Montevideo",
+        businessHours: [
+          { dayOfWeek: "monday", mode: "open", openTime: "09:00", closeTime: "18:00" },
+        ],
+      });
       const result = await client.getBusinessProfile("biz@s.whatsapp.net");
       expect(send).toHaveBeenCalledWith("getBusinessProfile", { jid: "biz@s.whatsapp.net" });
       expect(result.address).toBe("123 Main St");
+      expect(result.profileOptions?.cart_enabled).toBe("true");
+      expect(result.businessHours?.[0]?.dayOfWeek).toBe("monday");
     });
 
     it("setStatusMessage sends message", async () => {
@@ -774,11 +784,15 @@ describe("WhatsmeowClient", () => {
         jid: "biz@s.whatsapp.net",
         pushName: "Biz",
         message: "Hello",
+        isSigned: true,
+        verifiedLevel: "unknown",
         verifiedName: "Business Inc",
       });
       const result = await client.resolveBusinessMessageLink("biz-link");
       expect(send).toHaveBeenCalledWith("resolveBusinessMessageLink", { code: "biz-link" });
       expect(result.verifiedName).toBe("Business Inc");
+      expect(result.isSigned).toBe(true);
+      expect(result.verifiedLevel).toBe("unknown");
     });
   });
 

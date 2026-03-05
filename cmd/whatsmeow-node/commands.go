@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"go.mau.fi/whatsmeow"
+	waProto "go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types"
 	waLog "go.mau.fi/whatsmeow/util/log"
-	waProto "go.mau.fi/whatsmeow/proto/waE2E"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
@@ -1030,7 +1030,7 @@ func buildProtoMessage(m map[string]interface{}) (*waProto.Message, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal message JSON: %w", err)
 	}
-	if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(data, msg); err != nil {
+	if err := (protojson.UnmarshalOptions{}).Unmarshal(data, msg); err != nil {
 		return nil, fmt.Errorf("failed to parse message proto: %w", err)
 	}
 	return msg, nil
@@ -1044,7 +1044,7 @@ type downloadableMsg struct {
 	fileEncSHA256 []byte
 }
 
-func (d *downloadableMsg) GetDirectPath() string   { return d.directPath }
+func (d *downloadableMsg) GetDirectPath() string    { return d.directPath }
 func (d *downloadableMsg) GetMediaKey() []byte      { return d.mediaKey }
 func (d *downloadableMsg) GetFileSHA256() []byte    { return d.fileSHA256 }
 func (d *downloadableMsg) GetFileEncSHA256() []byte { return d.fileEncSHA256 }

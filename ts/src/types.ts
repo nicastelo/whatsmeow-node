@@ -108,12 +108,22 @@ export interface BusinessProfile {
   address?: string;
   email?: string;
   categories?: Array<{ id: string; name: string }>;
+  profileOptions?: Record<string, string>;
+  businessHoursTimeZone?: string;
+  businessHours?: Array<{
+    dayOfWeek: string;
+    mode: string;
+    openTime: string;
+    closeTime: string;
+  }>;
 }
 
 export interface BusinessMessageLinkTarget {
   jid: JID;
   pushName: string;
   message: string;
+  isSigned?: boolean;
+  verifiedLevel?: string;
   verifiedName?: string;
 }
 

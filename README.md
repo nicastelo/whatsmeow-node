@@ -153,7 +153,7 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 - `getUserInfo(jids)` -- Get user info (status, picture ID, verified name)
 - `getProfilePicture(jid)` -- Get profile picture URL
 - `getUserDevices(jids)` -- Get all devices for given users
-- `getBusinessProfile(jid)` -- Get business profile info (address, email, categories)
+- `getBusinessProfile(jid)` -- Get business profile info (address, email, categories, profile options, business hours)
 - `setStatusMessage(message)` -- Set your account's status message
 
 ### Groups

@@ -100,10 +100,10 @@ func (a *App) cmdEditMessage(cmd Command) {
 // Maps to: client.BuildPollCreation() + client.SendMessage()
 func (a *App) cmdSendPollCreation(cmd Command) {
 	args, ok := parseArgs[struct {
-		JID                  string   `json:"jid"`
-		Name                 string   `json:"name"`
-		Options              []string `json:"options"`
-		SelectableCount      int      `json:"selectableCount"`
+		JID             string   `json:"jid"`
+		Name            string   `json:"name"`
+		Options         []string `json:"options"`
+		SelectableCount int      `json:"selectableCount"`
 	}](cmd)
 	if !ok {
 		return
@@ -504,9 +504,9 @@ func (a *App) cmdGetSubGroups(cmd Command) {
 	out := make([]map[string]interface{}, len(groups))
 	for i, g := range groups {
 		out[i] = map[string]interface{}{
-			"jid":            g.JID.String(),
-			"name":           g.GroupName.Name,
-			"isDefaultSub":   g.GroupIsDefaultSub.IsDefaultSubGroup,
+			"jid":          g.JID.String(),
+			"name":         g.GroupName.Name,
+			"isDefaultSub": g.GroupIsDefaultSub.IsDefaultSubGroup,
 		}
 	}
 	sendResponse(cmd.ID, out)
@@ -921,6 +921,24 @@ func (a *App) cmdGetBusinessProfile(cmd Command) {
 		}
 		data["categories"] = cats
 	}
+	if len(profile.ProfileOptions) > 0 {
+		data["profileOptions"] = profile.ProfileOptions
+	}
+	if profile.BusinessHoursTimeZone != "" {
+		data["businessHoursTimeZone"] = profile.BusinessHoursTimeZone
+	}
+	if len(profile.BusinessHours) > 0 {
+		hours := make([]map[string]interface{}, len(profile.BusinessHours))
+		for i, h := range profile.BusinessHours {
+			hours[i] = map[string]interface{}{
+				"dayOfWeek": h.DayOfWeek,
+				"mode":      h.Mode,
+				"openTime":  h.OpenTime,
+				"closeTime": h.CloseTime,
+			}
+		}
+		data["businessHours"] = hours
+	}
 	sendResponse(cmd.ID, data)
 }
 
@@ -960,16 +978,16 @@ func (a *App) cmdGetPrivacySettings(cmd Command) {
 	settings := client.GetPrivacySettings(a.ctx)
 
 	sendResponse(cmd.ID, map[string]interface{}{
-		"groupAdd":       string(settings.GroupAdd),
-		"lastSeen":       string(settings.LastSeen),
-		"status":         string(settings.Status),
-		"profile":        string(settings.Profile),
-		"readReceipts":   string(settings.ReadReceipts),
-		"callAdd":        string(settings.CallAdd),
-		"online":         string(settings.Online),
-		"messages":       string(settings.Messages),
-		"defense":        string(settings.Defense),
-		"stickers":       string(settings.Stickers),
+		"groupAdd":     string(settings.GroupAdd),
+		"lastSeen":     string(settings.LastSeen),
+		"status":       string(settings.Status),
+		"profile":      string(settings.Profile),
+		"readReceipts": string(settings.ReadReceipts),
+		"callAdd":      string(settings.CallAdd),
+		"online":       string(settings.Online),
+		"messages":     string(settings.Messages),
+		"defense":      string(settings.Defense),
+		"stickers":     string(settings.Stickers),
 	})
 }
 
@@ -996,16 +1014,16 @@ func (a *App) cmdSetPrivacySetting(cmd Command) {
 	}
 
 	sendResponse(cmd.ID, map[string]interface{}{
-		"groupAdd":       string(settings.GroupAdd),
-		"lastSeen":       string(settings.LastSeen),
-		"status":         string(settings.Status),
-		"profile":        string(settings.Profile),
-		"readReceipts":   string(settings.ReadReceipts),
-		"callAdd":        string(settings.CallAdd),
-		"online":         string(settings.Online),
-		"messages":       string(settings.Messages),
-		"defense":        string(settings.Defense),
-		"stickers":       string(settings.Stickers),
+		"groupAdd":     string(settings.GroupAdd),
+		"lastSeen":     string(settings.LastSeen),
+		"status":       string(settings.Status),
+		"profile":      string(settings.Profile),
+		"readReceipts": string(settings.ReadReceipts),
+		"callAdd":      string(settings.CallAdd),
+		"online":       string(settings.Online),
+		"messages":     string(settings.Messages),
+		"defense":      string(settings.Defense),
+		"stickers":     string(settings.Stickers),
 	})
 }
 
@@ -1202,9 +1220,11 @@ func (a *App) cmdResolveBusinessMessageLink(cmd Command) {
 	}
 
 	data := map[string]interface{}{
-		"jid":      target.JID.String(),
-		"pushName": target.PushName,
-		"message":  target.Message,
+		"jid":           target.JID.String(),
+		"pushName":      target.PushName,
+		"message":       target.Message,
+		"isSigned":      target.IsSigned,
+		"verifiedLevel": target.VerifiedLevel,
 	}
 	if target.VerifiedName != "" {
 		data["verifiedName"] = target.VerifiedName
@@ -1258,12 +1278,12 @@ func (a *App) cmdUploadMedia(cmd Command) {
 	}
 
 	sendResponse(cmd.ID, map[string]interface{}{
-		"url":            resp.URL,
-		"directPath":     resp.DirectPath,
-		"mediaKey":       resp.MediaKey,
-		"fileEncSha256":  resp.FileEncSHA256,
-		"fileSha256":     resp.FileSHA256,
-		"fileLength":     resp.FileLength,
+		"url":           resp.URL,
+		"directPath":    resp.DirectPath,
+		"mediaKey":      resp.MediaKey,
+		"fileEncSha256": resp.FileEncSHA256,
+		"fileSha256":    resp.FileSHA256,
+		"fileLength":    resp.FileLength,
 	})
 }
 
@@ -1361,4 +1381,3 @@ func serializeNewsletterMessage(m *types.NewsletterMessage) map[string]interface
 	}
 	return data
 }
-
