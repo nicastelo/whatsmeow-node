@@ -37,17 +37,23 @@ func (a *App) shutdown() {
 func (a *App) handleCommand(cmd Command) {
 	switch cmd.Cmd {
 	// Connection & Auth
+	case "init":
+		a.cmdInit(cmd)
 	case "connect":
 		a.cmdConnect(cmd)
 	case "disconnect":
 		a.cmdDisconnect(cmd)
 	case "logout":
 		a.cmdLogout(cmd)
-	case "status":
-		a.cmdStatus(cmd)
-	case "pair:qr":
-		a.cmdPairQR(cmd)
-	case "pair:code":
+	case "isConnected":
+		a.cmdIsConnected(cmd)
+	case "isLoggedIn":
+		a.cmdIsLoggedIn(cmd)
+
+	// Pairing
+	case "getQRChannel":
+		a.cmdGetQRChannel(cmd)
+	case "pairCode":
 		a.cmdPairCode(cmd)
 
 	// Messaging
@@ -127,13 +133,13 @@ func parseArgs[T any](cmd Command) (T, bool) {
 	return args, true
 }
 
-// requireClient returns the whatsmeow client or sends an error if not connected.
+// requireClient returns the whatsmeow client or sends an error if not initialized.
 func (a *App) requireClient(cmd Command) *whatsmeow.Client {
 	a.mu.Lock()
 	c := a.client
 	a.mu.Unlock()
 	if c == nil {
-		sendError(cmd.ID, "not connected", "ERR_NOT_CONNECTED")
+		sendError(cmd.ID, "not initialized — call init first", "ERR_NOT_INIT")
 		return nil
 	}
 	return c

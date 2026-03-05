@@ -76,15 +76,8 @@ export interface NewsletterInfo {
 }
 
 // ── Connection ─────────────────────────────────────
-export interface StatusResult {
-  connected: boolean;
-  loggedIn: boolean;
+export interface InitResult {
   jid?: JID;
-}
-
-export interface ConnectResult {
-  jid?: JID;
-  needsPairing?: boolean;
 }
 
 // ── Events ─────────────────────────────────────────

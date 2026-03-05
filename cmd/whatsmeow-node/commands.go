@@ -16,7 +16,9 @@ import (
 
 // ── Connection & Auth ──────────────────────────────
 
-func (a *App) cmdConnect(cmd Command) {
+// cmdInit opens the store and creates the whatsmeow client (but does NOT connect).
+// Maps to: sqlstore.New() + container.GetFirstDevice() + whatsmeow.NewClient()
+func (a *App) cmdInit(cmd Command) {
 	args, ok := parseArgs[struct {
 		Store string `json:"store"`
 	}](cmd)
@@ -27,7 +29,7 @@ func (a *App) cmdConnect(cmd Command) {
 	a.mu.Lock()
 	if a.client != nil {
 		a.mu.Unlock()
-		sendError(cmd.ID, "already connected", "ERR_ALREADY_CONNECTED")
+		sendError(cmd.ID, "already initialized", "ERR_ALREADY_INIT")
 		return
 	}
 	a.mu.Unlock()
@@ -49,67 +51,46 @@ func (a *App) cmdConnect(cmd Command) {
 	client := whatsmeow.NewClient(device, logger)
 	client.AddEventHandler(a.eventHandler)
 
-	// If not paired yet, set up QR channel before connecting.
-	// GetQRChannel must be called before Connect() per whatsmeow API.
-	needsPairing := device.ID == nil
-	if needsPairing {
-		qrChan, err := client.GetQRChannel(a.ctx)
-		if err != nil {
-			_ = container.Close()
-			sendError(cmd.ID, "failed to get QR channel: "+err.Error(), "ERR_QR")
-			return
-		}
-		// Forward QR events in background
-		go func() {
-			for item := range qrChan {
-				switch item.Event {
-				case "code":
-					sendEvent("qr", map[string]interface{}{"code": item.Code})
-				case "success":
-					// connected event fires separately
-				case "timeout":
-					sendEvent("qr:timeout", nil)
-				default:
-					sendEvent("qr:error", map[string]interface{}{"event": item.Event})
-				}
-			}
-		}()
-	}
-
-	if err := client.Connect(); err != nil {
-		_ = container.Close()
-		sendError(cmd.ID, "failed to connect: "+err.Error(), "ERR_CONNECT")
-		return
-	}
-
 	a.mu.Lock()
 	a.client = client
 	a.container = container
 	a.mu.Unlock()
 
-	data := map[string]interface{}{
-		"needsPairing": needsPairing,
-	}
+	data := map[string]interface{}{}
 	if device.ID != nil {
 		data["jid"] = device.ID.String()
 	}
 	sendResponse(cmd.ID, data)
 }
 
-func (a *App) cmdDisconnect(cmd Command) {
-	a.mu.Lock()
-	if a.client != nil {
-		a.client.Disconnect()
-		a.client = nil
+// cmdConnect connects to WhatsApp.
+// Maps to: client.Connect()
+func (a *App) cmdConnect(cmd Command) {
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
 	}
-	if a.container != nil {
-		_ = a.container.Close()
-		a.container = nil
+
+	if err := client.Connect(); err != nil {
+		sendError(cmd.ID, "failed to connect: "+err.Error(), "ERR_CONNECT")
+		return
 	}
-	a.mu.Unlock()
 	sendResponse(cmd.ID, nil)
 }
 
+// cmdDisconnect disconnects from WhatsApp without destroying the client.
+// Maps to: client.Disconnect()
+func (a *App) cmdDisconnect(cmd Command) {
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+	client.Disconnect()
+	sendResponse(cmd.ID, nil)
+}
+
+// cmdLogout logs out (removes device from WhatsApp).
+// Maps to: client.Logout()
 func (a *App) cmdLogout(cmd Command) {
 	client := a.requireClient(cmd)
 	if client == nil {
@@ -119,37 +100,46 @@ func (a *App) cmdLogout(cmd Command) {
 		sendError(cmd.ID, err.Error(), "ERR_LOGOUT")
 		return
 	}
-	a.mu.Lock()
-	a.client.Disconnect()
-	a.client = nil
-	if a.container != nil {
-		_ = a.container.Close()
-		a.container = nil
-	}
-	a.mu.Unlock()
 	sendResponse(cmd.ID, nil)
 }
 
-func (a *App) cmdStatus(cmd Command) {
+// cmdIsConnected returns whether the client is connected.
+// Maps to: client.IsConnected()
+func (a *App) cmdIsConnected(cmd Command) {
 	a.mu.Lock()
 	c := a.client
 	a.mu.Unlock()
 
-	data := map[string]interface{}{
-		"connected": false,
-		"loggedIn":  false,
-	}
+	connected := false
 	if c != nil {
-		data["connected"] = c.IsConnected()
-		data["loggedIn"] = c.IsLoggedIn()
-		if c.Store.ID != nil {
-			data["jid"] = c.Store.ID.String()
-		}
+		connected = c.IsConnected()
 	}
-	sendResponse(cmd.ID, data)
+	sendResponse(cmd.ID, map[string]interface{}{
+		"connected": connected,
+	})
 }
 
-func (a *App) cmdPairQR(cmd Command) {
+// cmdIsLoggedIn returns whether the client is logged in.
+// Maps to: client.IsLoggedIn()
+func (a *App) cmdIsLoggedIn(cmd Command) {
+	a.mu.Lock()
+	c := a.client
+	a.mu.Unlock()
+
+	loggedIn := false
+	if c != nil {
+		loggedIn = c.IsLoggedIn()
+	}
+	sendResponse(cmd.ID, map[string]interface{}{
+		"loggedIn": loggedIn,
+	})
+}
+
+// ── Pairing ────────────────────────────────────────
+
+// cmdGetQRChannel sets up the QR channel for pairing. Must be called before connect().
+// Maps to: client.GetQRChannel()
+func (a *App) cmdGetQRChannel(cmd Command) {
 	client := a.requireClient(cmd)
 	if client == nil {
 		return
@@ -183,6 +173,8 @@ func (a *App) cmdPairQR(cmd Command) {
 	}()
 }
 
+// cmdPairCode pairs via phone number (alternative to QR). Call after connect().
+// Maps to: client.PairPhone()
 func (a *App) cmdPairCode(cmd Command) {
 	args, ok := parseArgs[struct {
 		Phone string `json:"phone"`
