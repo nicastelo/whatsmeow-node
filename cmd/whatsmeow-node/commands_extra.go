@@ -1250,11 +1250,12 @@ func (a *App) cmdUploadMedia(cmd Command) {
 		return
 	}
 
-	data, err := os.ReadFile(args.Path)
+	file, err := os.Open(args.Path)
 	if err != nil {
 		sendError(cmd.ID, "failed to read file: "+err.Error(), "ERR_READ_FILE")
 		return
 	}
+	defer file.Close()
 
 	var mediaType whatsmeow.MediaType
 	switch args.MediaType {
@@ -1271,7 +1272,7 @@ func (a *App) cmdUploadMedia(cmd Command) {
 		return
 	}
 
-	resp, err := client.Upload(a.ctx, data, mediaType)
+	resp, err := client.UploadReader(a.ctx, file, nil, mediaType)
 	if err != nil {
 		sendError(cmd.ID, err.Error(), "ERR_UPLOAD")
 		return
