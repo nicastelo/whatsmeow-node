@@ -1,0 +1,16 @@
+{
+  "name": "@whatsmeow-node/darwin-x64",
+  "version": "0.1.0",
+  "description": "whatsmeow-node binary for macOS x64 (Intel)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicastelo/whatsmeow-node.git"
+  },
+  "os": ["darwin"],
+  "cpu": ["x64"],
+  "files": ["bin/"],
+  "publishConfig": {
+    "access": "public"
+  }
+}

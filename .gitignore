@@ -1,0 +1,20 @@
+# Go
+whatsmeow-node
+*.exe
+
+# Node / TypeScript
+ts/dist/
+ts/node_modules/
+ts/*.db
+
+# Platform packages (populated at release time)
+npm/*/bin/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,159 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build-go:
+    strategy:
+      matrix:
+        include:
+          - goos: darwin
+            goarch: arm64
+            npm-pkg: darwin-arm64
+          - goos: darwin
+            goarch: amd64
+            npm-pkg: darwin-x64
+          - goos: linux
+            goarch: amd64
+            npm-pkg: linux-x64
+          - goos: linux
+            goarch: arm64
+            npm-pkg: linux-arm64
+          - goos: windows
+            goarch: amd64
+            npm-pkg: win32-x64
+          - goos: windows
+            goarch: arm64
+            npm-pkg: win32-arm64
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build binary
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          EXT=""
+          if [ "$GOOS" = "windows" ]; then EXT=".exe"; fi
+          go build -trimpath -ldflags="-s -w" \
+            -o "npm/${{ matrix.npm-pkg }}/bin/whatsmeow-node${EXT}" \
+            ./cmd/whatsmeow-node
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.npm-pkg }}
+          path: npm/${{ matrix.npm-pkg }}/bin/
+
+  # Build musl separately — uses CGO_ENABLED=0 same as others but
+  # the npm package has libc: ["musl"] so Alpine npm resolves it
+  build-go-musl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build binary
+        env:
+          GOOS: linux
+          GOARCH: amd64
+          CGO_ENABLED: "0"
+        run: |
+          go build -trimpath -ldflags="-s -w" \
+            -o npm/linux-x64-musl/bin/whatsmeow-node \
+            ./cmd/whatsmeow-node
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binary-linux-x64-musl
+          path: npm/linux-x64-musl/bin/
+
+  publish:
+    needs: [build-go, build-go-musl]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Copy binaries to platform packages
+        run: |
+          for dir in npm/*/; do
+            pkg=$(basename "$dir")
+            if [ -d "artifacts/binary-${pkg}" ]; then
+              mkdir -p "${dir}bin"
+              cp -r "artifacts/binary-${pkg}/"* "${dir}bin/"
+              chmod +x "${dir}bin/"* 2>/dev/null || true
+            fi
+          done
+
+      - name: Sync versions
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          for pkg in npm/*/package.json; do
+            node -e "
+              const fs = require('fs');
+              const p = JSON.parse(fs.readFileSync('$pkg', 'utf8'));
+              p.version = '${VERSION}';
+              fs.writeFileSync('$pkg', JSON.stringify(p, null, 2) + '\n');
+            "
+          done
+          cd ts
+          npm version "${VERSION}" --no-git-tag-version
+          node -e "
+            const fs = require('fs');
+            const p = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            for (const dep of Object.keys(p.optionalDependencies || {})) {
+              p.optionalDependencies[dep] = '${VERSION}';
+            }
+            fs.writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n');
+          "
+
+      - name: Publish platform packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          for dir in npm/*/; do
+            echo "Publishing $(basename $dir)..."
+            cd "$dir"
+            npm publish --access public || true
+            cd ../..
+          done
+
+      - name: Publish main package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd ts
+          npm install --ignore-scripts
+          npm run build
+          npm publish --access public
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
