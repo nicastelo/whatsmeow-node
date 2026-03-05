@@ -17,15 +17,24 @@ export interface SendResponse {
   timestamp: number;
 }
 
+export interface ContextInfo {
+  stanzaId?: string;
+  participant?: JID;
+  quotedMessage?: Record<string, unknown>;
+}
+
 export interface TextMessage {
   conversation: string;
 }
 
 export interface ExtendedTextMessage {
-  extendedTextMessage: { text: string };
+  extendedTextMessage: {
+    text: string;
+    contextInfo?: ContextInfo;
+  };
 }
 
-export type MessageContent = TextMessage | ExtendedTextMessage | Record<string, unknown>;
+export type MessageContent = TextMessage | ExtendedTextMessage;
 
 // ── Groups ─────────────────────────────────────────
 export interface GroupParticipant {
@@ -74,6 +83,125 @@ export interface NewsletterInfo {
   id: JID;
   name: string;
 }
+
+export interface NewsletterMetadata {
+  id: JID;
+  state: string;
+  name?: string;
+  description?: string;
+  pictureUrl?: string;
+  role?: string;
+  mute?: string;
+}
+
+export interface NewsletterMessage {
+  serverId: number;
+  timestamp: number;
+  viewsCount: number;
+  message?: Record<string, unknown>;
+  reactions?: Array<{ reaction: string; count: number }>;
+}
+
+// ── Business ───────────────────────────────────────
+export interface BusinessProfile {
+  jid: JID;
+  address?: string;
+  email?: string;
+  categories?: Array<{ id: string; name: string }>;
+  profileOptions?: Record<string, string>;
+  businessHoursTimeZone?: string;
+  businessHours?: Array<{
+    dayOfWeek: string;
+    mode: string;
+    openTime: string;
+    closeTime: string;
+  }>;
+}
+
+export interface BusinessMessageLinkTarget {
+  jid: JID;
+  pushName: string;
+  message: string;
+  isSigned?: boolean;
+  verifiedLevel?: string;
+  verifiedName?: string;
+}
+
+export interface ContactQRLinkTarget {
+  jid: JID;
+  type: string;
+  pushName: string;
+}
+
+// ── Privacy ────────────────────────────────────────
+export interface PrivacySettings {
+  groupAdd: string;
+  lastSeen: string;
+  status: string;
+  profile: string;
+  readReceipts: string;
+  callAdd: string;
+  online: string;
+  messages: string;
+  defense: string;
+  stickers: string;
+}
+
+// Wire values expected by whatsmeow (NOT camelCase)
+export type PrivacySettingName =
+  | "groupadd"
+  | "last"
+  | "status"
+  | "profile"
+  | "readreceipts"
+  | "calladd"
+  | "online"
+  | "messages"
+  | "defense"
+  | "stickers";
+export type PrivacySettingValue =
+  | "all"
+  | "contacts"
+  | "contact_allowlist"
+  | "contact_blacklist"
+  | "match_last_seen"
+  | "known"
+  | "none"
+  | "on_standard"
+  | "off";
+
+// ── Blocklist ──────────────────────────────────────
+export interface Blocklist {
+  jids: string[];
+}
+
+// ── Upload ─────────────────────────────────────────
+export type MediaType = "image" | "video" | "audio" | "document";
+
+export interface UploadResponse {
+  url: string;
+  directPath: string;
+  mediaKey: string; // base64
+  fileEncSha256: string; // base64
+  fileSha256: string; // base64
+  fileLength: number;
+}
+
+// ── Groups (extra) ─────────────────────────────────
+export interface GroupRequestParticipant {
+  jid: JID;
+  requestedAt: number;
+}
+
+export interface SubGroupInfo {
+  jid: JID;
+  name: string;
+  isDefaultSub: boolean;
+}
+
+export type GroupMemberAddMode = "admin_add" | "all_member_add";
+export type ParticipantRequestAction = "approve" | "reject";
+export type BlocklistAction = "block" | "unblock";
 
 // ── Connection ─────────────────────────────────────
 export interface InitResult {

@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"go.mau.fi/whatsmeow"
+	waProto "go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types"
 	waLog "go.mau.fi/whatsmeow/util/log"
-	waProto "go.mau.fi/whatsmeow/proto/waE2E"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
@@ -218,7 +218,11 @@ func (a *App) cmdSendMessage(cmd Command) {
 		return
 	}
 
-	msg := buildProtoMessage(args.Message)
+	msg, err := buildProtoMessage(args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
 
 	resp, err := client.SendMessage(a.ctx, jid, msg)
 	if err != nil {
@@ -1019,30 +1023,17 @@ func serializeGroupInfo(g *types.GroupInfo) map[string]interface{} {
 	return data
 }
 
-// buildProtoMessage converts a JSON map to a waE2E.Message.
-func buildProtoMessage(m map[string]interface{}) *waProto.Message {
+// buildProtoMessage converts a JSON map to a waE2E.Message via protojson.
+func buildProtoMessage(m map[string]interface{}) (*waProto.Message, error) {
 	msg := &waProto.Message{}
-
-	if text, ok := m["conversation"].(string); ok {
-		msg.Conversation = proto.String(text)
-		return msg
+	data, err := json.Marshal(m)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal message JSON: %w", err)
 	}
-
-	if ext, ok := m["extendedTextMessage"].(map[string]interface{}); ok {
-		etm := &waProto.ExtendedTextMessage{}
-		if text, ok := ext["text"].(string); ok {
-			etm.Text = proto.String(text)
-		}
-		msg.ExtendedTextMessage = etm
-		return msg
+	if err := (protojson.UnmarshalOptions{}).Unmarshal(data, msg); err != nil {
+		return nil, fmt.Errorf("failed to parse message proto: %w", err)
 	}
-
-	// Fallback: try "text" field as simple conversation
-	if text, ok := m["text"].(string); ok {
-		msg.Conversation = proto.String(text)
-	}
-
-	return msg
+	return msg, nil
 }
 
 // downloadableMsg implements whatsmeow.DownloadableMessage for media downloads.
@@ -1053,7 +1044,7 @@ type downloadableMsg struct {
 	fileEncSHA256 []byte
 }
 
-func (d *downloadableMsg) GetDirectPath() string   { return d.directPath }
+func (d *downloadableMsg) GetDirectPath() string    { return d.directPath }
 func (d *downloadableMsg) GetMediaKey() []byte      { return d.mediaKey }
 func (d *downloadableMsg) GetFileSHA256() []byte    { return d.fileSHA256 }
 func (d *downloadableMsg) GetFileEncSHA256() []byte { return d.fileEncSHA256 }

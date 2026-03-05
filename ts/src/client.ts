@@ -15,6 +15,22 @@ import type {
   ProfilePicture,
   GroupInfo,
   NewsletterInfo,
+  NewsletterMetadata,
+  NewsletterMessage,
+  BusinessProfile,
+  BusinessMessageLinkTarget,
+  ContactQRLinkTarget,
+  PrivacySettings,
+  PrivacySettingName,
+  PrivacySettingValue,
+  Blocklist,
+  MediaType,
+  UploadResponse,
+  GroupRequestParticipant,
+  SubGroupInfo,
+  GroupMemberAddMode,
+  ParticipantRequestAction,
+  BlocklistAction,
   WhatsmeowEvents,
   Presence,
   ChatPresence,
@@ -134,6 +150,13 @@ export class WhatsmeowClient extends EventEmitter {
   // ── Messaging ────────────────────────────────────
 
   async sendMessage(jid: JID, message: MessageContent): Promise<SendResponse> {
+    return (await this.proc.send("sendMessage", {
+      jid,
+      message,
+    })) as SendResponse;
+  }
+
+  async sendRawMessage(jid: JID, message: Record<string, unknown>): Promise<SendResponse> {
     return (await this.proc.send("sendMessage", {
       jid,
       message,
@@ -276,6 +299,227 @@ export class WhatsmeowClient extends EventEmitter {
 
   async rejectCall(from: JID, callId: string): Promise<void> {
     await this.proc.send("rejectCall", { from, callId });
+  }
+
+  // ── Message Operations (extra) ──────────────────
+
+  async sendReaction(chat: JID, sender: JID, id: string, reaction: string): Promise<SendResponse> {
+    return (await this.proc.send("sendReaction", { chat, sender, id, reaction })) as SendResponse;
+  }
+
+  async editMessage(chat: JID, id: string, message: MessageContent): Promise<SendResponse> {
+    return (await this.proc.send("editMessage", { chat, id, message })) as SendResponse;
+  }
+
+  async sendPollCreation(
+    jid: JID,
+    name: string,
+    options: string[],
+    selectableCount: number,
+  ): Promise<SendResponse> {
+    return (await this.proc.send("sendPollCreation", {
+      jid,
+      name,
+      options,
+      selectableCount,
+    })) as SendResponse;
+  }
+
+  async sendPollVote(
+    pollChat: JID,
+    pollSender: JID,
+    pollId: string,
+    pollTimestamp: number,
+    options: string[],
+  ): Promise<SendResponse> {
+    return (await this.proc.send("sendPollVote", {
+      pollChat,
+      pollSender,
+      pollId,
+      pollTimestamp,
+      options,
+    })) as SendResponse;
+  }
+
+  // ── Advanced Groups ─────────────────────────────
+
+  async setGroupDescription(jid: JID, description: string): Promise<void> {
+    await this.proc.send("setGroupDescription", { jid, description });
+  }
+
+  async getGroupInfoFromLink(code: string): Promise<GroupInfo> {
+    return (await this.proc.send("getGroupInfoFromLink", { code })) as GroupInfo;
+  }
+
+  async getGroupRequestParticipants(jid: JID): Promise<GroupRequestParticipant[]> {
+    return (await this.proc.send("getGroupRequestParticipants", {
+      jid,
+    })) as GroupRequestParticipant[];
+  }
+
+  async updateGroupRequestParticipants(
+    jid: JID,
+    participants: JID[],
+    action: ParticipantRequestAction,
+  ): Promise<void> {
+    await this.proc.send("updateGroupRequestParticipants", { jid, participants, action });
+  }
+
+  async setGroupMemberAddMode(jid: JID, mode: GroupMemberAddMode): Promise<void> {
+    await this.proc.send("setGroupMemberAddMode", { jid, mode });
+  }
+
+  async setGroupJoinApprovalMode(jid: JID, enabled: boolean): Promise<void> {
+    await this.proc.send("setGroupJoinApprovalMode", { jid, enabled });
+  }
+
+  async linkGroup(parent: JID, child: JID): Promise<void> {
+    await this.proc.send("linkGroup", { parent, child });
+  }
+
+  async unlinkGroup(parent: JID, child: JID): Promise<void> {
+    await this.proc.send("unlinkGroup", { parent, child });
+  }
+
+  async getSubGroups(jid: JID): Promise<SubGroupInfo[]> {
+    return (await this.proc.send("getSubGroups", { jid })) as SubGroupInfo[];
+  }
+
+  async getLinkedGroupsParticipants(jid: JID): Promise<string[]> {
+    return (await this.proc.send("getLinkedGroupsParticipants", { jid })) as string[];
+  }
+
+  // ── Newsletter Operations (extra) ───────────────
+
+  async createNewsletter(
+    name: string,
+    description: string,
+    picture?: string,
+  ): Promise<{ id: JID; name: string }> {
+    return (await this.proc.send("createNewsletter", {
+      name,
+      description,
+      picture: picture ?? "",
+    })) as { id: JID; name: string };
+  }
+
+  async getNewsletterInfo(jid: JID): Promise<NewsletterMetadata> {
+    return (await this.proc.send("getNewsletterInfo", { jid })) as NewsletterMetadata;
+  }
+
+  async getNewsletterInfoWithInvite(key: string): Promise<NewsletterMetadata> {
+    return (await this.proc.send("getNewsletterInfoWithInvite", { key })) as NewsletterMetadata;
+  }
+
+  async followNewsletter(jid: JID): Promise<void> {
+    await this.proc.send("followNewsletter", { jid });
+  }
+
+  async unfollowNewsletter(jid: JID): Promise<void> {
+    await this.proc.send("unfollowNewsletter", { jid });
+  }
+
+  async getNewsletterMessages(jid: JID, count: number, before = 0): Promise<NewsletterMessage[]> {
+    return (await this.proc.send("getNewsletterMessages", {
+      jid,
+      count,
+      before,
+    })) as NewsletterMessage[];
+  }
+
+  async newsletterMarkViewed(jid: JID, serverIds: number[]): Promise<void> {
+    await this.proc.send("newsletterMarkViewed", { jid, serverIds });
+  }
+
+  async newsletterSendReaction(
+    jid: JID,
+    serverId: number,
+    reaction: string,
+    messageId: string,
+  ): Promise<void> {
+    await this.proc.send("newsletterSendReaction", { jid, serverId, reaction, messageId });
+  }
+
+  async newsletterToggleMute(jid: JID, mute: boolean): Promise<void> {
+    await this.proc.send("newsletterToggleMute", { jid, mute });
+  }
+
+  // ── User & Contact Operations (extra) ───────────
+
+  async getUserDevices(jids: JID[]): Promise<string[]> {
+    return (await this.proc.send("getUserDevices", { jids })) as string[];
+  }
+
+  async getBusinessProfile(jid: JID): Promise<BusinessProfile> {
+    return (await this.proc.send("getBusinessProfile", { jid })) as BusinessProfile;
+  }
+
+  async setStatusMessage(message: string): Promise<void> {
+    await this.proc.send("setStatusMessage", { message });
+  }
+
+  // ── Privacy & Settings ──────────────────────────
+
+  async getPrivacySettings(): Promise<PrivacySettings> {
+    return (await this.proc.send("getPrivacySettings")) as PrivacySettings;
+  }
+
+  async setPrivacySetting(
+    name: PrivacySettingName,
+    value: PrivacySettingValue,
+  ): Promise<PrivacySettings> {
+    return (await this.proc.send("setPrivacySetting", { name, value })) as PrivacySettings;
+  }
+
+  async setDefaultDisappearingTimer(seconds: number): Promise<void> {
+    await this.proc.send("setDefaultDisappearingTimer", { seconds });
+  }
+
+  async setDisappearingTimer(jid: JID, seconds: number): Promise<void> {
+    await this.proc.send("setDisappearingTimer", { jid, seconds });
+  }
+
+  // ── Blocklist ───────────────────────────────────
+
+  async getBlocklist(): Promise<Blocklist> {
+    return (await this.proc.send("getBlocklist")) as Blocklist;
+  }
+
+  async updateBlocklist(jid: JID, action: BlocklistAction): Promise<Blocklist> {
+    return (await this.proc.send("updateBlocklist", { jid, action })) as Blocklist;
+  }
+
+  // ── QR & Link Resolution ────────────────────────
+
+  async getContactQRLink(revoke = false): Promise<string> {
+    const result = (await this.proc.send("getContactQRLink", { revoke })) as { link: string };
+    return result.link;
+  }
+
+  async resolveContactQRLink(code: string): Promise<ContactQRLinkTarget> {
+    return (await this.proc.send("resolveContactQRLink", { code })) as ContactQRLinkTarget;
+  }
+
+  async resolveBusinessMessageLink(code: string): Promise<BusinessMessageLinkTarget> {
+    return (await this.proc.send("resolveBusinessMessageLink", {
+      code,
+    })) as BusinessMessageLinkTarget;
+  }
+
+  // ── Media Upload ────────────────────────────────
+
+  async uploadMedia(path: string, mediaType: MediaType): Promise<UploadResponse> {
+    return (await this.proc.send("uploadMedia", { path, mediaType })) as UploadResponse;
+  }
+
+  // ── Configuration ───────────────────────────────
+
+  async setPassive(passive: boolean): Promise<void> {
+    await this.proc.send("setPassive", { passive });
+  }
+
+  async setForceActiveDeliveryReceipts(active: boolean): Promise<void> {
+    await this.proc.send("setForceActiveDeliveryReceipts", { active });
   }
 
   // ── Generic fallback ─────────────────────────────

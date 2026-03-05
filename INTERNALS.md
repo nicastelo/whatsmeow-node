@@ -81,33 +81,51 @@ Every command has a configurable timeout (default 30s). If Go doesn't respond wi
 
 ## Go Binary Commands
 
+Complete list of IPC commands accepted by the Go binary (see `app.go:handleCommand`).
+
 ### Connection & Auth
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `connect` | `{ store }` | `{ jid? }` | Open store + connect. Returns JID if already paired |
+| `init` | `{ store }` | `{ jid? }` | Open store + create whatsmeow client. Returns JID if already paired |
+| `connect` | `{}` | `{}` | Connect to WhatsApp (`client.Connect()`) |
 | `disconnect` | `{}` | `{}` | Disconnect without clearing session |
 | `logout` | `{}` | `{}` | Logout + clear session data |
-| `status` | `{}` | `{ connected, loggedIn, jid? }` | Connection state |
-| `pair:qr` | `{}` | `{}` | Start QR pairing (emits `qr` events) |
-| `pair:code` | `{ phone }` | `{ code }` | Request pairing code |
+| `isConnected` | `{}` | `{ connected }` | Check connection status |
+| `isLoggedIn` | `{}` | `{ loggedIn }` | Check login status |
+
+### Pairing
+
+| Command | Args | Response | Description |
+|---|---|---|---|
+| `getQRChannel` | `{}` | `{}` | Set up QR pairing channel (emits `qr` events) |
+| `pairCode` | `{ phone }` | `{ code }` | Request pairing code for phone number |
 
 ### Messaging
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `sendMessage` | `{ jid, message, extra? }` | `{ id, timestamp }` | Send a message |
+| `sendMessage` | `{ jid, message, extra? }` | `{ id, timestamp }` | Send a message (protojson `waE2E.Message`) |
 | `revokeMessage` | `{ chat, sender, id }` | `{}` | Delete message for everyone |
-| `editMessage` | `{ chat, id, newContent }` | `{ id, timestamp }` | Edit a sent message |
-| `reactMessage` | `{ chat, sender, id, reaction }` | `{ id, timestamp }` | React to a message |
+| `editMessage` | `{ chat, id, message }` | `{ id, timestamp }` | Edit a sent message |
+| `sendReaction` | `{ chat, sender, id, reaction }` | `{ id, timestamp }` | React to a message |
 | `markRead` | `{ ids, chat, sender? }` | `{}` | Mark messages as read |
+
+Note: The TS client has both `sendMessage` (typed) and `sendRawMessage` (untyped `Record<string, unknown>`). Both call the same `sendMessage` IPC command — the Go side uses `protojson.Unmarshal` to convert the JSON map to a `waE2E.Message` proto, so any valid proto field is accepted.
+
+### Polls
+
+| Command | Args | Response | Description |
+|---|---|---|---|
+| `sendPollCreation` | `{ jid, name, options, selectableCount }` | `{ id, timestamp }` | Create a poll |
+| `sendPollVote` | `{ pollChat, pollSender, pollId, pollTimestamp, options }` | `{}` | Vote on a poll |
 
 ### Media
 
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `downloadMedia` | `{ message }` | `{ path }` | Download to temp file, return path |
-| `uploadMedia` | `{ path, appInfo }` | `{ url, directPath, ... }` | Upload from file path |
+| `uploadMedia` | `{ path, mediaType }` | `{ url, directPath, mediaKey, fileEncSha256, fileSha256, fileLength }` | Upload from file path (hashes are base64 strings) |
 
 Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 would be ~13MB of JSON.
 
@@ -118,9 +136,9 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `isOnWhatsApp` | `{ phones }` | `[{ jid, isIn }]` | Check phone numbers |
 | `getUserInfo` | `{ jids }` | `{ ... }` | Get user info |
 | `getProfilePicture` | `{ jid }` | `{ url }` | Get profile picture URL |
-| `getBusinessProfile` | `{ jid }` | `{ ... }` | Get business profile |
-| `getBlocklist` | `{}` | `[jid, ...]` | Get blocked contacts |
-| `updateBlocklist` | `{ jid, action }` | `{}` | Block/unblock |
+| `getUserDevices` | `{ jids }` | `[jid, ...]` | Get all devices for users |
+| `getBusinessProfile` | `{ jid }` | `{ ... }` | Get business profile info |
+| `setStatusMessage` | `{ message }` | `{}` | Set account status message |
 
 ### Groups
 
@@ -128,6 +146,7 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 |---|---|---|---|
 | `createGroup` | `{ name, participants }` | `{ jid }` | Create a group |
 | `getGroupInfo` | `{ jid }` | `{ ... }` | Get group metadata |
+| `getGroupInfoFromLink` | `{ code }` | `{ ... }` | Get group info from invite link |
 | `getJoinedGroups` | `{}` | `[{ jid, name, ... }]` | List all groups |
 | `getGroupInviteLink` | `{ jid, reset? }` | `{ link }` | Get/reset invite link |
 | `joinGroupWithLink` | `{ code }` | `{ jid }` | Join via invite link |
@@ -138,16 +157,35 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `setGroupAnnounce` | `{ jid, announce }` | `{}` | Admin-only messages |
 | `setGroupLocked` | `{ jid, locked }` | `{}` | Lock group settings |
 | `updateGroupParticipants` | `{ jid, participants, action }` | `{}` | Add/remove/promote/demote |
+| `getGroupRequestParticipants` | `{ jid }` | `[{ jid, requestedAt }]` | Get pending join requests |
+| `updateGroupRequestParticipants` | `{ jid, participants, action }` | `{}` | Approve/reject join requests |
+| `setGroupMemberAddMode` | `{ jid, mode }` | `{}` | Set who can add members |
+| `setGroupJoinApprovalMode` | `{ jid, enabled }` | `{}` | Enable/disable join approval |
+
+### Communities
+
+| Command | Args | Response | Description |
+|---|---|---|---|
+| `linkGroup` | `{ parent, child }` | `{}` | Link child group to community |
+| `unlinkGroup` | `{ parent, child }` | `{}` | Unlink child group |
+| `getSubGroups` | `{ jid }` | `[{ jid, name }]` | Get community sub-groups |
+| `getLinkedGroupsParticipants` | `{ jid }` | `[jid, ...]` | Get participants across linked groups |
 
 ### Newsletters
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `createNewsletter` | `{ name, description? }` | `{ jid }` | Create a channel |
-| `getNewsletterInfo` | `{ jid }` | `{ ... }` | Get channel info |
 | `getSubscribedNewsletters` | `{}` | `[...]` | List subscribed channels |
+| `newsletterSubscribeLiveUpdates` | `{ jid }` | `{ durationMs }` | Subscribe to live updates |
+| `createNewsletter` | `{ name, description?, picture? }` | `{ ... }` | Create a channel |
+| `getNewsletterInfo` | `{ jid }` | `{ ... }` | Get channel metadata |
+| `getNewsletterInfoWithInvite` | `{ key }` | `{ ... }` | Get info from invite link |
 | `followNewsletter` | `{ jid }` | `{}` | Follow/subscribe |
 | `unfollowNewsletter` | `{ jid }` | `{}` | Unfollow |
+| `getNewsletterMessages` | `{ jid, count, before? }` | `[...]` | Fetch messages (paginate backward from server ID) |
+| `newsletterMarkViewed` | `{ jid, serverIds }` | `{}` | Mark messages as viewed |
+| `newsletterSendReaction` | `{ jid, serverId, reaction, messageId }` | `{}` | React to a message |
+| `newsletterToggleMute` | `{ jid, mute }` | `{}` | Mute/unmute |
 
 ### Presence
 
@@ -157,19 +195,29 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `sendChatPresence` | `{ jid, presence, media? }` | `{}` | Typing/recording indicator |
 | `subscribePresence` | `{ jid }` | `{}` | Watch contact presence |
 
-### Privacy
+### Privacy & Settings
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `getPrivacySettings` | `{}` | `{ ... }` | Get all privacy settings |
+| `getPrivacySettings` | `{}` | `{ groupAdd, lastSeen, status, profile, readReceipts, callAdd, online, messages, defense, stickers }` | Get all privacy settings |
 | `setPrivacySetting` | `{ name, value }` | `{}` | Update a privacy setting |
-| `setDisappearingTimer` | `{ chat, timer }` | `{}` | Set disappearing messages |
+| `setDefaultDisappearingTimer` | `{ seconds }` | `{}` | Set default disappearing timer (0 to disable) |
+| `setDisappearingTimer` | `{ jid, seconds }` | `{}` | Set disappearing messages for a chat (0 to disable) |
 
-### Polls
+### Blocklist
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `createPoll` | `{ name, options, selectable }` | `{ id, timestamp }` | Create a poll |
+| `getBlocklist` | `{}` | `{ jids: [jid, ...] }` | Get blocked contacts |
+| `updateBlocklist` | `{ jid, action }` | `{}` | Block/unblock |
+
+### QR & Link Resolution
+
+| Command | Args | Response | Description |
+|---|---|---|---|
+| `getContactQRLink` | `{ revoke? }` | `{ link }` | Generate/revoke contact QR link |
+| `resolveContactQRLink` | `{ code }` | `{ jid, pushName, ... }` | Resolve contact QR code |
+| `resolveBusinessMessageLink` | `{ code }` | `{ jid, verifiedName, ... }` | Resolve business message link |
 
 ### Calls
 
@@ -177,89 +225,80 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 |---|---|---|---|
 | `rejectCall` | `{ from, callId }` | `{}` | Reject incoming call |
 
-### Generic Fallback
+### Configuration
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `call` | `{ method, args }` | `{ ... }` | Call any whatsmeow Client method by name (reflection) |
+| `setPassive` | `{ passive }` | `{}` | Set passive mode (don't receive messages) |
+| `setForceActiveDeliveryReceipts` | `{ active }` | `{}` | Force sending delivery receipts |
 
-The `call` command uses Go reflection to call the named method. This means the binding never blocks users from accessing new whatsmeow features, even before typed wrappers are added.
+### TypeScript `call()` Escape Hatch
+
+The TypeScript client exposes `call(method, args)` which sends the `method` string directly as the IPC command name. This is a client-side convenience -- there is no special `call` handler in Go. If the command name doesn't match any case in `handleCommand`, Go responds with `ERR_UNKNOWN_CMD`. This lets users try new commands if the Go binary is updated before the TypeScript wrapper adds a typed method.
 
 ## Go Binary Events
+
+Complete list of events emitted by the Go binary (see `events.go:eventHandler`).
 
 ### Connection
 
 | Event | Data | Description |
 |---|---|---|
 | `qr` | `{ code }` | QR code string for pairing |
-| `pair:code` | `{ code }` | 8-digit pairing code response |
 | `connected` | `{ jid }` | Successfully connected |
-| `disconnected` | `{ reason }` | Connection lost |
+| `disconnected` | `{}` | Connection lost |
 | `logged_out` | `{ reason }` | Logged out (session cleared) |
-| `stream_error` | `{ code, raw? }` | WebSocket stream error |
+| `stream_error` | `{ code }` | WebSocket stream error |
 | `temporary_ban` | `{ code, expire }` | Temporarily banned |
-| `keep_alive_timeout` | `{}` | Server keep-alive timeout |
+| `keep_alive_timeout` | `{ errorCount }` | Server keep-alive timeout |
+| `keep_alive_restored` | `{}` | Keep-alive restored |
 
 ### Messages
 
 | Event | Data | Description |
 |---|---|---|
 | `message` | `{ info, message }` | Incoming message |
-| `message:receipt` | `{ info, type }` | Delivery/read receipts |
-| `message:reaction` | `{ info, reaction }` | Message reaction |
-| `message:revoke` | `{ info }` | Message deleted |
-| `message:edit` | `{ info, message }` | Message edited |
-| `message:poll_vote` | `{ info, vote }` | Poll vote received |
-| `history_sync` | `{ data }` | Initial history sync |
+| `message:receipt` | `{ type, chat, sender, isGroup, ids, timestamp }` | Delivery/read receipts |
 
 ### Presence
 
 | Event | Data | Description |
 |---|---|---|
 | `presence` | `{ jid, presence, lastSeen? }` | Contact presence change |
-| `chat_presence` | `{ jid, presence, media? }` | Typing/recording state |
+| `chat_presence` | `{ chat, sender, state, media }` | Typing/recording state |
 
 ### Groups
 
 | Event | Data | Description |
 |---|---|---|
-| `group:participants` | `{ jid, participants, action }` | Members added/removed/promoted |
-| `group:info` | `{ jid, ... }` | Group metadata changed |
-| `group:name` | `{ jid, name }` | Group renamed |
-| `group:description` | `{ jid, description }` | Group description changed |
-| `group:photo` | `{ jid }` | Group photo changed |
-| `group:locked` | `{ jid, locked }` | Group lock state changed |
-| `group:announce` | `{ jid, announce }` | Announce mode changed |
-| `group:ephemeral` | `{ jid, timer }` | Disappearing messages changed |
+| `group:info` | `{ jid, name?, description?, announce?, locked?, ephemeral?, join?, leave?, promote?, demote? }` | Group metadata changed (covers name, description, participants, settings) |
+| `group:joined` | `{ jid, name }` | Joined a new group |
+
+### Media
+
+| Event | Data | Description |
+|---|---|---|
+| `picture` | `{ jid, remove, pictureId? }` | Profile/group picture changed |
 
 ### Calls
 
 | Event | Data | Description |
 |---|---|---|
-| `call:offer` | `{ from, callId, ... }` | Incoming call |
+| `call:offer` | `{ from, callId }` | Incoming call |
 | `call:accept` | `{ from, callId }` | Call accepted |
 | `call:terminate` | `{ from, callId, reason }` | Call ended |
 
-### Privacy & Contacts
+### Identity & History
 
 | Event | Data | Description |
 |---|---|---|
-| `blocklist` | `{ changes }` | Blocklist changed |
-| `identity_change` | `{ jid }` | Contact identity key changed |
-| `push_name` | `{ jid, oldName, newName }` | Contact push name changed |
-| `privacy_settings` | `{ ... }` | Privacy settings changed |
-
-### Newsletters
-
-| Event | Data | Description |
-|---|---|---|
-| `newsletter:message` | `{ info, message }` | Newsletter message |
-| `newsletter:update` | `{ jid, ... }` | Newsletter metadata changed |
+| `identity_change` | `{ jid, timestamp }` | Contact identity key changed |
+| `history_sync` | `{ type }` | Initial history sync |
 
 ## Session Storage
 
-The `connect` command takes a connection string:
-- `"file:session.db"` -> SQLite (local dev, single-device)
+The `init` command takes a store connection string:
+- `"session.db"` or `"file:session.db"` -> SQLite (local dev, single-device)
 - `"postgres://user:pass@host/db"` -> Postgres (production, survives deploys)
 
 ### Database Drivers
@@ -285,7 +324,7 @@ Without WAL + busy_timeout, WhatsApp's initial sync after pairing fails with `SQ
 
 1. **Subprocess over FFI** -- No CGo, true async events via stdout streaming, process isolation (Go crash doesn't kill Node), simple cross-compilation. Tradeoff: serialization overhead (negligible at WhatsApp message rates).
 
-2. **JSON lines over stdin/stdout** -- Simple, debuggable (`echo '{"cmd":"status"}' | ./whatsmeow-node`), no port management. Throughput (~10k lines/sec) far exceeds WhatsApp rate limits.
+2. **JSON lines over stdin/stdout** -- Simple, debuggable (`echo '{"id":"1","cmd":"isConnected"}' | ./whatsmeow-node`), no port management. Throughput (~10k lines/sec) far exceeds WhatsApp rate limits.
 
 3. **Pure Go (no CGo)** -- `modernc.org/sqlite` + `pgx`. Enables single-command cross-compilation without C toolchain.
 
@@ -295,7 +334,7 @@ Without WAL + busy_timeout, WhatsApp's initial sync after pairing fails with `SQ
 
 6. **Handwritten TS types** -- No proto generation. Go handles all protobuf. TypeScript gets lightweight interfaces for the JSON shapes (~300 lines vs 14MB of generated protos).
 
-7. **Generic `call` fallback** -- Uses Go reflection to call any whatsmeow Client method by name. Users are never blocked by our release cycle.
+7. **protojson for message building** -- `sendMessage` uses `protojson.Unmarshal` to convert any JSON map to a `waE2E.Message` proto. This means all valid proto fields are supported without manual field mapping.
 
 8. **Auto-reconnect in Go** -- whatsmeow handles reconnection internally. Node sees events but doesn't manage reconnect logic.
 
@@ -341,7 +380,7 @@ At runtime, `client.ts` checks:
 | Capability | In Go | In this binding | Why |
 |---|---|---|---|
 | Custom `store.Device` implementation | Yes -- implement the interface for any backend | No -- SQLite and Postgres only | The store lives inside the Go binary. TypeScript never touches it. |
-| Direct protobuf access | Yes -- full `waE2E.Message` | No -- messages are JSON maps | Go handles all protobuf. Some proto edge cases may be lossy in JSON. |
+| Direct protobuf access | Yes -- full `waE2E.Message` | Partial -- `sendRawMessage` accepts any `waE2E.Message`-shaped JSON via protojson | Go handles all protobuf. `sendRawMessage` uses `protojson.Unmarshal` to convert JSON to proto, so all valid proto fields are supported. |
 | Custom event handler logic in Go | Yes -- full `EventHandler` | No -- events are JSON | You can only react to events in TypeScript. |
 | Fine-grained `SendRequestExtra` | Yes -- custom message ID, media handles, timeouts | Partial -- basic send works | Can be extended by adding args to `sendMessage`. |
 | Multiple clients in one process | Yes -- many `Client` instances | One client per Go process | Spawn multiple processes for multiple accounts. |
@@ -353,7 +392,7 @@ At runtime, `client.ts` checks:
 |---|---|---|
 | Database drivers | You import the driver you want | Both sqlite and pgx are compiled in. User picks at runtime via connection string. |
 | SQLite pragmas | You configure them yourself | WAL, busy_timeout(5s), foreign_keys set automatically. |
-| QR pairing | Call `GetQRChannel()` before `Connect()` | `connect()` detects if pairing is needed automatically. QR codes arrive as events. |
+| QR pairing | Call `GetQRChannel()` before `Connect()` | Same flow -- call `getQRChannel()` before `connect()`. QR codes arrive as events. |
 | Error types | Go `error` values | JSON error responses with `code` strings. Some Go error context may be lost. |
 | Reconnection | Handle `Disconnected` events yourself, or set `EnableAutoReconnect` | Auto-reconnect always enabled. TypeScript sees events. |
 | Logging | Pass a `waLog.Logger` to `NewClient` | Logs go to stderr as JSON. TypeScript receives them as `log` events. |
@@ -363,23 +402,23 @@ At runtime, `client.ts` checks:
 
 The goal is full API parity. The following whatsmeow `Client` methods are not yet wrapped:
 
-**Messaging:** `BuildReaction`, `BuildEdit`, `BuildPollCreation`, `BuildPollVote`, `EncryptPollVote`, `DecryptReaction`, `DecryptPollVote`, `DecryptComment`, `DecryptSecretEncryptedMessage`, `EncryptComment`, `EncryptReaction`, `GenerateMessageID`, `SetDisappearingTimer`, `RevokeMessage` (direct method), `BuildUnavailableMessageRequest`, `BuildHistorySyncRequest`, `SendPeerMessage`, `ParseWebMessage`
+**Messaging:** `BuildReaction`, `BuildEdit`, `BuildPollCreation`, `BuildPollVote`, `EncryptPollVote`, `DecryptReaction`, `DecryptPollVote`, `DecryptComment`, `DecryptSecretEncryptedMessage`, `EncryptComment`, `EncryptReaction`, `GenerateMessageID`, `BuildUnavailableMessageRequest`, `BuildHistorySyncRequest`, `SendPeerMessage`, `ParseWebMessage`
 
-**Media:** `Upload`, `UploadReader`, `UploadNewsletter`, `UploadNewsletterReader`, `DownloadAny`, `DownloadThumbnail`, `DownloadToFile`, `DownloadFB`, `DownloadFBToFile`, `DownloadMediaWithPath`, `DownloadMediaWithPathToFile`
+**Media:** `UploadReader`, `UploadNewsletter`, `UploadNewsletterReader`, `DownloadAny`, `DownloadThumbnail`, `DownloadToFile`, `DownloadFB`, `DownloadFBToFile`, `DownloadMediaWithPath`, `DownloadMediaWithPathToFile`
 
-**Users/Contacts:** `GetUserDevices`, `GetBusinessProfile`, `GetBotListV2`, `GetBotProfiles`, `ResolveBusinessMessageLink`, `ResolveContactQRLink`, `GetContactQRLink`, `GetBlocklist`, `UpdateBlocklist`, `SetStatusMessage`
+**Users/Contacts:** `GetBotListV2`, `GetBotProfiles`
 
-**Groups:** `SetGroupDescription`, `SetGroupTopic`, `SetGroupJoinApprovalMode`, `SetGroupMemberAddMode`, `GetGroupRequestParticipants`, `UpdateGroupRequestParticipants`, `GetGroupInfoFromLink`, `GetGroupInfoFromInvite`, `JoinGroupWithInvite`, `LinkGroup`, `UnlinkGroup`, `GetSubGroups`, `GetLinkedGroupsParticipants`
+**Groups:** `SetGroupTopic`, `GetGroupInfoFromInvite`, `JoinGroupWithInvite`
 
-**Newsletters:** `CreateNewsletter`, `GetNewsletterInfo`, `GetNewsletterInfoWithInvite`, `FollowNewsletter`, `UnfollowNewsletter`, `NewsletterToggleMute`, `NewsletterSendReaction`, `GetNewsletterMessages`, `GetNewsletterMessageUpdates`, `AcceptTOSNotice`
+**Newsletters:** `GetNewsletterMessageUpdates`, `AcceptTOSNotice`
 
-**Privacy:** `GetPrivacySettings`, `SetPrivacySetting`, `TryFetchPrivacySettings`, `SetDefaultDisappearingTimer`
+**Privacy:** `TryFetchPrivacySettings`
 
 **Store queries:** `GetAllContacts`, `GetContact`, `GetChatSettings`
 
 **App State:** `FetchAppState`, `SendAppState`, `MarkNotDirty`
 
-**Connection/Config:** `SetPassive`, `WaitForConnection`, `SetForceActiveDeliveryReceipts`, `SendMediaRetryReceipt`, `DownloadHistorySync`, `GetStatusPrivacy`, `GetServerPushNotificationConfig`, `RegisterForPushNotifications`
+**Connection/Config:** `WaitForConnection`, `SendMediaRetryReceipt`, `DownloadHistorySync`, `GetStatusPrivacy`, `GetServerPushNotificationConfig`, `RegisterForPushNotifications`
 
 **Network:** `SetProxyAddress`, `SetProxy`, `SetSOCKSProxy`, `SetMediaHTTPClient`, `SetWebsocketHTTPClient`, `SetPreLoginHTTPClient`
 

@@ -4,9 +4,29 @@ TypeScript/Node.js bindings for [whatsmeow](https://github.com/tulir/whatsmeow),
 
 Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CGo, no native addons, no WebSocket reimplementation -- just a subprocess.
 
-> **Alpha** -- This is an early release. The API may change, not all whatsmeow methods are wrapped yet, and it has not been extensively tested in production. Bug reports and contributions are welcome.
+> **Alpha** -- This is an early release. The API may change and it has not been extensively tested in production. Bug reports and contributions are welcome.
 
 **Current upstream**: whatsmeow [`0.0.0-20260227`](https://pkg.go.dev/go.mau.fi/whatsmeow)
+
+## Philosophy
+
+whatsmeow-node is a **binding**, not a framework. The goal is to expose whatsmeow's API to Node.js as faithfully as possible -- a 1:1 mapping with no added abstractions, convenience wrappers, or opinion about how you should structure your app. A binding should bind, not opine.
+
+- **No magic** -- Message payloads match the [whatsmeow protobuf schema](https://pkg.go.dev/go.mau.fi/whatsmeow/proto/waE2E#Message) directly. At runtime, message-sending methods accept JSON objects that follow the same shape that whatsmeow's `waE2E.Message` proto serializes to. If you know whatsmeow, you know this library.
+- **No sweeteners** -- We don't invent shorthand like `sendText(jid, "hello")` or auto-build reply context. You construct the proto-shaped object yourself, exactly as whatsmeow expects it.
+- **Typed where possible, open where needed** -- `sendMessage` is typed for common message shapes (text, extended text with replies). For any other `waE2E.Message` shape, use `sendRawMessage`, which accepts any `Record<string, unknown>` -- image messages, sticker messages, location messages, and anything whatsmeow adds in the future. At runtime both methods pass your object through to whatsmeow unchanged; the difference is only in TypeScript type checking.
+
+**Why?** whatsmeow is a great, battle-tested library that deliberately exposes low-level proto structs instead of inventing convenience abstractions. We follow the same philosophy -- our job is just to make whatsmeow accessible from Node.js, nothing more. This keeps whatsmeow-node in sync with upstream automatically -- if whatsmeow supports it, you can use it. One less abstraction layer to maintain.
+
+**Build on top of this.** If you want a higher-level API, build it as a separate package that depends on whatsmeow-node:
+
+- A `sendText(jid, text)` helper that constructs `{ conversation: text }`
+- A `reply(jid, text, quotedMsg)` helper that builds `extendedTextMessage` with `contextInfo`
+- A message builder/fluent API for composing media messages
+- A bot framework with command routing, middleware, session management
+- Queue-based sending with rate limiting
+
+All of these are better as userland packages that can evolve independently from the binding.
 
 ## Why whatsmeow?
 
@@ -108,35 +128,60 @@ Returns a `WhatsmeowClient` instance.
 
 ### Messaging
 
-- `sendMessage(jid, message)` -- Send a message (text, image, etc.)
+- `sendMessage(jid, message)` -- Send a typed message (conversation, extended text with replies)
+- `sendRawMessage(jid, message)` -- Send any `waE2E.Message`-shaped JSON (untyped escape hatch)
+- `sendReaction(chat, sender, id, reaction)` -- React to a message (empty string to remove)
+- `editMessage(chat, id, message)` -- Edit a previously sent message
 - `revokeMessage(chat, sender, id)` -- Revoke/delete a message
 - `markRead(ids, chat, sender?)` -- Mark messages as read
+
+### Polls
+
+- `sendPollCreation(jid, name, options, selectableCount)` -- Create and send a poll
+- `sendPollVote(pollChat, pollSender, pollId, pollTimestamp, options)` -- Vote on a poll
 
 ### Media
 
 - `downloadMedia(msg)` -- Download media from a received message
+- `uploadMedia(path, mediaType)` -- Upload media for sending (`"image"` | `"video"` | `"audio"` | `"document"`)
 
-Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The Go binary writes downloaded media to a temp file and returns the path.
+Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The Go binary writes downloaded media to a temp file and returns the path. Upload returns `{ url, directPath, mediaKey, fileEncSha256, fileSha256, fileLength }` for use in message protos.
 
-### Contacts
+### Contacts & Users
 
 - `isOnWhatsApp(phones)` -- Check if phone numbers are on WhatsApp
 - `getUserInfo(jids)` -- Get user info (status, picture ID, verified name)
 - `getProfilePicture(jid)` -- Get profile picture URL
+- `getUserDevices(jids)` -- Get all devices for given users
+- `getBusinessProfile(jid)` -- Get business profile info (address, email, categories, profile options, business hours)
+- `setStatusMessage(message)` -- Set your account's status message
 
 ### Groups
 
 - `createGroup(name, participants)` -- Create a group
 - `getGroupInfo(jid)` -- Get group metadata
+- `getGroupInfoFromLink(code)` -- Get group info from an invite link without joining
 - `getJoinedGroups()` -- List all joined groups
 - `getGroupInviteLink(jid, reset?)` -- Get/reset invite link
 - `joinGroupWithLink(code)` -- Join a group via invite link
 - `leaveGroup(jid)` -- Leave a group
 - `setGroupName(jid, name)` -- Update group name
+- `setGroupDescription(jid, description)` -- Update group description
 - `setGroupPhoto(jid, path)` -- Update group photo
 - `setGroupAnnounce(jid, announce)` -- Toggle announcement mode
 - `setGroupLocked(jid, locked)` -- Toggle group locked
 - `updateGroupParticipants(jid, participants, action)` -- Add/remove/promote/demote
+- `getGroupRequestParticipants(jid)` -- Get pending join requests
+- `updateGroupRequestParticipants(jid, participants, action)` -- Approve/reject join requests
+- `setGroupMemberAddMode(jid, mode)` -- Set who can add members (`"admin_add"` | `"all_member_add"`)
+- `setGroupJoinApprovalMode(jid, enabled)` -- Enable/disable join approval
+
+### Communities
+
+- `linkGroup(parent, child)` -- Link a child group to a parent community
+- `unlinkGroup(parent, child)` -- Unlink a child group from a community
+- `getSubGroups(jid)` -- Get sub-groups of a community
+- `getLinkedGroupsParticipants(jid)` -- Get participants across linked groups
 
 ### Presence
 
@@ -147,15 +192,47 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 ### Newsletters
 
 - `getSubscribedNewsletters()` -- List subscribed newsletters
-- `newsletterSubscribeLiveUpdates(jid)` -- Subscribe to newsletter updates
+- `newsletterSubscribeLiveUpdates(jid)` -- Subscribe to live updates
+- `createNewsletter(name, description, picture?)` -- Create a newsletter/channel
+- `getNewsletterInfo(jid)` -- Get newsletter metadata
+- `getNewsletterInfoWithInvite(key)` -- Get newsletter info from invite link
+- `followNewsletter(jid)` -- Follow a newsletter
+- `unfollowNewsletter(jid)` -- Unfollow a newsletter
+- `getNewsletterMessages(jid, count, before?)` -- Fetch newsletter messages (paginate backward from server ID)
+- `newsletterMarkViewed(jid, serverIds)` -- Mark messages as viewed
+- `newsletterSendReaction(jid, serverId, reaction, messageId)` -- React to a newsletter message
+- `newsletterToggleMute(jid, mute)` -- Mute/unmute a newsletter
+
+### Privacy & Settings
+
+- `getPrivacySettings()` -- Get all privacy settings
+- `setPrivacySetting(name, value)` -- Update a privacy setting
+- `setDefaultDisappearingTimer(seconds)` -- Set default disappearing timer (0 to disable)
+- `setDisappearingTimer(jid, seconds)` -- Set disappearing timer for a specific chat
+
+### Blocklist
+
+- `getBlocklist()` -- Get blocked contacts
+- `updateBlocklist(jid, action)` -- Block/unblock a contact (`"block"` | `"unblock"`)
+
+### QR & Link Resolution
+
+- `getContactQRLink(revoke?)` -- Generate or revoke your contact QR link
+- `resolveContactQRLink(code)` -- Resolve a contact QR code to user info
+- `resolveBusinessMessageLink(code)` -- Resolve a business message link
 
 ### Calls
 
 - `rejectCall(from, callId)` -- Reject an incoming call
 
+### Configuration
+
+- `setPassive(passive)` -- Set passive mode (don't receive messages)
+- `setForceActiveDeliveryReceipts(active)` -- Force sending delivery receipts
+
 ### Generic
 
-- `call(method, args)` -- Send any command to the Go binary (escape hatch for unwrapped whatsmeow methods)
+- `call(method, args)` -- Send any command to the Go binary (escape hatch)
 
 ### Events
 
@@ -206,7 +283,7 @@ Only your deployment platform's package will be installed (npm resolves by `os`/
 The API maps closely to whatsmeow's Go API. Most methods have a 1:1 TypeScript equivalent. Key differences:
 
 - **Session storage is internal** -- The Go binary manages the whatsmeow `store.Device` internally. You can't implement a custom store from TypeScript; you choose SQLite or Postgres via the connection string.
-- **Messages are JSON, not protobuf** -- You send/receive plain JSON objects instead of `waE2E.Message` protobuf structs. Simpler, but some proto edge cases may be lossy.
+- **Messages are JSON, not protobuf** -- You send/receive JSON objects that map to `waE2E.Message` protobuf fields via [protojson](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson). The JSON shape matches the proto schema directly.
 - **Auto-reconnect is enabled** -- whatsmeow's built-in reconnection is always on. You see `disconnected` + `connected` events but don't manage reconnect logic.
 - **One client per process** -- Each `createClient()` spawns one Go binary. For multiple accounts, create multiple clients.
 - **Network configuration not yet exposed** -- `SetProxy`, `SetMediaHTTPClient`, etc. are not available. The Go binary uses default networking.
