@@ -157,7 +157,7 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `setGroupAnnounce` | `{ jid, announce }` | `{}` | Admin-only messages |
 | `setGroupLocked` | `{ jid, locked }` | `{}` | Lock group settings |
 | `updateGroupParticipants` | `{ jid, participants, action }` | `{}` | Add/remove/promote/demote |
-| `getGroupRequestParticipants` | `{ jid }` | `[{ jid, reason, requestedAt }]` | Get pending join requests |
+| `getGroupRequestParticipants` | `{ jid }` | `[{ jid, requestedAt }]` | Get pending join requests |
 | `updateGroupRequestParticipants` | `{ jid, participants, action }` | `{}` | Approve/reject join requests |
 | `setGroupMemberAddMode` | `{ jid, mode }` | `{}` | Set who can add members |
 | `setGroupJoinApprovalMode` | `{ jid, enabled }` | `{}` | Enable/disable join approval |
@@ -169,14 +169,14 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `linkGroup` | `{ parent, child }` | `{}` | Link child group to community |
 | `unlinkGroup` | `{ parent, child }` | `{}` | Unlink child group |
 | `getSubGroups` | `{ jid }` | `[{ jid, name }]` | Get community sub-groups |
-| `getLinkedGroupsParticipants` | `{ jid }` | `{ ... }` | Get participants across linked groups |
+| `getLinkedGroupsParticipants` | `{ jid }` | `[jid, ...]` | Get participants across linked groups |
 
 ### Newsletters
 
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `getSubscribedNewsletters` | `{}` | `[...]` | List subscribed channels |
-| `newsletterSubscribeLiveUpdates` | `{ jid }` | `{ duration }` | Subscribe to live updates |
+| `newsletterSubscribeLiveUpdates` | `{ jid }` | `{ durationMs }` | Subscribe to live updates |
 | `createNewsletter` | `{ name, description?, picture? }` | `{ ... }` | Create a channel |
 | `getNewsletterInfo` | `{ jid }` | `{ ... }` | Get channel metadata |
 | `getNewsletterInfoWithInvite` | `{ key }` | `{ ... }` | Get info from invite link |
@@ -201,14 +201,14 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 |---|---|---|---|
 | `getPrivacySettings` | `{}` | `{ groupAdd, last, status, profile, readReceipts, callAdd, online, messages, defense, stickers }` | Get all privacy settings |
 | `setPrivacySetting` | `{ name, value }` | `{}` | Update a privacy setting |
-| `setDefaultDisappearingTimer` | `{ timer }` | `{}` | Set default disappearing timer |
-| `setDisappearingTimer` | `{ jid, timer }` | `{}` | Set disappearing messages for a chat |
+| `setDefaultDisappearingTimer` | `{ seconds }` | `{}` | Set default disappearing timer (0 to disable) |
+| `setDisappearingTimer` | `{ jid, seconds }` | `{}` | Set disappearing messages for a chat (0 to disable) |
 
 ### Blocklist
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `getBlocklist` | `{}` | `[jid, ...]` | Get blocked contacts |
+| `getBlocklist` | `{}` | `{ jids: [jid, ...] }` | Get blocked contacts |
 | `updateBlocklist` | `{ jid, action }` | `{}` | Block/unblock |
 
 ### QR & Link Resolution
@@ -324,7 +324,7 @@ Without WAL + busy_timeout, WhatsApp's initial sync after pairing fails with `SQ
 
 1. **Subprocess over FFI** -- No CGo, true async events via stdout streaming, process isolation (Go crash doesn't kill Node), simple cross-compilation. Tradeoff: serialization overhead (negligible at WhatsApp message rates).
 
-2. **JSON lines over stdin/stdout** -- Simple, debuggable (`echo '{"cmd":"status"}' | ./whatsmeow-node`), no port management. Throughput (~10k lines/sec) far exceeds WhatsApp rate limits.
+2. **JSON lines over stdin/stdout** -- Simple, debuggable (`echo '{"id":"1","cmd":"isConnected"}' | ./whatsmeow-node`), no port management. Throughput (~10k lines/sec) far exceeds WhatsApp rate limits.
 
 3. **Pure Go (no CGo)** -- `modernc.org/sqlite` + `pgx`. Enables single-command cross-compilation without C toolchain.
 
