@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"sort"
 	"time"
 
 	"go.mau.fi/whatsmeow"
@@ -342,6 +343,13 @@ func (a *App) cmdSetGroupMemberAddMode(cmd Command) {
 		Mode string `json:"mode"` // "admin_add" or "all_member_add"
 	}](cmd)
 	if !ok {
+		return
+	}
+
+	switch args.Mode {
+	case "admin_add", "all_member_add":
+	default:
+		sendError(cmd.ID, "invalid mode: must be \"admin_add\" or \"all_member_add\"", "ERR_INVALID_ARGS")
 		return
 	}
 
@@ -1336,11 +1344,17 @@ func serializeNewsletterMessage(m *types.NewsletterMessage) map[string]interface
 		data["message"] = protoToMap(m.Message)
 	}
 	if len(m.ReactionCounts) > 0 {
+		// Collect and sort by emoji for deterministic output
+		emojis := make([]string, 0, len(m.ReactionCounts))
+		for emoji := range m.ReactionCounts {
+			emojis = append(emojis, emoji)
+		}
+		sort.Strings(emojis)
 		reactions := make([]map[string]interface{}, 0, len(m.ReactionCounts))
-		for emoji, count := range m.ReactionCounts {
+		for _, emoji := range emojis {
 			reactions = append(reactions, map[string]interface{}{
 				"reaction": emoji,
-				"count":    count,
+				"count":    m.ReactionCounts[emoji],
 			})
 		}
 		data["reactions"] = reactions

@@ -107,7 +107,7 @@ Complete list of IPC commands accepted by the Go binary (see `app.go:handleComma
 |---|---|---|---|
 | `sendMessage` | `{ jid, message, extra? }` | `{ id, timestamp }` | Send a message (protojson `waE2E.Message`) |
 | `revokeMessage` | `{ chat, sender, id }` | `{}` | Delete message for everyone |
-| `editMessage` | `{ chat, id, newContent }` | `{ id, timestamp }` | Edit a sent message |
+| `editMessage` | `{ chat, id, message }` | `{ id, timestamp }` | Edit a sent message |
 | `sendReaction` | `{ chat, sender, id, reaction }` | `{ id, timestamp }` | React to a message |
 | `markRead` | `{ ids, chat, sender? }` | `{}` | Mark messages as read |
 
@@ -117,7 +117,7 @@ Note: The TS client has both `sendMessage` (typed) and `sendRawMessage` (untyped
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `sendPollCreation` | `{ jid, name, options, selectable }` | `{ id, timestamp }` | Create a poll |
+| `sendPollCreation` | `{ jid, name, options, selectableCount }` | `{ id, timestamp }` | Create a poll |
 | `sendPollVote` | `{ pollChat, pollSender, pollId, pollTimestamp, options }` | `{}` | Vote on a poll |
 
 ### Media
@@ -125,7 +125,7 @@ Note: The TS client has both `sendMessage` (typed) and `sendRawMessage` (untyped
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `downloadMedia` | `{ message }` | `{ path }` | Download to temp file, return path |
-| `uploadMedia` | `{ path, appInfo }` | `{ url, directPath, mediaKey, fileEncSha256, fileSha256, fileLength }` | Upload from file path (hashes are base64 strings) |
+| `uploadMedia` | `{ path, mediaType }` | `{ url, directPath, mediaKey, fileEncSha256, fileSha256, fileLength }` | Upload from file path (hashes are base64 strings) |
 
 Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 would be ~13MB of JSON.
 

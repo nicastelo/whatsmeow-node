@@ -12,9 +12,9 @@ Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CG
 
 whatsmeow-node is a **binding**, not a framework. The goal is to expose whatsmeow's API to Node.js as faithfully as possible -- a 1:1 mapping with no added abstractions, convenience wrappers, or opinion about how you should structure your app. A binding should bind, not opine.
 
-- **No magic** -- Message payloads match the [whatsmeow protobuf schema](https://pkg.go.dev/go.mau.fi/whatsmeow/proto/waE2E#Message) directly. `sendMessage` accepts the same JSON shape that whatsmeow's `waE2E.Message` proto serializes to. If you know whatsmeow, you know this library.
+- **No magic** -- Message payloads match the [whatsmeow protobuf schema](https://pkg.go.dev/go.mau.fi/whatsmeow/proto/waE2E#Message) directly. At runtime, message-sending methods accept JSON objects that follow the same shape that whatsmeow's `waE2E.Message` proto serializes to. If you know whatsmeow, you know this library.
 - **No sweeteners** -- We don't invent shorthand like `sendText(jid, "hello")` or auto-build reply context. You construct the proto-shaped object yourself, exactly as whatsmeow expects it.
-- **Typed where possible, open where needed** -- `sendMessage` is typed for common message shapes (text, extended text with replies). For anything else, `sendRawMessage` accepts any `Record<string, unknown>` that maps to a valid `waE2E.Message` -- image messages, sticker messages, location messages, and anything whatsmeow adds in the future.
+- **Typed where possible, open where needed** -- `sendMessage` is typed for common message shapes (text, extended text with replies). For any other `waE2E.Message` shape, use `sendRawMessage`, which accepts any `Record<string, unknown>` -- image messages, sticker messages, location messages, and anything whatsmeow adds in the future. At runtime both methods pass your object through to whatsmeow unchanged; the difference is only in TypeScript type checking.
 
 **Why?** whatsmeow is a great, battle-tested library that deliberately exposes low-level proto structs instead of inventing convenience abstractions. We follow the same philosophy -- our job is just to make whatsmeow accessible from Node.js, nothing more. This keeps whatsmeow-node in sync with upstream automatically -- if whatsmeow supports it, you can use it. One less abstraction layer to maintain.
 
