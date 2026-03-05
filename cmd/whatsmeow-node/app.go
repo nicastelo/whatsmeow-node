@@ -118,6 +118,100 @@ func (a *App) handleCommand(cmd Command) {
 	case "rejectCall":
 		a.cmdRejectCall(cmd)
 
+	// ── Extra: Message Operations ──────────────────
+	case "sendReaction":
+		a.cmdSendReaction(cmd)
+	case "editMessage":
+		a.cmdEditMessage(cmd)
+	case "sendPollCreation":
+		a.cmdSendPollCreation(cmd)
+	case "sendPollVote":
+		a.cmdSendPollVote(cmd)
+
+	// ── Extra: Advanced Groups ─────────────────────
+	case "setGroupDescription":
+		a.cmdSetGroupDescription(cmd)
+	case "getGroupInfoFromLink":
+		a.cmdGetGroupInfoFromLink(cmd)
+	case "getGroupRequestParticipants":
+		a.cmdGetGroupRequestParticipants(cmd)
+	case "updateGroupRequestParticipants":
+		a.cmdUpdateGroupRequestParticipants(cmd)
+	case "setGroupMemberAddMode":
+		a.cmdSetGroupMemberAddMode(cmd)
+	case "setGroupJoinApprovalMode":
+		a.cmdSetGroupJoinApprovalMode(cmd)
+	case "linkGroup":
+		a.cmdLinkGroup(cmd)
+	case "unlinkGroup":
+		a.cmdUnlinkGroup(cmd)
+	case "getSubGroups":
+		a.cmdGetSubGroups(cmd)
+	case "getLinkedGroupsParticipants":
+		a.cmdGetLinkedGroupsParticipants(cmd)
+
+	// ── Extra: Newsletter Operations ───────────────
+	case "createNewsletter":
+		a.cmdCreateNewsletter(cmd)
+	case "getNewsletterInfo":
+		a.cmdGetNewsletterInfo(cmd)
+	case "getNewsletterInfoWithInvite":
+		a.cmdGetNewsletterInfoWithInvite(cmd)
+	case "followNewsletter":
+		a.cmdFollowNewsletter(cmd)
+	case "unfollowNewsletter":
+		a.cmdUnfollowNewsletter(cmd)
+	case "getNewsletterMessages":
+		a.cmdGetNewsletterMessages(cmd)
+	case "newsletterMarkViewed":
+		a.cmdNewsletterMarkViewed(cmd)
+	case "newsletterSendReaction":
+		a.cmdNewsletterSendReaction(cmd)
+	case "newsletterToggleMute":
+		a.cmdNewsletterToggleMute(cmd)
+
+	// ── Extra: User & Contact Operations ───────────
+	case "getUserDevices":
+		a.cmdGetUserDevices(cmd)
+	case "getBusinessProfile":
+		a.cmdGetBusinessProfile(cmd)
+	case "setStatusMessage":
+		a.cmdSetStatusMessage(cmd)
+
+	// ── Extra: Privacy & Settings ──────────────────
+	case "getPrivacySettings":
+		a.cmdGetPrivacySettings(cmd)
+	case "setPrivacySetting":
+		a.cmdSetPrivacySetting(cmd)
+	case "setDefaultDisappearingTimer":
+		a.cmdSetDefaultDisappearingTimer(cmd)
+	case "setDisappearingTimer":
+		a.cmdSetDisappearingTimer(cmd)
+
+	// ── Extra: Blocklist ───────────────────────────
+	case "getBlocklist":
+		a.cmdGetBlocklist(cmd)
+	case "updateBlocklist":
+		a.cmdUpdateBlocklist(cmd)
+
+	// ── Extra: QR & Link Resolution ────────────────
+	case "getContactQRLink":
+		a.cmdGetContactQRLink(cmd)
+	case "resolveContactQRLink":
+		a.cmdResolveContactQRLink(cmd)
+	case "resolveBusinessMessageLink":
+		a.cmdResolveBusinessMessageLink(cmd)
+
+	// ── Extra: Media Upload ────────────────────────
+	case "uploadMedia":
+		a.cmdUploadMedia(cmd)
+
+	// ── Extra: Configuration ───────────────────────
+	case "setPassive":
+		a.cmdSetPassive(cmd)
+	case "setForceActiveDeliveryReceipts":
+		a.cmdSetForceActiveDeliveryReceipts(cmd)
+
 	default:
 		sendError(cmd.ID, "unknown command: "+cmd.Cmd, "ERR_UNKNOWN_CMD")
 	}

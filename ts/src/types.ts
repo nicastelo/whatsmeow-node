@@ -17,15 +17,24 @@ export interface SendResponse {
   timestamp: number;
 }
 
+export interface ContextInfo {
+  stanzaId?: string;
+  participant?: JID;
+  quotedMessage?: Record<string, unknown>;
+}
+
 export interface TextMessage {
   conversation: string;
 }
 
 export interface ExtendedTextMessage {
-  extendedTextMessage: { text: string };
+  extendedTextMessage: {
+    text: string;
+    contextInfo?: ContextInfo;
+  };
 }
 
-export type MessageContent = TextMessage | ExtendedTextMessage | Record<string, unknown>;
+export type MessageContent = TextMessage | ExtendedTextMessage;
 
 // ── Groups ─────────────────────────────────────────
 export interface GroupParticipant {
@@ -74,6 +83,99 @@ export interface NewsletterInfo {
   id: JID;
   name: string;
 }
+
+export interface NewsletterMetadata {
+  id: JID;
+  state: string;
+  name?: string;
+  description?: string;
+  pictureUrl?: string;
+  role?: string;
+  mute?: string;
+}
+
+export interface NewsletterMessage {
+  serverId: number;
+  timestamp: number;
+  viewsCount: number;
+  message?: Record<string, unknown>;
+  reactions?: Array<{ reaction: string; count: number }>;
+}
+
+// ── Business ───────────────────────────────────────
+export interface BusinessProfile {
+  jid: JID;
+  address?: string;
+  email?: string;
+  categories?: Array<{ id: string; name: string }>;
+}
+
+export interface BusinessMessageLinkTarget {
+  jid: JID;
+  pushName: string;
+  message: string;
+  verifiedName?: string;
+}
+
+export interface ContactQRLinkTarget {
+  jid: JID;
+  type: string;
+  pushName: string;
+}
+
+// ── Privacy ────────────────────────────────────────
+export interface PrivacySettings {
+  groupAdd: string;
+  lastSeen: string;
+  status: string;
+  profile: string;
+  readReceipts: string;
+  callAdd: string;
+  online: string;
+}
+
+export type PrivacySettingName =
+  | "groupAdd"
+  | "lastSeen"
+  | "status"
+  | "profile"
+  | "readReceipts"
+  | "callAdd"
+  | "online";
+export type PrivacySettingValue = "all" | "contacts" | "contact_blacklist" | "none" | "match_last_seen";
+
+// ── Blocklist ──────────────────────────────────────
+export interface Blocklist {
+  jids: string[];
+}
+
+// ── Upload ─────────────────────────────────────────
+export type MediaType = "image" | "video" | "audio" | "document";
+
+export interface UploadResponse {
+  url: string;
+  directPath: string;
+  mediaKey: number[];
+  fileEncSha256: number[];
+  fileSha256: number[];
+  fileLength: number;
+}
+
+// ── Groups (extra) ─────────────────────────────────
+export interface GroupRequestParticipant {
+  jid: JID;
+  requestedAt: number;
+}
+
+export interface SubGroupInfo {
+  jid: JID;
+  name: string;
+  isDefaultSub: boolean;
+}
+
+export type GroupMemberAddMode = "admin_add" | "all_member_add";
+export type ParticipantRequestAction = "approve" | "reject";
+export type BlocklistAction = "block" | "unblock";
 
 // ── Connection ─────────────────────────────────────
 export interface InitResult {

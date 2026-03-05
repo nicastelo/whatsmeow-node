@@ -1019,29 +1019,14 @@ func serializeGroupInfo(g *types.GroupInfo) map[string]interface{} {
 	return data
 }
 
-// buildProtoMessage converts a JSON map to a waE2E.Message.
+// buildProtoMessage converts a JSON map to a waE2E.Message via protojson.
 func buildProtoMessage(m map[string]interface{}) *waProto.Message {
 	msg := &waProto.Message{}
-
-	if text, ok := m["conversation"].(string); ok {
-		msg.Conversation = proto.String(text)
+	data, err := json.Marshal(m)
+	if err != nil {
 		return msg
 	}
-
-	if ext, ok := m["extendedTextMessage"].(map[string]interface{}); ok {
-		etm := &waProto.ExtendedTextMessage{}
-		if text, ok := ext["text"].(string); ok {
-			etm.Text = proto.String(text)
-		}
-		msg.ExtendedTextMessage = etm
-		return msg
-	}
-
-	// Fallback: try "text" field as simple conversation
-	if text, ok := m["text"].(string); ok {
-		msg.Conversation = proto.String(text)
-	}
-
+	_ = protojson.UnmarshalOptions{DiscardUnknown: true}.Unmarshal(data, msg)
 	return msg
 }
 
