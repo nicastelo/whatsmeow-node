@@ -1,15 +1,21 @@
 {
   "name": "@whatsmeow-node/darwin-arm64",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "whatsmeow-node binary for macOS ARM64 (Apple Silicon)",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nicastelo/whatsmeow-node.git"
   },
-  "os": ["darwin"],
-  "cpu": ["arm64"],
-  "files": ["bin/"],
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "files": [
+    "bin/"
+  ],
   "publishConfig": {
     "access": "public"
   }

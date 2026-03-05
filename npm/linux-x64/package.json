@@ -1,16 +1,24 @@
 {
   "name": "@whatsmeow-node/linux-x64",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "whatsmeow-node binary for Linux x64 (glibc)",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nicastelo/whatsmeow-node.git"
   },
-  "os": ["linux"],
-  "cpu": ["x64"],
-  "libc": ["glibc"],
-  "files": ["bin/"],
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "glibc"
+  ],
+  "files": [
+    "bin/"
+  ],
   "publishConfig": {
     "access": "public"
   }
