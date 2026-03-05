@@ -137,7 +137,11 @@ jobs:
       - name: Publish platform packages
         run: |
           for dir in npm/*/; do
-            echo "Publishing $(basename $dir)..."
+            pkg=$(basename "$dir")
+            # Skip the shared README template
+            [ ! -f "${dir}package.json" ] && continue
+            cp npm/README.md LICENSE "$dir"
+            echo "Publishing ${pkg}..."
             cd "$dir"
             npm publish --access public --provenance || true
             cd ../..
@@ -145,7 +149,9 @@ jobs:
 
       - name: Publish main package
         run: |
-          cp README.md LICENSE ts/
+          TAG="${GITHUB_REF_NAME}"
+          sed "s|(./|(https://github.com/nicastelo/whatsmeow-node/blob/${TAG}/|g" README.md > ts/README.md
+          cp LICENSE ts/
           cd ts
           npm install --ignore-scripts
           npm run build

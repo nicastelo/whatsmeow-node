@@ -1,6 +1,6 @@
 {
   "name": "@whatsmeow-node/linux-x64",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "whatsmeow-node binary for Linux x64 (glibc)",
   "license": "MIT",
   "repository": {
@@ -17,7 +17,9 @@
     "glibc"
   ],
   "files": [
-    "bin/"
+    "bin/",
+    "README.md",
+    "LICENSE"
   ],
   "publishConfig": {
     "access": "public"
