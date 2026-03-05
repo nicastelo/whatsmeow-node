@@ -97,17 +97,25 @@ Every command has a configurable timeout (default 30s). If Go doesn't respond wi
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `sendMessage` | `{ jid, message, extra? }` | `{ id, timestamp }` | Send a message |
+| `sendRawMessage` | `{ jid, message, extra? }` | `{ id, timestamp }` | Send any `waE2E.Message`-shaped JSON via protojson |
 | `revokeMessage` | `{ chat, sender, id }` | `{}` | Delete message for everyone |
 | `editMessage` | `{ chat, id, newContent }` | `{ id, timestamp }` | Edit a sent message |
 | `reactMessage` | `{ chat, sender, id, reaction }` | `{ id, timestamp }` | React to a message |
 | `markRead` | `{ ids, chat, sender? }` | `{}` | Mark messages as read |
+
+### Polls
+
+| Command | Args | Response | Description |
+|---|---|---|---|
+| `createPoll` | `{ jid, name, options, selectable }` | `{ id, timestamp }` | Create a poll |
+| `votePoll` | `{ pollChat, pollSender, pollId, pollTimestamp, options }` | `{}` | Vote on a poll |
 
 ### Media
 
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `downloadMedia` | `{ message }` | `{ path }` | Download to temp file, return path |
-| `uploadMedia` | `{ path, appInfo }` | `{ url, directPath, ... }` | Upload from file path |
+| `uploadMedia` | `{ path, appInfo }` | `{ url, directPath, mediaKey, ... }` | Upload from file path (returns base64 hashes) |
 
 Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 would be ~13MB of JSON.
 
@@ -118,9 +126,9 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `isOnWhatsApp` | `{ phones }` | `[{ jid, isIn }]` | Check phone numbers |
 | `getUserInfo` | `{ jids }` | `{ ... }` | Get user info |
 | `getProfilePicture` | `{ jid }` | `{ url }` | Get profile picture URL |
+| `getUserDevices` | `{ jids }` | `[jid, ...]` | Get all devices for users |
 | `getBusinessProfile` | `{ jid }` | `{ ... }` | Get business profile |
-| `getBlocklist` | `{}` | `[jid, ...]` | Get blocked contacts |
-| `updateBlocklist` | `{ jid, action }` | `{}` | Block/unblock |
+| `setStatusMessage` | `{ message }` | `{}` | Set account status message |
 
 ### Groups
 
@@ -128,6 +136,7 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 |---|---|---|---|
 | `createGroup` | `{ name, participants }` | `{ jid }` | Create a group |
 | `getGroupInfo` | `{ jid }` | `{ ... }` | Get group metadata |
+| `getGroupInfoFromLink` | `{ code }` | `{ ... }` | Get group info from invite link |
 | `getJoinedGroups` | `{}` | `[{ jid, name, ... }]` | List all groups |
 | `getGroupInviteLink` | `{ jid, reset? }` | `{ link }` | Get/reset invite link |
 | `joinGroupWithLink` | `{ code }` | `{ jid }` | Join via invite link |
@@ -138,16 +147,35 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `setGroupAnnounce` | `{ jid, announce }` | `{}` | Admin-only messages |
 | `setGroupLocked` | `{ jid, locked }` | `{}` | Lock group settings |
 | `updateGroupParticipants` | `{ jid, participants, action }` | `{}` | Add/remove/promote/demote |
+| `getGroupRequestParticipants` | `{ jid }` | `[{ jid, reason, requestedAt }]` | Get pending join requests |
+| `updateGroupRequestParticipants` | `{ jid, participants, action }` | `{}` | Approve/reject join requests |
+| `setGroupMemberAddMode` | `{ jid, mode }` | `{}` | Set who can add members |
+| `setGroupJoinApprovalMode` | `{ jid, enabled }` | `{}` | Enable/disable join approval |
+
+### Communities
+
+| Command | Args | Response | Description |
+|---|---|---|---|
+| `linkGroup` | `{ parent, child }` | `{}` | Link child group to community |
+| `unlinkGroup` | `{ parent, child }` | `{}` | Unlink child group |
+| `getSubGroups` | `{ jid }` | `[{ jid, name }]` | Get community sub-groups |
+| `getLinkedGroupsParticipants` | `{ jid }` | `{ ... }` | Get participants across linked groups |
 
 ### Newsletters
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `createNewsletter` | `{ name, description? }` | `{ jid }` | Create a channel |
+| `createNewsletter` | `{ name, description?, picture? }` | `{ ... }` | Create a channel |
 | `getNewsletterInfo` | `{ jid }` | `{ ... }` | Get channel info |
+| `getNewsletterInfoWithInvite` | `{ key }` | `{ ... }` | Get info from invite link |
 | `getSubscribedNewsletters` | `{}` | `[...]` | List subscribed channels |
 | `followNewsletter` | `{ jid }` | `{}` | Follow/subscribe |
 | `unfollowNewsletter` | `{ jid }` | `{}` | Unfollow |
+| `getNewsletterMessages` | `{ jid, count, before? }` | `[...]` | Fetch messages (paginate backward) |
+| `newsletterMarkViewed` | `{ jid, serverIds }` | `{}` | Mark messages as viewed |
+| `newsletterSendReaction` | `{ jid, serverId, reaction, messageId }` | `{}` | React to a message |
+| `newsletterToggleMute` | `{ jid, mute }` | `{}` | Mute/unmute |
+| `newsletterSubscribeLiveUpdates` | `{ jid }` | `{ duration }` | Subscribe to live updates |
 
 ### Presence
 
@@ -157,25 +185,42 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `sendChatPresence` | `{ jid, presence, media? }` | `{}` | Typing/recording indicator |
 | `subscribePresence` | `{ jid }` | `{}` | Watch contact presence |
 
-### Privacy
+### Privacy & Settings
 
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `getPrivacySettings` | `{}` | `{ ... }` | Get all privacy settings |
 | `setPrivacySetting` | `{ name, value }` | `{}` | Update a privacy setting |
-| `setDisappearingTimer` | `{ chat, timer }` | `{}` | Set disappearing messages |
+| `setDisappearingTimer` | `{ jid, timer }` | `{}` | Set disappearing messages for a chat |
+| `setDefaultDisappearingTimer` | `{ timer }` | `{}` | Set default disappearing timer |
 
-### Polls
+### Blocklist
 
 | Command | Args | Response | Description |
 |---|---|---|---|
-| `createPoll` | `{ name, options, selectable }` | `{ id, timestamp }` | Create a poll |
+| `getBlocklist` | `{}` | `[jid, ...]` | Get blocked contacts |
+| `updateBlocklist` | `{ jid, action }` | `{}` | Block/unblock |
+
+### QR & Link Resolution
+
+| Command | Args | Response | Description |
+|---|---|---|---|
+| `getContactQRLink` | `{ revoke? }` | `{ link }` | Generate/revoke contact QR link |
+| `resolveContactQRLink` | `{ code }` | `{ jid, pushName, ... }` | Resolve contact QR code |
+| `resolveBusinessMessageLink` | `{ code }` | `{ jid, verifiedName, ... }` | Resolve business message link |
 
 ### Calls
 
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `rejectCall` | `{ from, callId }` | `{}` | Reject incoming call |
+
+### Configuration
+
+| Command | Args | Response | Description |
+|---|---|---|---|
+| `setPassive` | `{ passive }` | `{}` | Set passive mode |
+| `setForceActiveDeliveryReceipts` | `{ active }` | `{}` | Force delivery receipts |
 
 ### Generic Fallback
 
@@ -341,7 +386,7 @@ At runtime, `client.ts` checks:
 | Capability | In Go | In this binding | Why |
 |---|---|---|---|
 | Custom `store.Device` implementation | Yes -- implement the interface for any backend | No -- SQLite and Postgres only | The store lives inside the Go binary. TypeScript never touches it. |
-| Direct protobuf access | Yes -- full `waE2E.Message` | No -- messages are JSON maps | Go handles all protobuf. Some proto edge cases may be lossy in JSON. |
+| Direct protobuf access | Yes -- full `waE2E.Message` | Partial -- `sendRawMessage` accepts any `waE2E.Message`-shaped JSON via protojson | Go handles all protobuf. `sendRawMessage` uses `protojson.Unmarshal` to convert JSON to proto, so all valid proto fields are supported. |
 | Custom event handler logic in Go | Yes -- full `EventHandler` | No -- events are JSON | You can only react to events in TypeScript. |
 | Fine-grained `SendRequestExtra` | Yes -- custom message ID, media handles, timeouts | Partial -- basic send works | Can be extended by adding args to `sendMessage`. |
 | Multiple clients in one process | Yes -- many `Client` instances | One client per Go process | Spawn multiple processes for multiple accounts. |
@@ -363,23 +408,23 @@ At runtime, `client.ts` checks:
 
 The goal is full API parity. The following whatsmeow `Client` methods are not yet wrapped:
 
-**Messaging:** `BuildReaction`, `BuildEdit`, `BuildPollCreation`, `BuildPollVote`, `EncryptPollVote`, `DecryptReaction`, `DecryptPollVote`, `DecryptComment`, `DecryptSecretEncryptedMessage`, `EncryptComment`, `EncryptReaction`, `GenerateMessageID`, `SetDisappearingTimer`, `RevokeMessage` (direct method), `BuildUnavailableMessageRequest`, `BuildHistorySyncRequest`, `SendPeerMessage`, `ParseWebMessage`
+**Messaging:** `BuildReaction`, `BuildEdit`, `BuildPollCreation`, `BuildPollVote`, `EncryptPollVote`, `DecryptReaction`, `DecryptPollVote`, `DecryptComment`, `DecryptSecretEncryptedMessage`, `EncryptComment`, `EncryptReaction`, `GenerateMessageID`, `BuildUnavailableMessageRequest`, `BuildHistorySyncRequest`, `SendPeerMessage`, `ParseWebMessage`
 
-**Media:** `Upload`, `UploadReader`, `UploadNewsletter`, `UploadNewsletterReader`, `DownloadAny`, `DownloadThumbnail`, `DownloadToFile`, `DownloadFB`, `DownloadFBToFile`, `DownloadMediaWithPath`, `DownloadMediaWithPathToFile`
+**Media:** `UploadReader`, `UploadNewsletter`, `UploadNewsletterReader`, `DownloadAny`, `DownloadThumbnail`, `DownloadToFile`, `DownloadFB`, `DownloadFBToFile`, `DownloadMediaWithPath`, `DownloadMediaWithPathToFile`
 
-**Users/Contacts:** `GetUserDevices`, `GetBusinessProfile`, `GetBotListV2`, `GetBotProfiles`, `ResolveBusinessMessageLink`, `ResolveContactQRLink`, `GetContactQRLink`, `GetBlocklist`, `UpdateBlocklist`, `SetStatusMessage`
+**Users/Contacts:** `GetBotListV2`, `GetBotProfiles`
 
-**Groups:** `SetGroupDescription`, `SetGroupTopic`, `SetGroupJoinApprovalMode`, `SetGroupMemberAddMode`, `GetGroupRequestParticipants`, `UpdateGroupRequestParticipants`, `GetGroupInfoFromLink`, `GetGroupInfoFromInvite`, `JoinGroupWithInvite`, `LinkGroup`, `UnlinkGroup`, `GetSubGroups`, `GetLinkedGroupsParticipants`
+**Groups:** `SetGroupTopic`, `GetGroupInfoFromInvite`, `JoinGroupWithInvite`
 
-**Newsletters:** `CreateNewsletter`, `GetNewsletterInfo`, `GetNewsletterInfoWithInvite`, `FollowNewsletter`, `UnfollowNewsletter`, `NewsletterToggleMute`, `NewsletterSendReaction`, `GetNewsletterMessages`, `GetNewsletterMessageUpdates`, `AcceptTOSNotice`
+**Newsletters:** `GetNewsletterMessageUpdates`, `AcceptTOSNotice`
 
-**Privacy:** `GetPrivacySettings`, `SetPrivacySetting`, `TryFetchPrivacySettings`, `SetDefaultDisappearingTimer`
+**Privacy:** `TryFetchPrivacySettings`
 
 **Store queries:** `GetAllContacts`, `GetContact`, `GetChatSettings`
 
 **App State:** `FetchAppState`, `SendAppState`, `MarkNotDirty`
 
-**Connection/Config:** `SetPassive`, `WaitForConnection`, `SetForceActiveDeliveryReceipts`, `SendMediaRetryReceipt`, `DownloadHistorySync`, `GetStatusPrivacy`, `GetServerPushNotificationConfig`, `RegisterForPushNotifications`
+**Connection/Config:** `WaitForConnection`, `SendMediaRetryReceipt`, `DownloadHistorySync`, `GetStatusPrivacy`, `GetServerPushNotificationConfig`, `RegisterForPushNotifications`
 
 **Network:** `SetProxyAddress`, `SetProxy`, `SetSOCKSProxy`, `SetMediaHTTPClient`, `SetWebsocketHTTPClient`, `SetPreLoginHTTPClient`
 
