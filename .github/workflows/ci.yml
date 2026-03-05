@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
+      - run: go run ./scripts/check-client-parity
       - run: go build ./cmd/whatsmeow-node
       - run: go vet ./...
 
