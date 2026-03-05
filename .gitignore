@@ -1,5 +1,5 @@
-# Go
-whatsmeow-node
+# Go binary (at repo root only, not cmd/whatsmeow-node/ source dir)
+/whatsmeow-node
 *.exe
 
 # Node / TypeScript
