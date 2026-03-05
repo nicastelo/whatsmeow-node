@@ -291,7 +291,7 @@ Without WAL + busy_timeout, WhatsApp's initial sync after pairing fails with `SQ
 
 4. **Media via temp files** -- A 10MB video as base64 JSON would be ~13MB and block the pipe. Go writes to a temp file and returns the path.
 
-5. **Platform-specific npm packages** -- Same pattern as esbuild/swc/turbo. `npm install whatsmeow-node` resolves the correct binary via optionalDependencies.
+5. **Platform-specific npm packages** -- Same pattern as esbuild/swc/turbo. `npm install @whatsmeow-node/whatsmeow-node` resolves the correct binary via optionalDependencies.
 
 6. **Handwritten TS types** -- No proto generation. Go handles all protobuf. TypeScript gets lightweight interfaces for the JSON shapes (~300 lines vs 14MB of generated protos).
 

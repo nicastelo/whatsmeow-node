@@ -11,7 +11,7 @@ Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CG
 ## Install
 
 ```bash
-npm install whatsmeow-node
+npm install @whatsmeow-node/whatsmeow-node
 ```
 
 The correct binary for your platform is installed automatically via `optionalDependencies`.
@@ -27,7 +27,7 @@ Supported platforms:
 ## Quick Start
 
 ```typescript
-import { createClient } from "whatsmeow-node";
+import { createClient } from "@whatsmeow-node/whatsmeow-node";
 
 const client = createClient({
   store: "file:session.db",
