@@ -129,6 +129,12 @@ export class WhatsmeowClient extends EventEmitter {
     return result.loggedIn;
   }
 
+  // Maps to: client.WaitForConnection()
+  async waitForConnection(timeoutMs = 30_000): Promise<boolean> {
+    const result = (await this.proc.send("waitForConnection", { timeoutMs })) as { connected: boolean };
+    return result.connected;
+  }
+
   // Kill the Go subprocess. Called automatically if the Node process exits.
   close(): void {
     this.proc.kill();
@@ -234,6 +240,10 @@ export class WhatsmeowClient extends EventEmitter {
 
   async setGroupName(jid: JID, name: string): Promise<void> {
     await this.proc.send("setGroupName", { jid, name });
+  }
+
+  async setGroupTopic(jid: JID, topic: string, previousId = "", newId = ""): Promise<void> {
+    await this.proc.send("setGroupTopic", { jid, topic, previousId, newId });
   }
 
   async setGroupPhoto(jid: JID, path: string): Promise<string> {

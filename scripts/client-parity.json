@@ -60,6 +60,7 @@
     "SetGroupMemberAddMode": "setGroupMemberAddMode",
     "SetGroupName": "setGroupName",
     "SetGroupPhoto": "setGroupPhoto",
+    "SetGroupTopic": "setGroupTopic",
     "SetPassive": "setPassive",
     "SetPrivacySetting": "setPrivacySetting",
     "SetStatusMessage": "setStatusMessage",
@@ -69,7 +70,8 @@
     "UpdateBlocklist": "updateBlocklist",
     "UpdateGroupParticipants": "updateGroupParticipants",
     "UpdateGroupRequestParticipants": "updateGroupRequestParticipants",
-    "UploadReader": "uploadMedia"
+    "UploadReader": "uploadMedia",
+    "WaitForConnection": "waitForConnection"
   },
   "excluded": {
     "AcceptTOSNotice": "Not wrapped yet; newsletter/legal flow omitted from current API.",
@@ -115,7 +117,6 @@
     "SendFBMessage": "Facebook bridge API not exposed yet.",
     "SendMediaRetryReceipt": "Low-level receipt API not exposed yet.",
     "SendPeerMessage": "Peer message API not exposed yet.",
-    "SetGroupTopic": "Group topic API not exposed yet.",
     "SetMediaHTTPClient": "Custom HTTP client APIs are intentionally not exposed.",
     "SetPreLoginHTTPClient": "Custom HTTP client APIs are intentionally not exposed.",
     "SetProxy": "Network/proxy configuration APIs are intentionally not exposed.",
@@ -126,8 +127,7 @@
     "TryFetchPrivacySettings": "Direct fetch variant not exposed; getPrivacySettings/setPrivacySetting are exposed.",
     "Upload": "Upload API is exposed via streaming UploadReader command for lower memory usage.",
     "UploadNewsletter": "Newsletter-specific upload API not exposed yet.",
-    "UploadNewsletterReader": "Newsletter-specific upload API not exposed yet.",
-    "WaitForConnection": "Connection wait helper not exposed; connect emits events."
+    "UploadNewsletterReader": "Newsletter-specific upload API not exposed yet."
   },
   "policy": {
     "goal": "All exported whatsmeow.Client methods must be either wrapped or explicitly excluded with rationale.",
@@ -155,9 +155,7 @@
       "AcceptTOSNotice",
       "GetNewsletterMessageUpdates",
       "GetStatusPrivacy",
-      "SetGroupTopic",
-      "TryFetchPrivacySettings",
-      "WaitForConnection"
+      "TryFetchPrivacySettings"
     ],
     "P2": [
       "ConnectContext",

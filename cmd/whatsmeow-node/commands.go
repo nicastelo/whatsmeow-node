@@ -135,6 +135,32 @@ func (a *App) cmdIsLoggedIn(cmd Command) {
 	})
 }
 
+// cmdWaitForConnection blocks until connected+logged-in or timeout.
+// Maps to: client.WaitForConnection()
+func (a *App) cmdWaitForConnection(cmd Command) {
+	args, ok := parseArgs[struct {
+		TimeoutMs int64 `json:"timeoutMs"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	timeout := time.Duration(args.TimeoutMs) * time.Millisecond
+	if args.TimeoutMs <= 0 {
+		timeout = 30 * time.Second
+	}
+
+	connected := client.WaitForConnection(timeout)
+	sendResponse(cmd.ID, map[string]interface{}{
+		"connected": connected,
+	})
+}
+
 // ── Pairing ────────────────────────────────────────
 
 // cmdGetQRChannel sets up the QR channel for pairing. Must be called before connect().
@@ -650,6 +676,35 @@ func (a *App) cmdSetGroupName(cmd Command) {
 	err = client.SetGroupName(a.ctx, jid, args.Name)
 	if err != nil {
 		sendError(cmd.ID, err.Error(), "ERR_SET_GROUP_NAME")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
+func (a *App) cmdSetGroupTopic(cmd Command) {
+	args, ok := parseArgs[struct {
+		JID        string `json:"jid"`
+		Topic      string `json:"topic"`
+		PreviousID string `json:"previousId"`
+		NewID      string `json:"newId"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	jid, err := types.ParseJID(args.JID)
+	if err != nil {
+		sendError(cmd.ID, "invalid JID", "ERR_INVALID_JID")
+		return
+	}
+
+	if err := client.SetGroupTopic(a.ctx, jid, args.PreviousID, args.NewID, args.Topic); err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_GROUP_TOPIC")
 		return
 	}
 	sendResponse(cmd.ID, nil)

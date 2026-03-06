@@ -128,6 +128,7 @@ Returns a `WhatsmeowClient` instance.
 - `logout()` -- Log out and remove device from WhatsApp (`client.Logout()`)
 - `isConnected()` -- Check connection status (`client.IsConnected()`)
 - `isLoggedIn()` -- Check login status (`client.IsLoggedIn()`)
+- `waitForConnection(timeoutMs?)` -- Wait until connected and logged in, or timeout
 - `close()` -- Kill the Go subprocess (for cleanup)
 
 ### Messaging
@@ -170,6 +171,7 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 - `joinGroupWithLink(code)` -- Join a group via invite link
 - `leaveGroup(jid)` -- Leave a group
 - `setGroupName(jid, name)` -- Update group name
+- `setGroupTopic(jid, topic, previousId?, newId?)` -- Update group topic/description with optional topic IDs
 - `setGroupDescription(jid, description)` -- Update group description
 - `setGroupPhoto(jid, path)` -- Update group photo
 - `setGroupAnnounce(jid, announce)` -- Toggle announcement mode

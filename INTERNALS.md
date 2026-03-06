@@ -93,6 +93,7 @@ Complete list of IPC commands accepted by the Go binary (see `app.go:handleComma
 | `logout` | `{}` | `{}` | Logout + clear session data |
 | `isConnected` | `{}` | `{ connected }` | Check connection status |
 | `isLoggedIn` | `{}` | `{ loggedIn }` | Check login status |
+| `waitForConnection` | `{ timeoutMs? }` | `{ connected }` | Wait until connected and logged in, or timeout |
 
 ### Pairing
 
@@ -152,6 +153,7 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | `joinGroupWithLink` | `{ code }` | `{ jid }` | Join via invite link |
 | `leaveGroup` | `{ jid }` | `{}` | Leave a group |
 | `setGroupName` | `{ jid, name }` | `{}` | Update group name |
+| `setGroupTopic` | `{ jid, topic, previousId?, newId? }` | `{}` | Update group topic/description |
 | `setGroupDescription` | `{ jid, description }` | `{}` | Update group description |
 | `setGroupPhoto` | `{ jid, path }` | `{}` | Update group photo |
 | `setGroupAnnounce` | `{ jid, announce }` | `{}` | Admin-only messages |

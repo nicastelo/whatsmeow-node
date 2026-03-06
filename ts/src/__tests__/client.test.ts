@@ -107,6 +107,20 @@ describe("WhatsmeowClient", () => {
       expect(await client.isLoggedIn()).toBe(false);
       expect(send).toHaveBeenCalledWith("isLoggedIn");
     });
+
+    it("waitForConnection sends timeoutMs and extracts connected", async () => {
+      mockResolve(send, { connected: true });
+      const connected = await client.waitForConnection(5000);
+      expect(send).toHaveBeenCalledWith("waitForConnection", { timeoutMs: 5000 });
+      expect(connected).toBe(true);
+    });
+
+    it("waitForConnection defaults timeoutMs to 30000", async () => {
+      mockResolve(send, { connected: false });
+      const connected = await client.waitForConnection();
+      expect(send).toHaveBeenCalledWith("waitForConnection", { timeoutMs: 30000 });
+      expect(connected).toBe(false);
+    });
   });
 
   // ── Pairing ────────────────────────────────────
@@ -387,6 +401,28 @@ describe("WhatsmeowClient", () => {
       mockResolve(send);
       await client.setGroupName("g@g.us", "New Name");
       expect(send).toHaveBeenCalledWith("setGroupName", { jid: "g@g.us", name: "New Name" });
+    });
+
+    it("setGroupTopic sends jid/topic with default IDs", async () => {
+      mockResolve(send);
+      await client.setGroupTopic("g@g.us", "New topic");
+      expect(send).toHaveBeenCalledWith("setGroupTopic", {
+        jid: "g@g.us",
+        topic: "New topic",
+        previousId: "",
+        newId: "",
+      });
+    });
+
+    it("setGroupTopic sends explicit previousId/newId", async () => {
+      mockResolve(send);
+      await client.setGroupTopic("g@g.us", "New topic", "prev123", "new123");
+      expect(send).toHaveBeenCalledWith("setGroupTopic", {
+        jid: "g@g.us",
+        topic: "New topic",
+        previousId: "prev123",
+        newId: "new123",
+      });
     });
 
     it("setGroupDescription sends jid and description", async () => {

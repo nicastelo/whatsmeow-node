@@ -49,6 +49,8 @@ func (a *App) handleCommand(cmd Command) {
 		a.cmdIsConnected(cmd)
 	case "isLoggedIn":
 		a.cmdIsLoggedIn(cmd)
+	case "waitForConnection":
+		a.cmdWaitForConnection(cmd)
 
 	// Pairing
 	case "getQRChannel":
@@ -91,6 +93,8 @@ func (a *App) handleCommand(cmd Command) {
 		a.cmdLeaveGroup(cmd)
 	case "setGroupName":
 		a.cmdSetGroupName(cmd)
+	case "setGroupTopic":
+		a.cmdSetGroupTopic(cmd)
 	case "setGroupPhoto":
 		a.cmdSetGroupPhoto(cmd)
 	case "setGroupAnnounce":
