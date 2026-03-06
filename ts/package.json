@@ -27,6 +27,7 @@
     "test:e2e": "vitest run --config vitest.config.e2e.ts",
     "test:watch": "vitest --exclude 'src/__tests__/e2e.test.ts'",
     "format": "prettier --write 'src/**/*.ts'",
+    "check:examples": "tsc --noEmit -p tsconfig.examples.json",
     "format:check": "prettier --check 'src/**/*.ts'"
   },
   "license": "MIT",
@@ -56,13 +57,13 @@
     "access": "public"
   },
   "optionalDependencies": {
-    "@whatsmeow-node/darwin-arm64": "0.2.3",
-    "@whatsmeow-node/darwin-x64": "0.2.3",
-    "@whatsmeow-node/linux-arm64": "0.2.3",
-    "@whatsmeow-node/linux-x64": "0.2.3",
-    "@whatsmeow-node/linux-x64-musl": "0.2.3",
-    "@whatsmeow-node/win32-arm64": "0.2.3",
-    "@whatsmeow-node/win32-x64": "0.2.3"
+    "@whatsmeow-node/darwin-arm64": "0.4.0",
+    "@whatsmeow-node/darwin-x64": "0.4.0",
+    "@whatsmeow-node/linux-arm64": "0.4.0",
+    "@whatsmeow-node/linux-x64": "0.4.0",
+    "@whatsmeow-node/linux-x64-musl": "0.4.0",
+    "@whatsmeow-node/win32-arm64": "0.4.0",
+    "@whatsmeow-node/win32-x64": "0.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -107,6 +107,181 @@ if (!jid) {
 await client.connect();
 ```
 
+## Connection Lifecycle
+
+The connection flow follows a specific sequence:
+
+```
+init() → connect() → "connected" event → operational → "disconnected" → auto-reconnect → "connected"
+```
+
+**Normal startup:**
+
+```typescript
+const { jid } = await client.init();  // Opens store, returns JID if already paired
+if (!jid) {
+  await client.getQRChannel();        // Set up QR pairing (first time only)
+}
+await client.connect();               // Starts connection (async, returns immediately)
+// Wait for "connected" event before sending messages
+```
+
+**Key events:**
+
+| Event | Meaning | Action |
+|-------|---------|--------|
+| `connected` | WhatsApp connection established | Safe to send messages |
+| `disconnected` | Connection lost | Auto-reconnect is built-in, no action needed |
+| `logged_out` | Session revoked (user unlinked device) | Must re-pair — delete store and start over |
+| `stream_error` | Protocol error from WhatsApp | Usually followed by auto-reconnect |
+| `keep_alive_timeout` | Keep-alive pings failing | Connection may be degraded |
+| `keep_alive_restored` | Keep-alive recovered | Connection is healthy again |
+
+**Resilient connection pattern:**
+
+```typescript
+const client = createClient({ store: "session.db" });
+
+client.on("connected", ({ jid }) => {
+  console.log(`Connected as ${jid}`);
+});
+
+client.on("disconnected", () => {
+  console.log("Disconnected — waiting for auto-reconnect...");
+});
+
+client.on("logged_out", ({ reason }) => {
+  console.error(`Logged out: ${reason}. Must re-pair.`);
+  process.exit(1);
+});
+
+const { jid } = await client.init();
+if (!jid) {
+  await client.getQRChannel();
+  client.on("qr", ({ code }) => {
+    // Render QR code for pairing
+  });
+}
+await client.connect();
+```
+
+Auto-reconnect is always enabled — whatsmeow handles reconnection internally. You only need to handle `logged_out` (session revoked, must re-pair).
+
+## Error Handling
+
+All client methods throw on failure. Errors are typed for easy handling:
+
+```typescript
+import {
+  WhatsmeowError,    // Base class for all whatsmeow errors
+  TimeoutError,      // IPC command timed out
+  ProcessExitedError // Go binary crashed or exited
+} from "@whatsmeow-node/whatsmeow-node";
+
+try {
+  await client.sendMessage(jid, { conversation: "hello" });
+} catch (err) {
+  if (err instanceof WhatsmeowError) {
+    console.error(`WhatsApp error [${err.code}]: ${err.message}`);
+  }
+}
+```
+
+**Common error codes:**
+
+| Code | Source | Meaning |
+|------|--------|---------|
+| `ERR_TIMEOUT` | TS | IPC command timed out (default: 30s) |
+| `ERR_PROCESS_EXITED` | TS | Go binary crashed or exited |
+| `ERR_NOT_INIT` | Go | `init()` not called yet |
+| `ERR_INVALID_ARGS` | Go | Missing or invalid arguments |
+| `ERR_INVALID_JID` | Go | Malformed JID string |
+| `ERR_SEND` | Go | Message send failed |
+| `ERR_UPLOAD` | Go | Media upload failed |
+| `ERR_UNKNOWN_CMD` | Go | Unrecognized IPC command |
+
+**Pattern for handling specific errors:**
+
+```typescript
+try {
+  await client.sendMessage(jid, { conversation: "hello" });
+} catch (err) {
+  if (err instanceof WhatsmeowError) {
+    switch (err.code) {
+      case "ERR_SEND":
+        console.error("Message failed:", err.message);
+        break;
+      case "ERR_NOT_INIT":
+        console.error("Forgot to call init()");
+        break;
+      default:
+        throw err;
+    }
+  }
+}
+```
+
+## Sending Messages
+
+**Text message:**
+
+```typescript
+await client.sendMessage(jid, { conversation: "Hello!" });
+```
+
+**Reply to a message:**
+
+```typescript
+await client.sendMessage(jid, {
+  extendedTextMessage: {
+    text: "This is a reply",
+    contextInfo: {
+      stanzaId: originalMessageId,
+      participant: originalSenderJid,
+      quotedMessage: { conversation: "the original text" },
+    },
+  },
+});
+```
+
+**Image, location, contact card** (use `sendRawMessage` for any proto shape):
+
+```typescript
+// Upload then send an image
+const media = await client.uploadMedia("/path/to/photo.jpg", "image");
+await client.sendRawMessage(jid, {
+  imageMessage: {
+    url: media.url,
+    directPath: media.directPath,
+    mediaKey: media.mediaKey,
+    fileEncSha256: media.fileEncSha256,
+    fileSha256: media.fileSha256,
+    fileLength: String(media.fileLength),
+    mimetype: "image/jpeg",
+    caption: "Check this out",
+  },
+});
+
+// Send a location
+await client.sendRawMessage(jid, {
+  locationMessage: {
+    degreesLatitude: -34.9011,
+    degreesLongitude: -56.1645,
+    name: "Montevideo",
+  },
+});
+
+// Send a contact card
+await client.sendRawMessage(jid, {
+  contactMessage: {
+    displayName: "John Doe",
+    vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nTEL:+1234567890\nEND:VCARD",
+  },
+});
+```
+
+`sendRawMessage` accepts any `Record<string, unknown>` matching the [whatsmeow `waE2E.Message` proto schema](https://pkg.go.dev/go.mau.fi/whatsmeow/proto/waE2E#Message). The JSON shape uses protojson field names (camelCase).
+
 ## API
 
 ### `createClient(options)`

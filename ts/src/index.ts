@@ -1,5 +1,5 @@
 export { WhatsmeowClient } from "./client.js";
-export { WhatsmeowError, TimeoutError, NotConnectedError, ProcessExitedError } from "./errors.js";
+export { WhatsmeowError, TimeoutError, ProcessExitedError } from "./errors.js";
 export type {
   JID,
   MessageInfo,
@@ -30,6 +30,7 @@ export type {
   Blocklist,
   MediaType,
   UploadResponse,
+  GroupInfoEvent,
   GroupRequestParticipant,
   SubGroupInfo,
   GroupMemberAddMode,

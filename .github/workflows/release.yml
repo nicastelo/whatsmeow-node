@@ -164,3 +164,25 @@ jobs:
           gh release create "$GITHUB_REF_NAME" \
             --title "$GITHUB_REF_NAME" \
             --generate-notes
+
+      - name: Sync versions back to main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          git checkout main
+          git pull --ff-only origin main
+          MAIN_VERSION=$(node -p "require('./ts/package.json').version")
+          if npx semver "$VERSION" -r ">=${MAIN_VERSION}"; then
+            cd ts && npm version "${VERSION}" --no-git-tag-version --allow-same-version && cd ..
+            node scripts/sync-versions.mjs
+            if git diff --quiet; then
+              echo "Versions already in sync"
+            else
+              git add ts/package.json npm/*/package.json
+              git commit -m "Sync package versions to ${VERSION}"
+              git push origin main
+            fi
+          else
+            echo "Skipping sync: released ${VERSION} is older than main (${MAIN_VERSION})"
+          fi

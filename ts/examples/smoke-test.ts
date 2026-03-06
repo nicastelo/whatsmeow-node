@@ -7,7 +7,7 @@
  * If a phone number is provided, messaging tests will target that JID.
  * Otherwise only read-only/self methods are tested.
  */
-import { createClient } from "../dist/index.js";
+import { createClient } from "../src/index.js";
 import path from "node:path";
 
 const binaryPath = path.resolve(import.meta.dirname, "../../whatsmeow-node");
@@ -160,7 +160,7 @@ async function main() {
       const resp = await client.sendMessage(targetJid, {
         conversation: "Smoke test from whatsmeow-node 🏎️",
       });
-      assert(resp.id, "should return message id");
+      assert(!!resp.id, "should return message id");
       sentMsgId = resp.id;
       console.log(`    sent: ${resp.id}`);
     });
@@ -168,7 +168,7 @@ async function main() {
     if (sentMsgId) {
       await test("sendReaction", async () => {
         const resp = await client.sendReaction(targetJid, initResult.jid!, sentMsgId!, "🔥");
-        assert(resp.id, "should return reaction id");
+        assert(!!resp.id, "should return reaction id");
         console.log(`    reacted: ${resp.id}`);
       });
 
@@ -176,19 +176,19 @@ async function main() {
         const resp = await client.editMessage(targetJid, sentMsgId!, {
           conversation: "Smoke test from whatsmeow-node 🏎️ (edited!)",
         });
-        assert(resp.id, "should return edit id");
+        assert(!!resp.id, "should return edit id");
         console.log(`    edited: ${resp.id}`);
       });
 
       await test("sendReaction (remove)", async () => {
         const resp = await client.sendReaction(targetJid, initResult.jid!, sentMsgId!, "");
-        assert(resp.id, "should return id");
+        assert(!!resp.id, "should return id");
       });
     }
 
     await test("sendPollCreation", async () => {
       const resp = await client.sendPollCreation(targetJid, "Smoke test poll", ["Yes", "No", "Maybe"], 1);
-      assert(resp.id, "should return poll id");
+      assert(!!resp.id, "should return poll id");
       console.log(`    poll: ${resp.id}`);
     });
 

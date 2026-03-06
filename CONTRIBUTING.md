@@ -179,9 +179,12 @@ When adding wrappers, move methods from `excluded` -> `wrapped` and keep priorit
 
 1. Bump version in `ts/package.json`
 2. Run `node scripts/sync-versions.mjs` to sync all platform packages
-3. Commit and tag: `git tag v0.2.0`
-4. Push tag: `git push origin v0.2.0`
-5. CI handles the rest (build, publish, GitHub release)
+3. Commit: `git add ts/package.json npm/*/package.json && git commit -m "Bump to 0.5.0"`
+4. Tag: `git tag v0.5.0`
+5. Push both: `git push origin main v0.5.0`
+6. CI handles the rest (build, publish, GitHub release, version sync commit)
+
+**Important:** Always commit the synced versions _before_ tagging so that `main` is never behind the published version. The release workflow also commits synced versions back to `main` as a safety net, but the source should already be in sync.
 
 ## Version Syncing
 
@@ -189,4 +192,4 @@ The `scripts/sync-versions.mjs` script reads the version from `ts/package.json` 
 - All `npm/*/package.json` platform packages
 - The `optionalDependencies` in `ts/package.json`
 
-The release workflow also does this automatically from the git tag.
+Run it after bumping `ts/package.json` and commit the result. The release workflow runs it again as a safety net and commits back to `main` if anything drifted.
