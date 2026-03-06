@@ -1329,12 +1329,12 @@ func (a *App) cmdUploadMedia(cmd Command) {
 	}
 
 	sendResponse(cmd.ID, map[string]interface{}{
-		"url":           resp.URL,
-		"directPath":    resp.DirectPath,
-		"mediaKey":      resp.MediaKey,
-		"fileEncSha256": resp.FileEncSHA256,
-		"fileSha256":    resp.FileSHA256,
-		"fileLength":    resp.FileLength,
+		"URL":            resp.URL,
+		"directPath":     resp.DirectPath,
+		"mediaKey":       resp.MediaKey,
+		"fileEncSHA256":  resp.FileEncSHA256,
+		"fileSHA256":     resp.FileSHA256,
+		"fileLength":     resp.FileLength,
 	})
 }
 

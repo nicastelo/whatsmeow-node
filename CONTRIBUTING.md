@@ -62,6 +62,8 @@ whatsmeow-node/
     examples/
       pair.ts         -- QR pairing example
       send-test.ts    -- message sending example
+      media-send.ts   -- upload + send image example
+      reconnect.ts    -- resilient connection with event handling
   npm/
     darwin-arm64/     -- platform package stubs (binaries added at release)
     darwin-x64/

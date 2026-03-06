@@ -275,11 +275,11 @@ describe("WhatsmeowClient", () => {
 
     it("uploadMedia sends path and mediaType", async () => {
       const uploadResp = {
-        url: "https://mmg.whatsapp.net/...",
+        URL: "https://mmg.whatsapp.net/...",
         directPath: "/v/...",
         mediaKey: "AQID", // base64 for [1,2,3]
-        fileEncSha256: "BAUG",
-        fileSha256: "BwgJ",
+        fileEncSHA256: "BAUG",
+        fileSHA256: "BwgJ",
         fileLength: 1024,
       };
       mockResolve(send, uploadResp);
