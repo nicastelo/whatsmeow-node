@@ -7,10 +7,14 @@ const BUSINESS_LINK = process.env.TEST_BUSINESS_LINK ?? "";
 describe.skipIf(skip)("business", () => {
   setupClient();
 
-  it("getBusinessProfile returns profile or errors for non-business", { skip: !BUSINESS_JID }, async () => {
-    const profile = await client.getBusinessProfile(BUSINESS_JID);
-    expect(profile).toHaveProperty("jid");
-  });
+  it(
+    "getBusinessProfile returns profile or errors for non-business",
+    { skip: !BUSINESS_JID },
+    async () => {
+      const profile = await client.getBusinessProfile(BUSINESS_JID);
+      expect(profile).toHaveProperty("jid");
+    },
+  );
 
   it("resolveBusinessMessageLink resolves a link", { skip: !BUSINESS_LINK }, async () => {
     const target = await client.resolveBusinessMessageLink(BUSINESS_LINK);

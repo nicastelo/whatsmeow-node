@@ -13,7 +13,11 @@ describe.skipIf(skip || !TEST_PHONE)("groups", () => {
 
   afterAll(async () => {
     if (groupJid) {
-      try { await client.leaveGroup(groupJid); } catch { /* ignore */ }
+      try {
+        await client.leaveGroup(groupJid);
+      } catch {
+        /* ignore */
+      }
     }
   });
 

@@ -1,5 +1,13 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { client, testJid, selfJid, skip, setupClient, TEST_PHONE, ensureConnected } from "./setup.js";
+import {
+  client,
+  testJid,
+  selfJid,
+  skip,
+  setupClient,
+  TEST_PHONE,
+  ensureConnected,
+} from "./setup.js";
 
 describe.skipIf(skip || !TEST_PHONE)("messages", () => {
   setupClient();

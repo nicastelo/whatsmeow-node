@@ -14,7 +14,8 @@ export let selfJid: string;
 export const TEST_PHONE = process.env.TEST_PHONE ?? "";
 export const testJid = TEST_PHONE ? `${TEST_PHONE.replace(/^\+/, "")}@s.whatsapp.net` : "";
 
-export const skip = !process.env.WHATSMEOW_INTEGRATION || !existsSync(SESSION_DB) || !existsSync(BINARY_PATH);
+export const skip =
+  !process.env.WHATSMEOW_INTEGRATION || !existsSync(SESSION_DB) || !existsSync(BINARY_PATH);
 
 let setupDone = false;
 

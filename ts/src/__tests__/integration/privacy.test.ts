@@ -6,8 +6,14 @@ describe.skipIf(skip)("privacy", () => {
   beforeAll(() => ensureConnected());
 
   const expectedKeys = [
-    "groupAdd", "lastSeen", "status", "profile",
-    "readReceipts", "callAdd", "online", "messages",
+    "groupAdd",
+    "lastSeen",
+    "status",
+    "profile",
+    "readReceipts",
+    "callAdd",
+    "online",
+    "messages",
   ];
 
   it("getPrivacySettings returns all expected keys", async () => {
