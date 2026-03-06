@@ -11,7 +11,7 @@ Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CG
 
 > **Alpha** -- This is an early release. The API may change and it has not been extensively tested in production. Bug reports and contributions are welcome.
 
-**Current upstream**: whatsmeow [`0.0.0-20260227`](https://pkg.go.dev/go.mau.fi/whatsmeow)
+**Current upstream**: whatsmeow [`0.0.0-20260305`](https://pkg.go.dev/go.mau.fi/whatsmeow)
 
 ## Install
 
