@@ -251,11 +251,11 @@ await client.sendMessage(jid, {
 const media = await client.uploadMedia("/path/to/photo.jpg", "image");
 await client.sendRawMessage(jid, {
   imageMessage: {
-    url: media.url,
+    URL: media.URL,
     directPath: media.directPath,
     mediaKey: media.mediaKey,
-    fileEncSha256: media.fileEncSha256,
-    fileSha256: media.fileSha256,
+    fileEncSHA256: media.fileEncSHA256,
+    fileSHA256: media.fileSHA256,
     fileLength: String(media.fileLength),
     mimetype: "image/jpeg",
     caption: "Check this out",
@@ -326,7 +326,7 @@ Returns a `WhatsmeowClient` instance.
 - `downloadMedia(msg)` -- Download media from a received message
 - `uploadMedia(path, mediaType)` -- Upload media for sending (`"image"` | `"video"` | `"audio"` | `"document"`)
 
-Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The Go binary writes downloaded media to a temp file and returns the path. Upload returns `{ url, directPath, mediaKey, fileEncSha256, fileSha256, fileLength }` for use in message protos.
+Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The Go binary writes downloaded media to a temp file and returns the path. Upload returns `{ URL, directPath, mediaKey, fileEncSHA256, fileSHA256, fileLength }` for use in message protos.
 
 ### Contacts & Users
 

@@ -126,7 +126,7 @@ Note: The TS client has both `sendMessage` (typed) and `sendRawMessage` (untyped
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `downloadMedia` | `{ message }` | `{ path }` | Download to temp file, return path |
-| `uploadMedia` | `{ path, mediaType }` | `{ url, directPath, mediaKey, fileEncSha256, fileSha256, fileLength }` | Upload from file path (hashes are base64 strings) |
+| `uploadMedia` | `{ path, mediaType }` | `{ URL, directPath, mediaKey, fileEncSHA256, fileSHA256, fileLength }` | Upload from file path (hashes are base64 strings) |
 
 Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 would be ~13MB of JSON.
 

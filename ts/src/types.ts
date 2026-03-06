@@ -199,11 +199,11 @@ export interface Blocklist {
 export type MediaType = "image" | "video" | "audio" | "document";
 
 export interface UploadResponse {
-  url: string;
+  URL: string;
   directPath: string;
   mediaKey: string; // base64
-  fileEncSha256: string; // base64
-  fileSha256: string; // base64
+  fileEncSHA256: string; // base64
+  fileSHA256: string; // base64
   fileLength: number;
 }
 
