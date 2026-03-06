@@ -134,7 +134,11 @@ export interface ContactQRLinkTarget {
 }
 
 // ── Privacy ────────────────────────────────────────
-export type PrivacySettingAllContactsBlacklistNone = "all" | "contacts" | "contact_blacklist" | "none";
+export type PrivacySettingAllContactsBlacklistNone =
+  | "all"
+  | "contacts"
+  | "contact_blacklist"
+  | "none";
 export type PrivacySettingAllNone = "all" | "none";
 export type PrivacySettingAllKnown = "all" | "known";
 export type PrivacySettingAllMatchLastSeen = "all" | "match_last_seen";

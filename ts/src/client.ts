@@ -132,7 +132,9 @@ export class WhatsmeowClient extends EventEmitter {
 
   // Maps to: client.WaitForConnection()
   async waitForConnection(timeoutMs = 30_000): Promise<boolean> {
-    const result = (await this.proc.send("waitForConnection", { timeoutMs })) as { connected: boolean };
+    const result = (await this.proc.send("waitForConnection", { timeoutMs })) as {
+      connected: boolean;
+    };
     return result.connected;
   }
 
