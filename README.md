@@ -2,10 +2,10 @@
 
 [![CI](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml/badge.svg)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml)
 [![E2E](https://github.com/nicastelo/whatsmeow-node/actions/workflows/e2e.yml/badge.svg)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/e2e.yml)
+[![API coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nicastelo/eb3fdca5e3c515b4d946d8e0dc51defc/raw/method-coverage-badge.json)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml)
+[![integration coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nicastelo/deee098d298bc9a9193cec6adcb13220/raw/coverage-badge.json)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/e2e.yml)
 [![npm version](https://img.shields.io/npm/v/%40whatsmeow-node%2Fwhatsmeow-node)](https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node)
 [![npm downloads](https://img.shields.io/npm/dm/%40whatsmeow-node%2Fwhatsmeow-node)](https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node)
-[![integration coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nicastelo/deee098d298bc9a9193cec6adcb13220/raw/coverage-badge.json)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/e2e.yml)
-[![API coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nicastelo/eb3fdca5e3c515b4d946d8e0dc51defc/raw/method-coverage-badge.json)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml)
 
 TypeScript/Node.js bindings for [whatsmeow](https://github.com/tulir/whatsmeow), the Go WhatsApp Web multidevice API library.
 
