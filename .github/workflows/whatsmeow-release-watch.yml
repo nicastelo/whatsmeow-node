@@ -121,6 +121,46 @@ jobs:
           echo "parity_status=$parity_status" >> "$GITHUB_OUTPUT"
           echo "breaking=$breaking" >> "$GITHUB_OUTPUT"
 
+      - name: Build Go binary with new whatsmeow
+        if: steps.detect.outputs.has_update == 'true'
+        run: go build -o whatsmeow-node ./cmd/whatsmeow-node
+        id: build
+        continue-on-error: true
+
+      - uses: actions/setup-node@v4
+        if: steps.build.outcome == 'success'
+        with:
+          node-version: "22"
+
+      - name: Install TS dependencies
+        if: steps.build.outcome == 'success'
+        run: cd ts && npm install --ignore-scripts
+
+      - name: Run E2E tests against new version
+        if: steps.build.outcome == 'success'
+        id: e2e
+        continue-on-error: true
+        env:
+          E2E_SESSION_KEY: ${{ secrets.E2E_SESSION_KEY }}
+        run: |
+          if [ -z "$E2E_SESSION_KEY" ] || [ ! -f .e2e-session.db.enc ]; then
+            echo "e2e_status=skipped" >> "$GITHUB_OUTPUT"
+            echo "E2E skipped: session not configured"
+            exit 0
+          fi
+          openssl enc -aes-256-cbc -d -pbkdf2 \
+            -in .e2e-session.db.enc -out ts/e2e-session.db \
+            -pass "pass:$E2E_SESSION_KEY"
+          cd ts
+          E2E_BINARY_PATH="$GITHUB_WORKSPACE/whatsmeow-node" \
+          E2E_SESSION_DB="$GITHUB_WORKSPACE/ts/e2e-session.db" \
+          npm run test:e2e 2>&1 | tee ../e2e-output.txt
+          echo "e2e_status=pass" >> "$GITHUB_OUTPUT"
+
+      - name: Record E2E failure
+        if: steps.e2e.outcome == 'failure'
+        run: echo "e2e_status=fail" >> "$GITHUB_OUTPUT"
+
       - name: Open or update tracking issue
         if: steps.detect.outputs.has_update == 'true'
         uses: actions/github-script@v7
@@ -129,6 +169,8 @@ jobs:
           LATEST: ${{ steps.detect.outputs.latest }}
           PARITY_STATUS: ${{ steps.analyze.outputs.parity_status }}
           BREAKING: ${{ steps.analyze.outputs.breaking }}
+          BUILD_STATUS: ${{ steps.build.outcome }}
+          E2E_STATUS: ${{ steps.e2e.outputs.e2e_status || 'skipped' }}
         with:
           script: |
             const fs = require('node:fs');
@@ -138,6 +180,8 @@ jobs:
             const latest = process.env.LATEST;
             const parityStatus = process.env.PARITY_STATUS || 'fail';
             const breaking = process.env.BREAKING || 'false';
+            const buildStatus = process.env.BUILD_STATUS || 'skipped';
+            const e2eStatus = process.env.E2E_STATUS || 'skipped';
             const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
             const upstreamOwner = 'tulir';
             const upstreamRepoName = 'whatsmeow';
@@ -163,6 +207,11 @@ jobs:
             let parityOutput = 'No parity output captured.';
             if (fs.existsSync('parity-output.txt')) {
               parityOutput = fs.readFileSync('parity-output.txt', 'utf8').trim();
+            }
+
+            let e2eOutput = 'No E2E output captured.';
+            if (fs.existsSync('e2e-output.txt')) {
+              e2eOutput = fs.readFileSync('e2e-output.txt', 'utf8').trim();
             }
 
             let apiSummary = 'No API change summary captured.';
@@ -224,6 +273,8 @@ jobs:
               `- Changelog / releases: ${changelogUrl}`,
               `- Compare current -> latest: ${compareUrl}`,
               `- Parity check against latest: **${parityStatus.toUpperCase()}**`,
+              `- Build with new version: **${buildStatus.toUpperCase()}**`,
+              `- E2E tests against new version: **${e2eStatus.toUpperCase()}**`,
               `- Potential breaking API change detected: **${breaking.toUpperCase()}**`,
               `- Workflow run: ${runUrl}`,
               '',
@@ -240,6 +291,13 @@ jobs:
               '## Parity Output',
               '```text',
               parityOutput,
+              '```',
+              '',
+              '## E2E Test Results',
+              `Status: **${e2eStatus.toUpperCase()}**`,
+              '',
+              '```text',
+              truncate(e2eOutput, 4000),
               '```',
               '',
               'Next step: open a parity batch PR to wrap added methods and address any breaking signature changes.',
