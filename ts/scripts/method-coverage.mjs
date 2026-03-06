@@ -51,7 +51,7 @@ if (report) {
 
 const badge = {
   schemaVersion: 1,
-  label: "methods tested",
+  label: "API coverage",
   message: `${tested.length}/${methods.length} (${pct}%)`,
   color,
 };
