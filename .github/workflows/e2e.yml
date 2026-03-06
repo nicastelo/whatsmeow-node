@@ -4,11 +4,19 @@ on:
   schedule:
     - cron: "0 8 * * *" # Daily at 8am UTC
   workflow_dispatch: # Manual trigger
+  pull_request:
+    types: [labeled, synchronize]
+
+permissions:
+  actions: write
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    if: github.repository == 'nicastelo/whatsmeow-node'
+    if: >-
+      github.repository == 'nicastelo/whatsmeow-node' &&
+      (github.event_name != 'pull_request' ||
+       contains(github.event.pull_request.labels.*.name, 'run-e2e'))
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -44,7 +52,23 @@ jobs:
             -pass "pass:$E2E_SESSION_KEY"
 
       - name: Run E2E tests
+        id: e2e
+        continue-on-error: true
         env:
           E2E_BINARY_PATH: ${{ github.workspace }}/whatsmeow-node
           E2E_SESSION_DB: ${{ github.workspace }}/ts/e2e-session.db
         run: cd ts && npm run test:e2e
+
+      - name: Handle session expiry
+        if: steps.e2e.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f ts/.e2e-session-expired ]; then
+            echo "::warning::WhatsApp session expired. Re-pair and update .e2e-session.db.enc"
+            gh run cancel ${{ github.run_id }} --repo ${{ github.repository }}
+            sleep 10
+          else
+            echo "E2E tests failed (not a session expiry)"
+            exit 1
+          fi

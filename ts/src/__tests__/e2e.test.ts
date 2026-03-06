@@ -14,13 +14,14 @@
 
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { resolve } from "node:path";
-import { existsSync, copyFileSync } from "node:fs";
+import { existsSync, copyFileSync, writeFileSync } from "node:fs";
 import { createClient } from "../index.js";
 import type { WhatsmeowClient } from "../client.js";
 
 const SESSION_DB = process.env.E2E_SESSION_DB ?? resolve(__dirname, "../../e2e-session.db");
 const BINARY_PATH = process.env.E2E_BINARY_PATH ?? resolve(__dirname, "../../../whatsmeow-node");
 const CONNECT_TIMEOUT = 30_000;
+const SESSION_EXPIRED_MARKER = resolve(__dirname, "../../.e2e-session-expired");
 
 describe.skipIf(!existsSync(SESSION_DB) || !existsSync(BINARY_PATH))("E2E", () => {
   let client: WhatsmeowClient;
@@ -49,12 +50,21 @@ describe.skipIf(!existsSync(SESSION_DB) || !existsSync(BINARY_PATH))("E2E", () =
     jid = init.jid ?? "";
     expect(jid).not.toBe("");
 
-    // Connect and wait for connected event
+    // Connect and wait for connected event, detecting session expiry
     const connected = new Promise<void>((res, rej) => {
       const timer = setTimeout(() => rej(new Error("connect timeout")), CONNECT_TIMEOUT);
       client.once("connected", () => {
         clearTimeout(timer);
         res();
+      });
+      client.once("logged_out", (data) => {
+        clearTimeout(timer);
+        writeFileSync(SESSION_EXPIRED_MARKER, `Session expired: ${data.reason}\n`);
+        rej(
+          new Error(
+            `Session expired (logged_out: ${data.reason}). Re-pair and update .e2e-session.db.enc`,
+          ),
+        );
       });
     });
     await client.connect();
