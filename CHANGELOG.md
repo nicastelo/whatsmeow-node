@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 > **Alpha** — During alpha (0.x), breaking changes may occur on minor version bumps. Pin your version if stability matters.
 
+## [0.4.0] - 2026-03-05
+
+### Added
+
+- Bump whatsmeow to `0.0.0-20260305` (upstream patch, no API changes)
+- E2E test suite running nightly against a real WhatsApp session
+- E2E workflow cancels gracefully on session expiry instead of failing
+- `run-e2e` label trigger to run E2E on PRs
+- CI-enforced whatsmeow client parity checker
+- Release watch workflow enriched with upstream release notes and commit summary
+- New wrappers: `WaitForConnection`, `SetGroupTopic`, `GetStatusPrivacy`, `TryFetchPrivacySettings`
+- Tighter `PrivacySettings` value unions
+- Parity policy, priorities, and wrapper PR template
+- npm and CI badges in README
+
 ## [0.3.0] - 2026-03-05
 
 ### Breaking Changes
@@ -62,6 +77,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.4.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.2.3...v0.3.0
 [0.2.3]: https://github.com/nicastelo/whatsmeow-node/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/nicastelo/whatsmeow-node/compare/v0.2.1...v0.2.2

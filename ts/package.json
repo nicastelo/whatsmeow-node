@@ -1,6 +1,6 @@
 {
   "name": "@whatsmeow-node/whatsmeow-node",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "whatsmeowVersion": "0.0.0-20260305",
   "description": "TypeScript bindings for whatsmeow (Go WhatsApp library) via subprocess IPC",
   "type": "module",
