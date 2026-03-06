@@ -134,17 +134,37 @@ export interface ContactQRLinkTarget {
 }
 
 // ── Privacy ────────────────────────────────────────
+export type PrivacySettingAllContactsBlacklistNone =
+  | "all"
+  | "contacts"
+  | "contact_blacklist"
+  | "none";
+export type PrivacySettingAllNone = "all" | "none";
+export type PrivacySettingAllKnown = "all" | "known";
+export type PrivacySettingAllMatchLastSeen = "all" | "match_last_seen";
+export type PrivacySettingAllContacts = "all" | "contacts";
+export type PrivacySettingOnStandardOff = "on_standard" | "off";
+export type PrivacySettingContactsAllowlistNone = "contacts" | "contact_allowlist" | "none";
+
 export interface PrivacySettings {
-  groupAdd: string;
-  lastSeen: string;
-  status: string;
-  profile: string;
-  readReceipts: string;
-  callAdd: string;
-  online: string;
-  messages: string;
-  defense: string;
-  stickers: string;
+  groupAdd: PrivacySettingAllContactsBlacklistNone;
+  lastSeen: PrivacySettingAllContactsBlacklistNone;
+  status: PrivacySettingAllContactsBlacklistNone;
+  profile: PrivacySettingAllContactsBlacklistNone;
+  readReceipts: PrivacySettingAllNone;
+  callAdd: PrivacySettingAllKnown;
+  online: PrivacySettingAllMatchLastSeen;
+  messages: PrivacySettingAllContacts;
+  defense: PrivacySettingOnStandardOff;
+  stickers: PrivacySettingContactsAllowlistNone;
+}
+
+export type StatusPrivacyType = "contacts" | "blacklist" | "whitelist";
+
+export interface StatusPrivacy {
+  type: StatusPrivacyType;
+  list: JID[];
+  isDefault: boolean;
 }
 
 // Wire values expected by whatsmeow (NOT camelCase)

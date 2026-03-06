@@ -28,6 +28,7 @@
     "GetQRChannel": "getQRChannel",
     "GetSubGroups": "getSubGroups",
     "GetSubscribedNewsletters": "getSubscribedNewsletters",
+    "GetStatusPrivacy": "getStatusPrivacy",
     "GetUserDevices": "getUserDevices",
     "GetUserInfo": "getUserInfo",
     "IsConnected": "isConnected",
@@ -65,6 +66,7 @@
     "SetPrivacySetting": "setPrivacySetting",
     "SetStatusMessage": "setStatusMessage",
     "SubscribePresence": "subscribePresence",
+    "TryFetchPrivacySettings": "tryFetchPrivacySettings",
     "UnfollowNewsletter": "unfollowNewsletter",
     "UnlinkGroup": "unlinkGroup",
     "UpdateBlocklist": "updateBlocklist",
@@ -104,7 +106,6 @@
     "GetGroupInfoFromInvite": "Invite variant not exposed yet.",
     "GetNewsletterMessageUpdates": "Live update polling API not exposed yet.",
     "GetServerPushNotificationConfig": "Push config API not exposed yet.",
-    "GetStatusPrivacy": "Status privacy API not exposed yet.",
     "GetUserDevicesContext": "Context-specific variant; GetUserDevices is exposed.",
     "JoinGroupWithInvite": "Invite variant not exposed yet.",
     "MarkNotDirty": "App-state internals not exposed yet.",
@@ -124,7 +125,6 @@
     "SetSOCKSProxy": "Network/proxy configuration APIs are intentionally not exposed.",
     "SetWebsocketHTTPClient": "Custom HTTP client APIs are intentionally not exposed.",
     "StoreLIDPNMapping": "Store/internal mapping API not exposed over IPC.",
-    "TryFetchPrivacySettings": "Direct fetch variant not exposed; getPrivacySettings/setPrivacySetting are exposed.",
     "Upload": "Upload API is exposed via streaming UploadReader command for lower memory usage.",
     "UploadNewsletter": "Newsletter-specific upload API not exposed yet.",
     "UploadNewsletterReader": "Newsletter-specific upload API not exposed yet."
@@ -153,9 +153,7 @@
   "priorities": {
     "P1": [
       "AcceptTOSNotice",
-      "GetNewsletterMessageUpdates",
-      "GetStatusPrivacy",
-      "TryFetchPrivacySettings"
+      "GetNewsletterMessageUpdates"
     ],
     "P2": [
       "ConnectContext",

@@ -23,6 +23,8 @@ export type {
   BusinessMessageLinkTarget,
   ContactQRLinkTarget,
   PrivacySettings,
+  StatusPrivacyType,
+  StatusPrivacy,
   PrivacySettingName,
   PrivacySettingValue,
   Blocklist,

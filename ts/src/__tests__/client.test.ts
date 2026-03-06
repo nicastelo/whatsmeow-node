@@ -714,6 +714,22 @@ describe("WhatsmeowClient", () => {
       expect(result).toEqual(settings);
     });
 
+    it("tryFetchPrivacySettings defaults ignoreCache to false", async () => {
+      mockResolve(send, { groupAdd: "all" });
+      await client.tryFetchPrivacySettings();
+      expect(send).toHaveBeenCalledWith("tryFetchPrivacySettings", {
+        ignoreCache: false,
+      });
+    });
+
+    it("tryFetchPrivacySettings forwards ignoreCache=true", async () => {
+      mockResolve(send, { groupAdd: "all" });
+      await client.tryFetchPrivacySettings(true);
+      expect(send).toHaveBeenCalledWith("tryFetchPrivacySettings", {
+        ignoreCache: true,
+      });
+    });
+
     it("setPrivacySetting sends whatsmeow wire-format name", async () => {
       mockResolve(send, { groupAdd: "contacts" });
       await client.setPrivacySetting("groupadd", "contacts");
@@ -739,6 +755,20 @@ describe("WhatsmeowClient", () => {
         name: "calladd",
         value: "known",
       });
+    });
+
+    it("getStatusPrivacy sends no args", async () => {
+      const statusPrivacy = [
+        {
+          type: "contacts",
+          list: [],
+          isDefault: true,
+        },
+      ];
+      mockResolve(send, statusPrivacy);
+      const result = await client.getStatusPrivacy();
+      expect(send).toHaveBeenCalledWith("getStatusPrivacy");
+      expect(result).toEqual(statusPrivacy);
     });
 
     it("setDefaultDisappearingTimer sends seconds", async () => {

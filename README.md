@@ -212,7 +212,9 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 ### Privacy & Settings
 
 - `getPrivacySettings()` -- Get all privacy settings
+- `tryFetchPrivacySettings(ignoreCache?)` -- Fetch privacy settings from cache or server
 - `setPrivacySetting(name, value)` -- Update a privacy setting
+- `getStatusPrivacy()` -- Get default status audience rules
 - `setDefaultDisappearingTimer(seconds)` -- Set default disappearing timer (0 to disable)
 - `setDisappearingTimer(jid, seconds)` -- Set disappearing timer for a specific chat
 
