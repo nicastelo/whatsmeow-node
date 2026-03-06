@@ -139,7 +139,20 @@ jobs:
             const parityStatus = process.env.PARITY_STATUS || 'fail';
             const breaking = process.env.BREAKING || 'false';
             const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const upstreamRepo = 'https://github.com/tulir/whatsmeow';
+            const changelogUrl = `${upstreamRepo}/releases`;
             const title = `[watch] whatsmeow update available: ${current} -> ${latest}`;
+
+            const toRef = (version) => {
+              const pseudo = /^v\d+\.\d+\.\d+-\d{14}-([0-9a-f]{12})$/;
+              const match = version.match(pseudo);
+              return match ? match[1] : version;
+            };
+            const currentRef = toRef(current);
+            const latestRef = toRef(latest);
+            const compareUrl = `${upstreamRepo}/compare/${currentRef}...${latestRef}`;
+            const latestVersionUrl = `https://pkg.go.dev/go.mau.fi/whatsmeow@${latest}`;
+            const latestSourceUrl = `${upstreamRepo}/tree/${latestRef}`;
 
             let parityOutput = 'No parity output captured.';
             if (fs.existsSync('parity-output.txt')) {
@@ -156,6 +169,10 @@ jobs:
               '',
               `- Current: \`${current}\``,
               `- Latest: \`${latest}\``,
+              `- Latest version link: ${latestVersionUrl}`,
+              `- Latest source link: ${latestSourceUrl}`,
+              `- Changelog / releases: ${changelogUrl}`,
+              `- Compare current -> latest: ${compareUrl}`,
               `- Parity check against latest: **${parityStatus.toUpperCase()}**`,
               `- Potential breaking API change detected: **${breaking.toUpperCase()}**`,
               `- Workflow run: ${runUrl}`,
