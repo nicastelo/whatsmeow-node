@@ -1,6 +1,7 @@
 # whatsmeow-node
 
 [![CI](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml/badge.svg)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml)
+[![E2E](https://github.com/nicastelo/whatsmeow-node/actions/workflows/e2e.yml/badge.svg)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/e2e.yml)
 [![npm version](https://img.shields.io/npm/v/%40whatsmeow-node%2Fwhatsmeow-node)](https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node)
 [![npm downloads](https://img.shields.io/npm/dm/%40whatsmeow-node%2Fwhatsmeow-node)](https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node)
 
@@ -330,6 +331,32 @@ npx tsx examples/pair.ts
 ```
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full development setup.
+
+## Testing
+
+**Unit tests** (mock-based, no WhatsApp connection):
+
+```bash
+cd ts && npm test
+```
+
+**E2E tests** (requires a paired WhatsApp session):
+
+```bash
+# Build the Go binary first
+go build -o whatsmeow-node ./cmd/whatsmeow-node
+
+# Run E2E tests against a session
+E2E_SESSION_DB=./ts/session.db npm run test:e2e
+```
+
+E2E tests run read-only operations (privacy settings, blocklist, groups, contacts, newsletters, presence) to minimize ban risk. They run nightly in CI against an encrypted session stored in the repo.
+
+To set up E2E for CI:
+
+1. Pair a session: `cd ts && npx tsx examples/pair.ts`
+2. Encrypt and commit: `./scripts/export-session.sh ts/session.db`
+3. Set the secret: `gh secret set E2E_SESSION_KEY --body '<passphrase>'`
 
 ## Acknowledgments
 

@@ -22,139 +22,136 @@ const SESSION_DB = process.env.E2E_SESSION_DB ?? resolve(__dirname, "../../e2e-s
 const BINARY_PATH = process.env.E2E_BINARY_PATH ?? resolve(__dirname, "../../../whatsmeow-node");
 const CONNECT_TIMEOUT = 30_000;
 
-describe.skipIf(!existsSync(SESSION_DB) || !existsSync(BINARY_PATH))(
-  "E2E",
-  () => {
-    let client: WhatsmeowClient;
-    let jid: string;
+describe.skipIf(!existsSync(SESSION_DB) || !existsSync(BINARY_PATH))("E2E", () => {
+  let client: WhatsmeowClient;
+  let jid: string;
 
-    // Use a copy so the original session.db isn't modified
-    const testDb = resolve(__dirname, "../../.e2e-test-session.db");
+  // Use a copy so the original session.db isn't modified
+  const testDb = resolve(__dirname, "../../.e2e-test-session.db");
 
-    beforeAll(async () => {
-      copyFileSync(SESSION_DB, testDb);
-      // Also copy WAL/SHM if they exist
-      for (const ext of ["-wal", "-shm"]) {
-        if (existsSync(SESSION_DB + ext)) {
-          copyFileSync(SESSION_DB + ext, testDb + ext);
-        }
+  beforeAll(async () => {
+    copyFileSync(SESSION_DB, testDb);
+    // Also copy WAL/SHM if they exist
+    for (const ext of ["-wal", "-shm"]) {
+      if (existsSync(SESSION_DB + ext)) {
+        copyFileSync(SESSION_DB + ext, testDb + ext);
       }
+    }
 
-      client = createClient({
-        store: testDb,
-        binaryPath: BINARY_PATH,
-        commandTimeout: CONNECT_TIMEOUT,
+    client = createClient({
+      store: testDb,
+      binaryPath: BINARY_PATH,
+      commandTimeout: CONNECT_TIMEOUT,
+    });
+
+    const init = await client.init();
+    expect(init.jid).toBeTruthy();
+    jid = init.jid ?? "";
+    expect(jid).not.toBe("");
+
+    // Connect and wait for connected event
+    const connected = new Promise<void>((res, rej) => {
+      const timer = setTimeout(() => rej(new Error("connect timeout")), CONNECT_TIMEOUT);
+      client.once("connected", () => {
+        clearTimeout(timer);
+        res();
       });
-
-      const init = await client.init();
-      expect(init.jid).toBeTruthy();
-      jid = init.jid ?? "";
-      expect(jid).not.toBe("");
-
-      // Connect and wait for connected event
-      const connected = new Promise<void>((res, rej) => {
-        const timer = setTimeout(() => rej(new Error("connect timeout")), CONNECT_TIMEOUT);
-        client.once("connected", () => {
-          clearTimeout(timer);
-          res();
-        });
-      });
-      await client.connect();
-      await connected;
-    }, CONNECT_TIMEOUT + 5_000);
-
-    afterAll(async () => {
-      try {
-        await client.disconnect();
-      } catch {
-        // ignore
-      }
-      client.close();
     });
+    await client.connect();
+    await connected;
+  }, CONNECT_TIMEOUT + 5_000);
 
-    // ── Connection ──────────────────────────────────
+  afterAll(async () => {
+    try {
+      await client.disconnect();
+    } catch {
+      // ignore
+    }
+    client.close();
+  });
 
-    it("is connected and logged in", async () => {
-      const connected = await client.isConnected();
-      const loggedIn = await client.isLoggedIn();
-      expect(connected).toBe(true);
-      expect(loggedIn).toBe(true);
-    });
+  // ── Connection ──────────────────────────────────
 
-    // ── Privacy & Settings ──────────────────────────
+  it("is connected and logged in", async () => {
+    const connected = await client.isConnected();
+    const loggedIn = await client.isLoggedIn();
+    expect(connected).toBe(true);
+    expect(loggedIn).toBe(true);
+  });
 
-    it("getPrivacySettings returns settings object", async () => {
-      const settings = await client.getPrivacySettings();
-      expect(settings).toHaveProperty("groupAdd");
-      expect(settings).toHaveProperty("lastSeen");
-      expect(settings).toHaveProperty("status");
-      expect(settings).toHaveProperty("profile");
-      expect(settings).toHaveProperty("readReceipts");
-    });
+  // ── Privacy & Settings ──────────────────────────
 
-    // ── Blocklist ───────────────────────────────────
+  it("getPrivacySettings returns settings object", async () => {
+    const settings = await client.getPrivacySettings();
+    expect(settings).toHaveProperty("groupAdd");
+    expect(settings).toHaveProperty("lastSeen");
+    expect(settings).toHaveProperty("status");
+    expect(settings).toHaveProperty("profile");
+    expect(settings).toHaveProperty("readReceipts");
+  });
 
-    it("getBlocklist returns jids array", async () => {
-      const blocklist = await client.getBlocklist();
-      expect(blocklist).toHaveProperty("jids");
-      expect(Array.isArray(blocklist.jids)).toBe(true);
-    });
+  // ── Blocklist ───────────────────────────────────
 
-    // ── Groups ──────────────────────────────────────
+  it("getBlocklist returns jids array", async () => {
+    const blocklist = await client.getBlocklist();
+    expect(blocklist).toHaveProperty("jids");
+    expect(Array.isArray(blocklist.jids)).toBe(true);
+  });
 
-    it("getJoinedGroups returns array", async () => {
-      const groups = await client.getJoinedGroups();
-      expect(Array.isArray(groups)).toBe(true);
-      // Verify shape if there are groups
-      if (groups.length > 0) {
-        expect(groups[0]).toHaveProperty("JID");
-      }
-    });
+  // ── Groups ──────────────────────────────────────
 
-    // ── Contacts ────────────────────────────────────
+  it("getJoinedGroups returns array", async () => {
+    const groups = await client.getJoinedGroups();
+    expect(Array.isArray(groups)).toBe(true);
+    // Verify shape if there are groups
+    if (groups.length > 0) {
+      expect(groups[0]).toHaveProperty("JID");
+    }
+  });
 
-    it("isOnWhatsApp checks own number", async () => {
-      // Extract phone from JID (e.g. "5989...@s.whatsapp.net" -> "+5989...")
-      const phone = "+" + jid.split("@")[0].split(":")[0];
-      const results = await client.isOnWhatsApp([phone]);
-      expect(Array.isArray(results)).toBe(true);
-      expect(results.length).toBe(1);
-      expect(results[0].isIn).toBe(true);
-    });
+  // ── Contacts ────────────────────────────────────
 
-    it("getUserInfo returns info for own JID", async () => {
-      const info = await client.getUserInfo([jid]);
-      // Response keys may differ from input (e.g. device suffix)
-      const keys = Object.keys(info);
-      expect(keys.length).toBeGreaterThanOrEqual(1);
-      const first = info[keys[0]];
-      expect(first).toHaveProperty("status");
-    });
+  it("isOnWhatsApp checks own number", async () => {
+    // Extract phone from JID (e.g. "5989...@s.whatsapp.net" -> "+5989...")
+    const phone = "+" + jid.split("@")[0].split(":")[0];
+    const results = await client.isOnWhatsApp([phone]);
+    expect(Array.isArray(results)).toBe(true);
+    expect(results.length).toBe(1);
+    expect(results[0].isIn).toBe(true);
+  });
 
-    // ── Newsletters ─────────────────────────────────
+  it("getUserInfo returns info for own JID", async () => {
+    const info = await client.getUserInfo([jid]);
+    // Response keys may differ from input (e.g. device suffix)
+    const keys = Object.keys(info);
+    expect(keys.length).toBeGreaterThanOrEqual(1);
+    const first = info[keys[0]];
+    expect(first).toHaveProperty("status");
+  });
 
-    it("getSubscribedNewsletters returns array", async () => {
-      const newsletters = await client.getSubscribedNewsletters();
-      expect(Array.isArray(newsletters)).toBe(true);
-    });
+  // ── Newsletters ─────────────────────────────────
 
-    // ── Presence ────────────────────────────────────
+  it("getSubscribedNewsletters returns array", async () => {
+    const newsletters = await client.getSubscribedNewsletters();
+    expect(Array.isArray(newsletters)).toBe(true);
+  });
 
-    it("sendPresence available succeeds", async () => {
-      // Should not throw
-      await client.sendPresence("available");
-    });
+  // ── Presence ────────────────────────────────────
 
-    it("sendPresence unavailable succeeds", async () => {
-      await client.sendPresence("unavailable");
-    });
+  it("sendPresence available succeeds", async () => {
+    // Should not throw
+    await client.sendPresence("available");
+  });
 
-    // ── QR Links ────────────────────────────────────
+  it("sendPresence unavailable succeeds", async () => {
+    await client.sendPresence("unavailable");
+  });
 
-    it("getContactQRLink returns a link string", async () => {
-      const link = await client.getContactQRLink();
-      expect(typeof link).toBe("string");
-      expect(link.length).toBeGreaterThan(0);
-    });
-  },
-);
+  // ── QR Links ────────────────────────────────────
+
+  it("getContactQRLink returns a link string", async () => {
+    const link = await client.getContactQRLink();
+    expect(typeof link).toBe("string");
+    expect(link.length).toBeGreaterThan(0);
+  });
+});
