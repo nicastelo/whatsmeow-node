@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"sort"
 	"time"
@@ -997,11 +998,14 @@ func (a *App) cmdGetPrivacySettings(cmd Command) {
 // cmdTryFetchPrivacySettings fetches privacy settings from cache or server.
 // Maps to: client.TryFetchPrivacySettings()
 func (a *App) cmdTryFetchPrivacySettings(cmd Command) {
-	args, ok := parseArgs[struct {
+	args := struct {
 		IgnoreCache bool `json:"ignoreCache"`
-	}](cmd)
-	if !ok {
-		return
+	}{}
+	if len(cmd.Args) > 0 {
+		if err := json.Unmarshal(cmd.Args, &args); err != nil {
+			sendError(cmd.ID, "invalid args: "+err.Error(), "ERR_INVALID_ARGS")
+			return
+		}
 	}
 
 	client := a.requireClient(cmd)
