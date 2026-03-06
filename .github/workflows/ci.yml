@@ -30,3 +30,19 @@ jobs:
       - run: cd ts && npm run check:examples
       - run: cd ts && npm run build
       - run: cd ts && npm test
+
+      - name: Update method coverage badge
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+        run: |
+          BADGE_JSON=$(cd ts && node scripts/method-coverage.mjs)
+          if [ -n "$GIST_TOKEN" ]; then
+            curl -s -X PATCH \
+              -H "Authorization: token $GIST_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/gists/eb3fdca5e3c515b4d946d8e0dc51defc" \
+              -d "$(jq -n --arg b "$BADGE_JSON" '{files: {"method-coverage-badge.json": {content: $b}}}')"
+          else
+            echo "::notice::Method coverage: $BADGE_JSON (GIST_TOKEN not set, skipping badge update)"
+          fi

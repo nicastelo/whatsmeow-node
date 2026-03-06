@@ -115,7 +115,7 @@ describe.skipIf(!existsSync(SESSION_DB) || !existsSync(BINARY_PATH))("E2E", () =
     expect(Array.isArray(groups)).toBe(true);
     // Verify shape if there are groups
     if (groups.length > 0) {
-      expect(groups[0]).toHaveProperty("JID");
+      expect(groups[0]).toHaveProperty("jid");
     }
   });
 

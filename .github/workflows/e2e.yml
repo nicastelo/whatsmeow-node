@@ -59,6 +59,33 @@ jobs:
           E2E_SESSION_DB: ${{ github.workspace }}/ts/e2e-session.db
         run: cd ts && npm run test:e2e
 
+      - name: Run integration tests with coverage
+        id: integration
+        if: steps.e2e.outcome == 'success'
+        continue-on-error: true
+        env:
+          WHATSMEOW_INTEGRATION: "1"
+          TEST_PHONE: ${{ secrets.TEST_PHONE }}
+          E2E_BINARY_PATH: ${{ github.workspace }}/whatsmeow-node
+          E2E_SESSION_DB: ${{ github.workspace }}/ts/e2e-session.db
+        run: cd ts && npm run test:integration:coverage
+
+      - name: Update coverage badge
+        if: steps.integration.outcome == 'success' && github.event_name != 'pull_request'
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+        run: |
+          BADGE_JSON=$(cd ts && node scripts/coverage-badge.mjs)
+          if [ -n "$GIST_TOKEN" ]; then
+            curl -s -X PATCH \
+              -H "Authorization: token $GIST_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/gists/deee098d298bc9a9193cec6adcb13220" \
+              -d "$(jq -n --arg b "$BADGE_JSON" '{files: {"coverage-badge.json": {content: $b}}}')"
+          else
+            echo "::notice::Coverage badge: $BADGE_JSON (GIST_TOKEN not set, skipping badge update)"
+          fi
+
       - name: Handle session expiry
         if: steps.e2e.outcome == 'failure'
         env:
