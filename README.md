@@ -1,5 +1,7 @@
 # whatsmeow-node
 
+[![CI](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml/badge.svg)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml)
+
 TypeScript/Node.js bindings for [whatsmeow](https://github.com/tulir/whatsmeow), the Go WhatsApp Web multidevice API library.
 
 Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CGo, no native addons, no WebSocket reimplementation -- just a subprocess.

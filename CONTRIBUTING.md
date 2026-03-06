@@ -131,7 +131,22 @@ this.proc.on("my_event", (d) => this.emit("my_event", d));
 
 ## Testing
 
-No test runner is configured yet. To test manually:
+Automated checks:
+
+```bash
+# Go parity/build checks
+go run ./scripts/check-client-parity
+go build ./cmd/whatsmeow-node
+go vet ./...
+
+# TypeScript checks
+cd ts && npm run lint
+cd ts && npm run format:check
+cd ts && npm run build
+cd ts && npm test
+```
+
+Manual smoke checks:
 
 ```bash
 # Pair a device
@@ -139,11 +154,14 @@ cd ts && npx tsx examples/pair.ts
 
 # Send a test message (after pairing)
 cd ts && npx tsx examples/send-test.ts
+
+# Run broad API smoke test (requires paired session.db)
+cd ts && npx tsx examples/smoke-test.ts [phone]
 ```
 
 ## CI
 
-- **Push/PR to main**: Runs `go build`, `go vet`, `npm run lint`, `npm run format:check`, `npm run build`
+- **Push/PR to main**: Runs `go run ./scripts/check-client-parity`, `go build`, `go vet`, `npm run lint`, `npm run format:check`, `npm run build`, `npm test`
 - **Tag `v*`**: Cross-compiles Go for 7 platforms, publishes platform packages + main package to npm, creates GitHub release
 
 ## Releasing
