@@ -12,6 +12,22 @@ Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CG
 
 **Current upstream**: whatsmeow [`0.0.0-20260227`](https://pkg.go.dev/go.mau.fi/whatsmeow)
 
+## Install
+
+```bash
+npm install @whatsmeow-node/whatsmeow-node
+```
+
+The correct binary for your platform is installed automatically via `optionalDependencies`.
+
+Supported platforms:
+
+| OS      | x64 | arm64 | musl (Alpine) |
+|---------|-----|-------|---------------|
+| macOS   | Yes | Yes   | -             |
+| Linux   | Yes | Yes   | x64 only      |
+| Windows | Yes | Yes   | -             |
+
 ## Philosophy
 
 whatsmeow-node is a **binding**, not a framework. The goal is to expose whatsmeow's API to Node.js as faithfully as possible -- a 1:1 mapping with no added abstractions, convenience wrappers, or opinion about how you should structure your app. A binding should bind, not opine.
@@ -59,22 +75,6 @@ We chose whatsmeow because:
 The tradeoff is the IPC layer between Node.js and Go, but the subprocess approach keeps things simple: no CGo, no native addons, no WebSocket reimplementation in JavaScript.
 
 Huge thanks to [@tulir](https://github.com/tulir) and the [whatsmeow contributors](https://github.com/tulir/whatsmeow/graphs/contributors) for building and maintaining such a solid foundation.
-
-## Install
-
-```bash
-npm install @whatsmeow-node/whatsmeow-node
-```
-
-The correct binary for your platform is installed automatically via `optionalDependencies`.
-
-Supported platforms:
-
-| OS      | x64 | arm64 | musl (Alpine) |
-|---------|-----|-------|---------------|
-| macOS   | Yes | Yes   | -             |
-| Linux   | Yes | Yes   | x64 only      |
-| Windows | Yes | Yes   | -             |
 
 ## Quick Start
 
