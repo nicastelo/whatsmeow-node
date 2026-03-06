@@ -10,6 +10,21 @@ import (
 	"go.mau.fi/whatsmeow/types/events"
 )
 
+func privacySettingsToMap(settings types.PrivacySettings) map[string]interface{} {
+	return map[string]interface{}{
+		"groupAdd":     string(settings.GroupAdd),
+		"lastSeen":     string(settings.LastSeen),
+		"status":       string(settings.Status),
+		"profile":      string(settings.Profile),
+		"readReceipts": string(settings.ReadReceipts),
+		"callAdd":      string(settings.CallAdd),
+		"online":       string(settings.Online),
+		"messages":     string(settings.Messages),
+		"defense":      string(settings.Defense),
+		"stickers":     string(settings.Stickers),
+	}
+}
+
 // ── Message Operations ────────────────────────────────
 
 // cmdSendReaction sends an emoji reaction to a message.
@@ -976,19 +991,31 @@ func (a *App) cmdGetPrivacySettings(cmd Command) {
 	}
 
 	settings := client.GetPrivacySettings(a.ctx)
+	sendResponse(cmd.ID, privacySettingsToMap(settings))
+}
 
-	sendResponse(cmd.ID, map[string]interface{}{
-		"groupAdd":     string(settings.GroupAdd),
-		"lastSeen":     string(settings.LastSeen),
-		"status":       string(settings.Status),
-		"profile":      string(settings.Profile),
-		"readReceipts": string(settings.ReadReceipts),
-		"callAdd":      string(settings.CallAdd),
-		"online":       string(settings.Online),
-		"messages":     string(settings.Messages),
-		"defense":      string(settings.Defense),
-		"stickers":     string(settings.Stickers),
-	})
+// cmdTryFetchPrivacySettings fetches privacy settings from cache or server.
+// Maps to: client.TryFetchPrivacySettings()
+func (a *App) cmdTryFetchPrivacySettings(cmd Command) {
+	args, ok := parseArgs[struct {
+		IgnoreCache bool `json:"ignoreCache"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	settings, err := client.TryFetchPrivacySettings(a.ctx, args.IgnoreCache)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_GET_PRIVACY")
+		return
+	}
+
+	sendResponse(cmd.ID, privacySettingsToMap(*settings))
 }
 
 // cmdSetPrivacySetting updates a privacy setting.
@@ -1012,19 +1039,38 @@ func (a *App) cmdSetPrivacySetting(cmd Command) {
 		sendError(cmd.ID, err.Error(), "ERR_SET_PRIVACY")
 		return
 	}
+	sendResponse(cmd.ID, privacySettingsToMap(settings))
+}
 
-	sendResponse(cmd.ID, map[string]interface{}{
-		"groupAdd":     string(settings.GroupAdd),
-		"lastSeen":     string(settings.LastSeen),
-		"status":       string(settings.Status),
-		"profile":      string(settings.Profile),
-		"readReceipts": string(settings.ReadReceipts),
-		"callAdd":      string(settings.CallAdd),
-		"online":       string(settings.Online),
-		"messages":     string(settings.Messages),
-		"defense":      string(settings.Defense),
-		"stickers":     string(settings.Stickers),
-	})
+// cmdGetStatusPrivacy gets current status audience rules.
+// Maps to: client.GetStatusPrivacy()
+func (a *App) cmdGetStatusPrivacy(cmd Command) {
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	statusPrivacy, err := client.GetStatusPrivacy(a.ctx)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_GET_STATUS_PRIVACY")
+		return
+	}
+
+	rules := make([]map[string]interface{}, 0, len(statusPrivacy))
+	for _, rule := range statusPrivacy {
+		list := make([]string, 0, len(rule.List))
+		for _, jid := range rule.List {
+			list = append(list, jid.String())
+		}
+
+		rules = append(rules, map[string]interface{}{
+			"type":      string(rule.Type),
+			"list":      list,
+			"isDefault": rule.IsDefault,
+		})
+	}
+
+	sendResponse(cmd.ID, rules)
 }
 
 // cmdSetDefaultDisappearingTimer sets the default disappearing message timer.

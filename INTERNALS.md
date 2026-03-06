@@ -202,7 +202,9 @@ Media uses temp file paths instead of base64-over-JSON. A 10MB video as base64 w
 | Command | Args | Response | Description |
 |---|---|---|---|
 | `getPrivacySettings` | `{}` | `{ groupAdd, lastSeen, status, profile, readReceipts, callAdd, online, messages, defense, stickers }` | Get all privacy settings |
-| `setPrivacySetting` | `{ name, value }` | `{}` | Update a privacy setting |
+| `tryFetchPrivacySettings` | `{ ignoreCache? }` | `{ groupAdd, lastSeen, status, profile, readReceipts, callAdd, online, messages, defense, stickers }` | Fetch privacy settings from cache or server |
+| `setPrivacySetting` | `{ name, value }` | `{ groupAdd, lastSeen, status, profile, readReceipts, callAdd, online, messages, defense, stickers }` | Update a privacy setting |
+| `getStatusPrivacy` | `{}` | `[{ type, list, isDefault }, ...]` | Get default status audience rules |
 | `setDefaultDisappearingTimer` | `{ seconds }` | `{}` | Set default disappearing timer (0 to disable) |
 | `setDisappearingTimer` | `{ jid, seconds }` | `{}` | Set disappearing messages for a chat (0 to disable) |
 
@@ -410,17 +412,17 @@ The goal is full API parity. The following whatsmeow `Client` methods are not ye
 
 **Users/Contacts:** `GetBotListV2`, `GetBotProfiles`
 
-**Groups:** `SetGroupTopic`, `GetGroupInfoFromInvite`, `JoinGroupWithInvite`
+**Groups:** `GetGroupInfoFromInvite`, `JoinGroupWithInvite`
 
 **Newsletters:** `GetNewsletterMessageUpdates`, `AcceptTOSNotice`
 
-**Privacy:** `TryFetchPrivacySettings`
+**Privacy:** None
 
 **Store queries:** `GetAllContacts`, `GetContact`, `GetChatSettings`
 
 **App State:** `FetchAppState`, `SendAppState`, `MarkNotDirty`
 
-**Connection/Config:** `WaitForConnection`, `SendMediaRetryReceipt`, `DownloadHistorySync`, `GetStatusPrivacy`, `GetServerPushNotificationConfig`, `RegisterForPushNotifications`
+**Connection/Config:** `SendMediaRetryReceipt`, `DownloadHistorySync`, `GetServerPushNotificationConfig`, `RegisterForPushNotifications`
 
 **Network:** `SetProxyAddress`, `SetProxy`, `SetSOCKSProxy`, `SetMediaHTTPClient`, `SetWebsocketHTTPClient`, `SetPreLoginHTTPClient`
 

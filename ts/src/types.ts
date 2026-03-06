@@ -147,6 +147,14 @@ export interface PrivacySettings {
   stickers: string;
 }
 
+export type StatusPrivacyType = "contacts" | "blacklist" | "whitelist";
+
+export interface StatusPrivacy {
+  type: StatusPrivacyType;
+  list: JID[];
+  isDefault: boolean;
+}
+
 // Wire values expected by whatsmeow (NOT camelCase)
 export type PrivacySettingName =
   | "groupadd"

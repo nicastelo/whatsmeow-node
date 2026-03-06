@@ -185,8 +185,12 @@ func (a *App) handleCommand(cmd Command) {
 	// ── Extra: Privacy & Settings ──────────────────
 	case "getPrivacySettings":
 		a.cmdGetPrivacySettings(cmd)
+	case "tryFetchPrivacySettings":
+		a.cmdTryFetchPrivacySettings(cmd)
 	case "setPrivacySetting":
 		a.cmdSetPrivacySetting(cmd)
+	case "getStatusPrivacy":
+		a.cmdGetStatusPrivacy(cmd)
 	case "setDefaultDisappearingTimer":
 		a.cmdSetDefaultDisappearingTimer(cmd)
 	case "setDisappearingTimer":

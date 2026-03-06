@@ -21,6 +21,7 @@ import type {
   BusinessMessageLinkTarget,
   ContactQRLinkTarget,
   PrivacySettings,
+  StatusPrivacy,
   PrivacySettingName,
   PrivacySettingValue,
   Blocklist,
@@ -474,11 +475,19 @@ export class WhatsmeowClient extends EventEmitter {
     return (await this.proc.send("getPrivacySettings")) as PrivacySettings;
   }
 
+  async tryFetchPrivacySettings(ignoreCache = false): Promise<PrivacySettings> {
+    return (await this.proc.send("tryFetchPrivacySettings", { ignoreCache })) as PrivacySettings;
+  }
+
   async setPrivacySetting(
     name: PrivacySettingName,
     value: PrivacySettingValue,
   ): Promise<PrivacySettings> {
     return (await this.proc.send("setPrivacySetting", { name, value })) as PrivacySettings;
+  }
+
+  async getStatusPrivacy(): Promise<StatusPrivacy[]> {
+    return (await this.proc.send("getStatusPrivacy")) as StatusPrivacy[];
   }
 
   async setDefaultDisappearingTimer(seconds: number): Promise<void> {
