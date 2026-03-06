@@ -75,8 +75,8 @@ describe.skipIf(!existsSync(SESSION_DB) || !existsSync(BINARY_PATH))(
     // ── Connection ──────────────────────────────────
 
     it("is connected and logged in", async () => {
-      const { connected } = await client.isConnected();
-      const { loggedIn } = await client.isLoggedIn();
+      const connected = await client.isConnected();
+      const loggedIn = await client.isLoggedIn();
       expect(connected).toBe(true);
       expect(loggedIn).toBe(true);
     });
@@ -124,7 +124,11 @@ describe.skipIf(!existsSync(SESSION_DB) || !existsSync(BINARY_PATH))(
 
     it("getUserInfo returns info for own JID", async () => {
       const info = await client.getUserInfo([jid]);
-      expect(info).toHaveProperty(jid);
+      // Response keys may differ from input (e.g. device suffix)
+      const keys = Object.keys(info);
+      expect(keys.length).toBeGreaterThanOrEqual(1);
+      const first = info[keys[0]];
+      expect(first).toHaveProperty("status");
     });
 
     // ── Newsletters ─────────────────────────────────
@@ -147,10 +151,10 @@ describe.skipIf(!existsSync(SESSION_DB) || !existsSync(BINARY_PATH))(
 
     // ── QR Links ────────────────────────────────────
 
-    it("getContactQRLink returns a link", async () => {
-      const result = await client.getContactQRLink();
-      expect(result).toHaveProperty("link");
-      expect(typeof result.link).toBe("string");
+    it("getContactQRLink returns a link string", async () => {
+      const link = await client.getContactQRLink();
+      expect(typeof link).toBe("string");
+      expect(link.length).toBeGreaterThan(0);
     });
   },
 );
