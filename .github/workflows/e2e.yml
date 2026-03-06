@@ -1,0 +1,58 @@
+name: E2E
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # Daily at 8am UTC
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    if: github.repository == 'nicastelo/whatsmeow-node'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build Go binary
+        run: go build -o whatsmeow-node ./cmd/whatsmeow-node
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: cd ts && npm install --ignore-scripts
+
+      - name: Restore session
+        env:
+          E2E_SESSION_DB_B64: ${{ secrets.E2E_SESSION_DB_B64 }}
+        run: |
+          if [ -z "$E2E_SESSION_DB_B64" ]; then
+            echo "::error::E2E_SESSION_DB_B64 secret not set"
+            exit 1
+          fi
+          echo "$E2E_SESSION_DB_B64" | base64 -d > ts/e2e-session.db
+
+      - name: Run E2E tests
+        env:
+          E2E_BINARY_PATH: ${{ github.workspace }}/whatsmeow-node
+          E2E_SESSION_DB: ${{ github.workspace }}/ts/e2e-session.db
+        run: cd ts && npm run test:e2e
+
+      - name: Save updated session
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ ! -f ts/e2e-session.db ]; then exit 0; fi
+          # Checkpoint WAL into main db file for a clean export
+          sqlite3 ts/.e2e-test-session.db "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
+          NEW_B64=$(base64 -w0 ts/.e2e-test-session.db)
+          # Update the secret via gh CLI (requires GH_PAT with admin:org or repo scope)
+          if [ -n "$GH_TOKEN" ]; then
+            gh secret set E2E_SESSION_DB_B64 --body "$NEW_B64" 2>/dev/null || echo "::warning::Could not update session secret (expected if GH_PAT not set)"
+          fi
