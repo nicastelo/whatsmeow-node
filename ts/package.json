@@ -23,9 +23,11 @@
     "dev": "tsup --watch",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "test": "vitest run --exclude 'src/__tests__/e2e.test.ts'",
+    "test": "vitest run --exclude 'src/__tests__/e2e.test.ts' --exclude 'src/__tests__/integration/**'",
     "test:e2e": "vitest run --config vitest.config.e2e.ts",
-    "test:watch": "vitest --exclude 'src/__tests__/e2e.test.ts'",
+    "test:integration": "vitest run -c vitest.config.integration.ts",
+    "test:integration:coverage": "COVERAGE=1 vitest run -c vitest.config.integration.ts",
+    "test:watch": "vitest --exclude 'src/__tests__/e2e.test.ts' --exclude 'src/__tests__/integration/**'",
     "format": "prettier --write 'src/**/*.ts'",
     "check:examples": "tsc --noEmit -p tsconfig.examples.json",
     "format:check": "prettier --check 'src/**/*.ts'"
@@ -68,6 +70,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.1",
