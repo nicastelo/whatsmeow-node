@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Export a session.db as a base64 string for use as a GitHub Actions secret.
+# Encrypt a session.db for storage in the repo. The passphrase is stored
+# as a GitHub secret (E2E_SESSION_KEY), the encrypted file is committed.
 #
 # Usage:
 #   1. Pair first:  cd ts && npx tsx examples/pair.ts
 #   2. Export:       ./scripts/export-session.sh ts/session.db
-#   3. Set secret:   gh secret set E2E_SESSION_DB_B64 < session.b64
-#
-# Optional: set GH_PAT secret too (personal access token with repo scope)
-# so the E2E workflow can update the session after each run.
+#   3. Commit:       git add .e2e-session.db.gpg && git commit -m "Update E2E session"
+#   4. Set secret:   gh secret set E2E_SESSION_KEY --body "<your-passphrase>"
 
 if [ $# -ne 1 ]; then
   echo "Usage: $0 <path-to-session.db>"
@@ -26,11 +25,21 @@ fi
 # Checkpoint WAL into main db
 sqlite3 "$DB" "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
 
-OUT="${DB%.db}.b64"
-base64 < "$DB" > "$OUT"
+OUT="$(git rev-parse --show-toplevel)/.e2e-session.db.enc"
+
+if [ -n "${E2E_SESSION_KEY:-}" ]; then
+  PASSPHRASE="$E2E_SESSION_KEY"
+else
+  read -rsp "Passphrase: " PASSPHRASE
+  echo
+fi
+
+openssl enc -aes-256-cbc -salt -pbkdf2 \
+  -in "$DB" -out "$OUT" -pass "pass:$PASSPHRASE"
 
 SIZE=$(wc -c < "$OUT" | tr -d ' ')
-echo "Exported to $OUT ($SIZE bytes)"
+echo "Encrypted to $OUT ($SIZE bytes)"
 echo ""
-echo "Set it as a GitHub secret:"
-echo "  gh secret set E2E_SESSION_DB_B64 < $OUT"
+echo "Next steps:"
+echo "  git add .e2e-session.db.enc && git commit -m 'Update E2E session'"
+echo "  gh secret set E2E_SESSION_KEY --body '<your-passphrase>'"
