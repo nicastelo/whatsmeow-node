@@ -139,7 +139,26 @@ jobs:
             const parityStatus = process.env.PARITY_STATUS || 'fail';
             const breaking = process.env.BREAKING || 'false';
             const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const upstreamOwner = 'tulir';
+            const upstreamRepoName = 'whatsmeow';
+            const upstreamRepo = 'https://github.com/tulir/whatsmeow';
+            const changelogUrl = `${upstreamRepo}/releases`;
             const title = `[watch] whatsmeow update available: ${current} -> ${latest}`;
+
+            const toRef = (version) => {
+              const pseudo = /^v\d+\.\d+\.\d+-\d{14}-([0-9a-f]{12})$/;
+              const match = version.match(pseudo);
+              return match ? match[1] : version;
+            };
+            const currentRef = toRef(current);
+            const latestRef = toRef(latest);
+            const compareUrl = `${upstreamRepo}/compare/${currentRef}...${latestRef}`;
+            const latestVersionUrl = `https://pkg.go.dev/go.mau.fi/whatsmeow@${latest}`;
+            const latestSourceUrl = `${upstreamRepo}/tree/${latestRef}`;
+            const truncate = (text, max) => {
+              if (!text) return '';
+              return text.length > max ? `${text.slice(0, max)}\n\n...[truncated]...` : text;
+            };
 
             let parityOutput = 'No parity output captured.';
             if (fs.existsSync('parity-output.txt')) {
@@ -151,14 +170,70 @@ jobs:
               apiSummary = fs.readFileSync('api-change-summary.md', 'utf8').trim();
             }
 
+            let releaseNotes = '';
+            let releaseTitle = '';
+            let releaseUrl = '';
+            try {
+              const releases = await github.rest.repos.listReleases({
+                owner: upstreamOwner,
+                repo: upstreamRepoName,
+                per_page: 100,
+              });
+              const matched = releases.data.find((rel) => rel.tag_name === latestRef);
+              if (matched) {
+                releaseTitle = matched.name || matched.tag_name;
+                releaseUrl = matched.html_url;
+                releaseNotes = truncate(matched.body || '', 6000);
+              }
+            } catch (err) {
+              core.warning(`Failed to fetch releases: ${String(err)}`);
+            }
+
+            let compareSummary = '';
+            try {
+              const compare = await github.rest.repos.compareCommits({
+                owner: upstreamOwner,
+                repo: upstreamRepoName,
+                basehead: `${currentRef}...${latestRef}`,
+              });
+              const commits = compare.data.commits || [];
+              const commitLines = commits
+                .slice(0, 30)
+                .map((c) => `- ${c.sha.slice(0, 12)} ${c.commit.message.split('\n')[0]}`);
+              const hidden = commits.length - commitLines.length;
+              if (hidden > 0) {
+                commitLines.push(`- ...and ${hidden} more commits`);
+              }
+              compareSummary = [
+                `Files changed: ${compare.data.files?.length ?? 0}`,
+                `Total commits: ${commits.length}`,
+                '',
+                ...commitLines,
+              ].join('\n');
+            } catch (err) {
+              core.warning(`Failed to fetch compare summary: ${String(err)}`);
+            }
+
             const body = [
               'A new `go.mau.fi/whatsmeow` version is available.',
               '',
               `- Current: \`${current}\``,
               `- Latest: \`${latest}\``,
+              `- Latest version link: ${latestVersionUrl}`,
+              `- Latest source link: ${latestSourceUrl}`,
+              `- Changelog / releases: ${changelogUrl}`,
+              `- Compare current -> latest: ${compareUrl}`,
               `- Parity check against latest: **${parityStatus.toUpperCase()}**`,
               `- Potential breaking API change detected: **${breaking.toUpperCase()}**`,
               `- Workflow run: ${runUrl}`,
+              '',
+              '## Upstream Release Notes',
+              releaseTitle ? `Release: ${releaseTitle}` : 'Release: not found for this ref',
+              releaseUrl ? `URL: ${releaseUrl}` : '',
+              releaseNotes ? releaseNotes : '_No release notes found for this exact ref (likely pseudo-version); see compare summary below._',
+              '',
+              '## Upstream Changelog / Commit Summary',
+              compareSummary ? `\`\`\`text\n${truncate(compareSummary, 4000)}\n\`\`\`` : '_Compare summary unavailable._',
               '',
               apiSummary,
               '',
