@@ -164,6 +164,17 @@ cd ts && npx tsx examples/smoke-test.ts [phone]
 - **Push/PR to main**: Runs `go run ./scripts/check-client-parity`, `go build`, `go vet`, `npm run lint`, `npm run format:check`, `npm run build`, `npm test`
 - **Tag `v*`**: Cross-compiles Go for 7 platforms, publishes platform packages + main package to npm, creates GitHub release
 
+## Parity Roadmap
+
+`scripts/client-parity.json` is the source of truth for parity coverage:
+
+- `wrapped`: methods already exposed over IPC
+- `excluded`: methods not currently exposed, each with explicit rationale
+- `policy.intentional_exclusions`: exclusions that are intentionally out-of-scope for IPC
+- `priorities.P1/P2/P3`: planned wrapper batches for parity burn-down
+
+When adding wrappers, move methods from `excluded` -> `wrapped` and keep priorities in sync.
+
 ## Releasing
 
 1. Bump version in `ts/package.json`

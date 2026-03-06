@@ -128,5 +128,77 @@
     "UploadNewsletter": "Newsletter-specific upload API not exposed yet.",
     "UploadNewsletterReader": "Newsletter-specific upload API not exposed yet.",
     "WaitForConnection": "Connection wait helper not exposed; connect emits events."
+  },
+  "policy": {
+    "goal": "All exported whatsmeow.Client methods must be either wrapped or explicitly excluded with rationale.",
+    "intentional_exclusions": [
+      "AddEventHandler",
+      "AddEventHandlerWithSuccessStatus",
+      "DangerousInternals",
+      "RemoveEventHandler",
+      "RemoveEventHandlers",
+      "SetMediaHTTPClient",
+      "SetPreLoginHTTPClient",
+      "SetProxy",
+      "SetProxyAddress",
+      "SetSOCKSProxy",
+      "SetWebsocketHTTPClient",
+      "StoreLIDPNMapping"
+    ],
+    "notes": [
+      "Entries in intentional_exclusions are not part of the parity burn-down target.",
+      "All other excluded methods are planned wrappers and should be moved to wrapped over time."
+    ]
+  },
+  "priorities": {
+    "P1": [
+      "AcceptTOSNotice",
+      "GetNewsletterMessageUpdates",
+      "GetStatusPrivacy",
+      "SetGroupTopic",
+      "TryFetchPrivacySettings",
+      "WaitForConnection"
+    ],
+    "P2": [
+      "ConnectContext",
+      "GetGroupInfoFromInvite",
+      "GetUserDevicesContext",
+      "JoinGroupWithInvite",
+      "ResetConnection",
+      "UploadNewsletter",
+      "UploadNewsletterReader"
+    ],
+    "P3": [
+      "BuildHistorySyncRequest",
+      "BuildMessageKey",
+      "BuildUnavailableMessageRequest",
+      "DecryptComment",
+      "DecryptPollVote",
+      "DecryptReaction",
+      "DecryptSecretEncryptedMessage",
+      "DownloadAny",
+      "DownloadFB",
+      "DownloadFBToFile",
+      "DownloadHistorySync",
+      "DownloadMediaWithPath",
+      "DownloadMediaWithPathToFile",
+      "DownloadThumbnail",
+      "DownloadToFile",
+      "EncryptComment",
+      "EncryptPollVote",
+      "EncryptReaction",
+      "FetchAppState",
+      "GenerateMessageID",
+      "GetBotListV2",
+      "GetBotProfiles",
+      "GetServerPushNotificationConfig",
+      "MarkNotDirty",
+      "ParseWebMessage",
+      "RegisterForPushNotifications",
+      "SendAppState",
+      "SendFBMessage",
+      "SendMediaRetryReceipt",
+      "SendPeerMessage"
+    ]
   }
 }
