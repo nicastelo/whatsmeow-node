@@ -27,5 +27,6 @@ jobs:
       - run: cd ts && npm install --ignore-scripts
       - run: cd ts && npm run lint
       - run: cd ts && npm run format:check
+      - run: cd ts && npm run check:examples
       - run: cd ts && npm run build
       - run: cd ts && npm test

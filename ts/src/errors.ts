@@ -15,13 +15,6 @@ export class TimeoutError extends WhatsmeowError {
   }
 }
 
-export class NotConnectedError extends WhatsmeowError {
-  constructor() {
-    super("Not connected", "ERR_NOT_CONNECTED");
-    this.name = "NotConnectedError";
-  }
-}
-
 export class ProcessExitedError extends WhatsmeowError {
   constructor(exitCode: number | null) {
     super(`Go process exited with code ${exitCode}`, "ERR_PROCESS_EXITED");

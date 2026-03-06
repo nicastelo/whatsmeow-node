@@ -228,6 +228,20 @@ export interface InitResult {
   jid?: JID;
 }
 
+// ── Group Info Event ────────────────────────────────
+export interface GroupInfoEvent {
+  jid: JID;
+  name?: string;
+  description?: string;
+  announce?: boolean;
+  locked?: boolean;
+  ephemeral?: boolean;
+  join?: JID[];
+  leave?: JID[];
+  promote?: JID[];
+  demote?: JID[];
+}
+
 // ── Events ─────────────────────────────────────────
 export interface WhatsmeowEvents {
   connected: { jid: JID };
@@ -253,7 +267,7 @@ export interface WhatsmeowEvents {
     media: ChatPresenceMedia;
   };
   presence: { jid: JID; presence: Presence; lastSeen?: number };
-  "group:info": Record<string, unknown>;
+  "group:info": GroupInfoEvent;
   "group:joined": { jid: JID; name: string };
   picture: { jid: JID; remove: boolean; pictureId?: string };
   "call:offer": { from: JID; callId: string };

@@ -1,4 +1,4 @@
-import { createClient } from "../dist/index.js";
+import { createClient } from "../src/index.js";
 import qrcode from "qrcode-terminal";
 import path from "node:path";
 
@@ -6,7 +6,7 @@ const binaryPath = path.resolve(import.meta.dirname, "../../whatsmeow-node");
 const storePath = path.resolve(import.meta.dirname, "../session.db");
 
 const client = createClient({
-  store: storePath,
+  store: `file:${storePath}`,
   binaryPath,
 });
 
