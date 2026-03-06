@@ -1,6 +1,8 @@
 # whatsmeow-node
 
 [![CI](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml/badge.svg)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/%40whatsmeow-node%2Fwhatsmeow-node)](https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node)
+[![npm downloads](https://img.shields.io/npm/dm/%40whatsmeow-node%2Fwhatsmeow-node)](https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node)
 
 TypeScript/Node.js bindings for [whatsmeow](https://github.com/tulir/whatsmeow), the Go WhatsApp Web multidevice API library.
 
