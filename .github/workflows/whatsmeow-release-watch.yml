@@ -1,0 +1,202 @@
+name: Watch Whatsmeow Releases
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch-whatsmeow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Detect newer whatsmeow version
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          current="$(go list -m -f '{{.Version}}' go.mau.fi/whatsmeow)"
+          latest="$(go list -m -u -f '{{if .Update}}{{.Update.Version}}{{end}}' go.mau.fi/whatsmeow)"
+
+          if [ -n "$latest" ] && [ "$latest" != "$current" ]; then
+            has_update=true
+          else
+            has_update=false
+            latest="$current"
+          fi
+
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          echo "has_update=$has_update" >> "$GITHUB_OUTPUT"
+
+      - name: Analyze update impact (parity + API changes)
+        if: steps.detect.outputs.has_update == 'true'
+        id: analyze
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          extract_client_methods() {
+            go doc go.mau.fi/whatsmeow Client \
+              | sed -nE 's/^[[:space:]]*func \([^)]*\*Client\) /func /p' \
+              | LC_ALL=C sort -u
+          }
+
+          extract_client_methods > current-client-methods.txt
+
+          go get go.mau.fi/whatsmeow@"${{ steps.detect.outputs.latest }}"
+          go mod tidy
+
+          extract_client_methods > latest-client-methods.txt
+
+          comm -13 current-client-methods.txt latest-client-methods.txt > added-sigs.txt
+          comm -23 current-client-methods.txt latest-client-methods.txt > removed-sigs.txt
+
+          sed -E 's/^func ([^(]+)\(.*/\1/' added-sigs.txt | LC_ALL=C sort -u > added-names.txt
+          sed -E 's/^func ([^(]+)\(.*/\1/' removed-sigs.txt | LC_ALL=C sort -u > removed-names.txt
+          comm -12 added-names.txt removed-names.txt > changed-names.txt
+
+          added_count=$(wc -l < added-sigs.txt | tr -d ' ')
+          removed_count=$(wc -l < removed-sigs.txt | tr -d ' ')
+          changed_count=$(wc -l < changed-names.txt | tr -d ' ')
+
+          if [ "$removed_count" -gt 0 ] || [ "$changed_count" -gt 0 ]; then
+            breaking=true
+          else
+            breaking=false
+          fi
+
+          set +e
+          parity_output="$(go run ./scripts/check-client-parity 2>&1)"
+          parity_exit=$?
+          set -e
+          printf '%s\n' "$parity_output" > parity-output.txt
+
+          if [ "$parity_exit" -eq 0 ]; then
+            parity_status=pass
+          else
+            parity_status=fail
+          fi
+
+          {
+            echo "## Client API Diff"
+            echo
+            echo "- Added signatures: $added_count"
+            echo "- Removed signatures: $removed_count"
+            echo "- Signature-changed methods: $changed_count"
+            echo "- Potential breaking change: $breaking"
+            echo
+            echo "### Added Signatures"
+            if [ "$added_count" -gt 0 ]; then
+              sed 's/^/- `&`/' added-sigs.txt
+            else
+              echo "- None"
+            fi
+            echo
+            echo "### Removed Signatures"
+            if [ "$removed_count" -gt 0 ]; then
+              sed 's/^/- `&`/' removed-sigs.txt
+            else
+              echo "- None"
+            fi
+            echo
+            echo "### Signature-Changed Methods"
+            if [ "$changed_count" -gt 0 ]; then
+              sed 's/^/- `&`/' changed-names.txt
+            else
+              echo "- None"
+            fi
+          } > api-change-summary.md
+
+          echo "parity_status=$parity_status" >> "$GITHUB_OUTPUT"
+          echo "breaking=$breaking" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update tracking issue
+        if: steps.detect.outputs.has_update == 'true'
+        uses: actions/github-script@v7
+        env:
+          CURRENT: ${{ steps.detect.outputs.current }}
+          LATEST: ${{ steps.detect.outputs.latest }}
+          PARITY_STATUS: ${{ steps.analyze.outputs.parity_status }}
+          BREAKING: ${{ steps.analyze.outputs.breaking }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const current = process.env.CURRENT;
+            const latest = process.env.LATEST;
+            const parityStatus = process.env.PARITY_STATUS || 'fail';
+            const breaking = process.env.BREAKING || 'false';
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const title = `[watch] whatsmeow update available: ${current} -> ${latest}`;
+
+            let parityOutput = 'No parity output captured.';
+            if (fs.existsSync('parity-output.txt')) {
+              parityOutput = fs.readFileSync('parity-output.txt', 'utf8').trim();
+            }
+
+            let apiSummary = 'No API change summary captured.';
+            if (fs.existsSync('api-change-summary.md')) {
+              apiSummary = fs.readFileSync('api-change-summary.md', 'utf8').trim();
+            }
+
+            const body = [
+              'A new `go.mau.fi/whatsmeow` version is available.',
+              '',
+              `- Current: \`${current}\``,
+              `- Latest: \`${latest}\``,
+              `- Parity check against latest: **${parityStatus.toUpperCase()}**`,
+              `- Potential breaking API change detected: **${breaking.toUpperCase()}**`,
+              `- Workflow run: ${runUrl}`,
+              '',
+              apiSummary,
+              '',
+              '## Parity Output',
+              '```text',
+              parityOutput,
+              '```',
+              '',
+              'Next step: open a parity batch PR to wrap added methods and address any breaking signature changes.',
+            ].join('\n');
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            const existing = issues.find((issue) => issue.title === title);
+
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: existing.number,
+                body,
+              });
+              core.info(`Updated existing issue #${existing.number}`);
+            } else {
+              const created = await github.rest.issues.create({
+                owner,
+                repo,
+                title,
+                body,
+              });
+              core.info(`Created issue #${created.data.number}`);
+            }
+
+      - name: No update found
+        if: steps.detect.outputs.has_update != 'true'
+        run: echo "No newer whatsmeow version detected."
