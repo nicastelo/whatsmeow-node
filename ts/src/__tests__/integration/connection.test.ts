@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { client, selfJid, skip, setupClient } from "./setup.js";
+import { client, skip, setupClient } from "./setup.js";
 
 describe.skipIf(skip)("connection", () => {
   setupClient();
