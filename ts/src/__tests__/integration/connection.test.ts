@@ -4,9 +4,10 @@ import { client, selfJid, skip, setupClient } from "./setup.js";
 describe.skipIf(skip)("connection", () => {
   setupClient();
 
-  it("init returns jid for paired session", () => {
-    expect(selfJid).toBeTruthy();
-    expect(selfJid).toContain("@s.whatsapp.net");
+  it("init returns jid for paired session", async () => {
+    const result = await client.init();
+    expect(result.jid).toBeTruthy();
+    expect(result.jid).toContain("@s.whatsapp.net");
   });
 
   it("isConnected returns true", async () => {

@@ -21,7 +21,7 @@ const methods = [...clientSrc.matchAll(/^\s+async (\w+)\(/gm)]
 
 // Read all test files into one string
 const testFiles = readdirSync(testDir)
-  .filter((f) => f.endsWith(".test.ts") || f === "setup.ts")
+  .filter((f) => f.endsWith(".test.ts"))
   .map((f) => readFileSync(resolve(testDir, f), "utf8"))
   .join("\n");
 
