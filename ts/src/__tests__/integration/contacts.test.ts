@@ -40,4 +40,8 @@ describe.skipIf(skip)("contacts", () => {
     const devices = await client.getUserDevices([selfJid]);
     expect(Array.isArray(devices)).toBe(true);
   });
+
+  it("setStatusMessage succeeds", async () => {
+    await client.setStatusMessage(`Integration test status ${Date.now()}`);
+  });
 });

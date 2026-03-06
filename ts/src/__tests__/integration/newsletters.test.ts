@@ -30,10 +30,15 @@ describe.skipIf(skip)("newsletters", () => {
     expect(info.name).toBe(newsletterName);
   });
 
+  let messageServerId: number;
+
   it("getNewsletterMessages returns array", async () => {
     expect(newsletterId).toBeTruthy();
     const messages = await client.getNewsletterMessages(newsletterId, 10);
     expect(Array.isArray(messages)).toBe(true);
+    if (messages.length > 0) {
+      messageServerId = messages[0].serverId;
+    }
   });
 
   it("newsletterSubscribeLiveUpdates returns duration", async () => {
@@ -45,6 +50,15 @@ describe.skipIf(skip)("newsletters", () => {
   it("newsletterToggleMute succeeds", async () => {
     expect(newsletterId).toBeTruthy();
     await client.newsletterToggleMute(newsletterId, true);
+  });
+
+  it("newsletterSendReaction reacts to a message", async (ctx) => {
+    expect(newsletterId).toBeTruthy();
+    if (!messageServerId) {
+      ctx.skip();
+      return;
+    }
+    await client.newsletterSendReaction(newsletterId, messageServerId, "\u{1F44D}", "");
   });
 
   it("newsletterMarkViewed succeeds", async () => {

@@ -64,4 +64,27 @@ describe.skipIf(skip || !TEST_PHONE)("messages", () => {
     expect(sentId).toBeTruthy();
     await client.markRead([sentId], testJid);
   });
+
+  let pollId: string;
+  let pollTimestamp: number;
+
+  it("sendPollCreation creates a poll", async () => {
+    const resp = await client.sendPollCreation(
+      testJid,
+      "Integration test poll",
+      ["Option A", "Option B", "Option C"],
+      1,
+    );
+    expect(resp.id).toBeTruthy();
+    expect(resp.timestamp).toBeGreaterThan(0);
+    pollId = resp.id;
+    pollTimestamp = resp.timestamp;
+  });
+
+  it("sendPollVote votes on the poll", async () => {
+    expect(pollId).toBeTruthy();
+    const resp = await client.sendPollVote(testJid, selfJid, pollId, pollTimestamp, ["Option A"]);
+    expect(resp.id).toBeTruthy();
+    expect(resp.timestamp).toBeGreaterThan(0);
+  });
 });

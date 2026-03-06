@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { client, skip, setupClient, ensureConnected } from "./setup.js";
+import { client, selfJid, skip, setupClient, ensureConnected } from "./setup.js";
 
 describe.skipIf(skip)("privacy", () => {
   setupClient();
@@ -47,5 +47,10 @@ describe.skipIf(skip)("privacy", () => {
 
   it("setDefaultDisappearingTimer succeeds", async () => {
     await client.setDefaultDisappearingTimer(0);
+  });
+
+  it("setDisappearingTimer succeeds on own chat", async () => {
+    const ownChat = selfJid.replace(/:.*@/, "@");
+    await client.setDisappearingTimer(ownChat, 0);
   });
 });
