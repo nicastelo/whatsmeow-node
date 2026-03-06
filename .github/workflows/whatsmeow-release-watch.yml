@@ -159,7 +159,12 @@ jobs:
 
       - name: Record E2E failure
         if: steps.e2e.outcome == 'failure'
-        run: echo "e2e_status=fail" >> "$GITHUB_OUTPUT"
+        run: |
+          if [ -f ts/.e2e-session-expired ]; then
+            echo "e2e_status=expired" >> "$GITHUB_OUTPUT"
+          else
+            echo "e2e_status=fail" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Open or update tracking issue
         if: steps.detect.outputs.has_update == 'true'
