@@ -189,8 +189,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
+          git fetch origin main
           git checkout main
           git pull --ff-only origin main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           MAIN_VERSION=$(node -p "require('./ts/package.json').version")
           if npx semver "$VERSION" -r ">=${MAIN_VERSION}"; then
             cd ts && npm version "${VERSION}" --no-git-tag-version --allow-same-version && cd ..
