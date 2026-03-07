@@ -1,6 +1,6 @@
 {
   "name": "@whatsmeow-node/darwin-arm64",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "whatsmeow-node binary for macOS ARM64 (Apple Silicon)",
   "license": "MIT",
   "repository": {
