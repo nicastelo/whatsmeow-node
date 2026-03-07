@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-> **Alpha** — During alpha (0.x), breaking changes may occur on minor version bumps. Pin your version if stability matters.
+> **0.x** — We stay on 0.x because the upstream whatsmeow library is pre-1.0. Breaking changes are signaled by minor version bumps (`0.5 → 0.6`). Pin your version if stability matters.
 
 ## [0.5.0] - 2026-03-07
 

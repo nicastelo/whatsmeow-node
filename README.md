@@ -11,7 +11,7 @@ TypeScript/Node.js bindings for [whatsmeow](https://github.com/tulir/whatsmeow),
 
 Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CGo, no native addons, no WebSocket reimplementation -- just a subprocess.
 
-> **Alpha** -- This is an early release. The API may change and it has not been extensively tested in production. Bug reports and contributions are welcome.
+> **0.x** -- The binding API is stable, but we stay on 0.x because the upstream whatsmeow library is itself pre-1.0. See [Versioning](#versioning) for details.
 
 **Current upstream**: whatsmeow [`0.0.0-20260305`](https://pkg.go.dev/go.mau.fi/whatsmeow)
 
@@ -559,16 +559,18 @@ For the full comparison including what's not yet implemented, see [INTERNALS.md]
 
 ## Versioning
 
-Independent semver. The embedded whatsmeow version is tracked in `package.json` as `whatsmeowVersion`.
+whatsmeow-node stays on `0.x` because the upstream whatsmeow library is itself pre-1.0 (`0.0.0-YYYYMMDD`). Declaring 1.0 on top of an unstable upstream would be misleading. This is **not** a maturity signal — the binding layer, IPC contract, and TypeScript API are stable. The `0.` prefix reflects upstream reality.
+
+We use `0.MAJOR.MINOR` semantics: the minor position acts as the major version, and patch acts as minor.
 
 | What changed | Version bump |
 |---|---|
-| whatsmeow patch (bug fix) | Patch |
-| whatsmeow adds new methods | Minor (add wrappers + types) |
-| whatsmeow removes/renames methods | Major |
-| Our bug fix | Patch |
-| New TS convenience methods | Minor |
-| IPC protocol change | Major |
+| Breaking API or IPC change | Minor (`0.5.0` → `0.6.0`) |
+| whatsmeow upstream bump (breaking) | Minor |
+| New methods, features, upstream bump (non-breaking) | Patch (`0.5.0` → `0.5.1`) |
+| Bug fix | Patch |
+
+The exact whatsmeow commit is tracked in `package.json` as `whatsmeowVersion`.
 
 ## Building from Source
 
