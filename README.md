@@ -10,6 +10,7 @@
 [![integration coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nicastelo/deee098d298bc9a9193cec6adcb13220/raw/coverage-badge.json)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/e2e.yml)
 [![npm version](https://img.shields.io/npm/v/%40whatsmeow-node%2Fwhatsmeow-node)](https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node)
 [![npm downloads](https://img.shields.io/npm/dm/%40whatsmeow-node%2Fwhatsmeow-node)](https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node)
+[![docs](https://img.shields.io/badge/docs-nicastelo.github.io-25855a)](https://nicastelo.github.io/whatsmeow-node/)
 
 TypeScript/Node.js bindings for [whatsmeow](https://github.com/tulir/whatsmeow), the Go WhatsApp Web multidevice API library.
 
@@ -25,6 +26,10 @@ Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CG
 > Do not use this for spamming, stalkerware, bulk messaging, or any purpose that violates WhatsApp's Terms of Service. The maintainers do not condone such use and bear no liability for misuse.
 
 **Current upstream**: whatsmeow [`0.0.0-20260305`](https://pkg.go.dev/go.mau.fi/whatsmeow)
+
+## Documentation
+
+Full docs and guides at **[nicastelo.github.io/whatsmeow-node](https://nicastelo.github.io/whatsmeow-node/)** — getting started, API reference, events, error codes, troubleshooting, and examples.
 
 ## Install
 
