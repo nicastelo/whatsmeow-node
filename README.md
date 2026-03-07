@@ -326,6 +326,8 @@ Returns a `WhatsmeowClient` instance.
 ### Media
 
 - `downloadMedia(msg)` -- Download media from a received message
+- `downloadAny(message)` -- Download media from any message type (auto-detects the media field)
+- `downloadMediaWithPath(opts)` -- Download media using direct path and keys (lower-level)
 - `uploadMedia(path, mediaType)` -- Upload media for sending (`"image"` | `"video"` | `"audio"` | `"document"`)
 
 Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The Go binary writes downloaded media to a temp file and returns the path. Upload returns `{ URL, directPath, mediaKey, fileEncSHA256, fileSHA256, fileLength }` for use in message protos.
@@ -344,9 +346,11 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 - `createGroup(name, participants)` -- Create a group
 - `getGroupInfo(jid)` -- Get group metadata
 - `getGroupInfoFromLink(code)` -- Get group info from an invite link without joining
+- `getGroupInfoFromInvite(jid, inviter, code, expiration)` -- Get group info from a direct invite
 - `getJoinedGroups()` -- List all joined groups
 - `getGroupInviteLink(jid, reset?)` -- Get/reset invite link
 - `joinGroupWithLink(code)` -- Join a group via invite link
+- `joinGroupWithInvite(jid, inviter, code, expiration)` -- Join a group via direct invite
 - `leaveGroup(jid)` -- Leave a group
 - `setGroupName(jid, name)` -- Update group name
 - `setGroupTopic(jid, topic, previousId?, newId?)` -- Update group topic/description with optional topic IDs
@@ -383,9 +387,12 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 - `followNewsletter(jid)` -- Follow a newsletter
 - `unfollowNewsletter(jid)` -- Unfollow a newsletter
 - `getNewsletterMessages(jid, count, before?)` -- Fetch newsletter messages (paginate backward from server ID)
+- `getNewsletterMessageUpdates(jid, count, opts?)` -- Get message updates (since timestamp or after server ID)
 - `newsletterMarkViewed(jid, serverIds)` -- Mark messages as viewed
 - `newsletterSendReaction(jid, serverId, reaction, messageId)` -- React to a newsletter message
 - `newsletterToggleMute(jid, mute)` -- Mute/unmute a newsletter
+- `acceptTOSNotice(noticeId, stage)` -- Accept a Terms of Service notice (required for some newsletter flows)
+- `uploadNewsletter(path, mediaType)` -- Upload media for newsletter messages
 
 ### Privacy & Settings
 
@@ -415,6 +422,40 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 
 - `setPassive(passive)` -- Set passive mode (don't receive messages)
 - `setForceActiveDeliveryReceipts(active)` -- Force sending delivery receipts
+- `resetConnection()` -- Reset the WebSocket connection
+
+### Message Helpers
+
+- `generateMessageID()` -- Generate a unique message ID
+- `buildMessageKey(chat, sender, id)` -- Build a protobuf message key
+- `buildUnavailableMessageRequest(chat, sender, id)` -- Build a request for unavailable messages
+- `buildHistorySyncRequest(info, count)` -- Build a history sync request message
+- `sendPeerMessage(message)` -- Send a message to your own devices
+- `sendMediaRetryReceipt(info, mediaKey)` -- Request re-upload of media from the sender
+
+### Bots
+
+- `getBotListV2()` -- Get the list of available bots
+- `getBotProfiles(bots)` -- Get profiles for specific bots
+
+### App State
+
+- `fetchAppState(name, fullSync?, onlyIfNotSynced?)` -- Fetch app state from the server
+- `markNotDirty(cleanType, timestamp)` -- Mark an app state patch as not dirty
+
+### Decrypt / Encrypt
+
+- `decryptComment(info, message)` -- Decrypt a comment message
+- `decryptPollVote(info, message)` -- Decrypt a poll vote message
+- `decryptReaction(info, message)` -- Decrypt a reaction message
+- `decryptSecretEncryptedMessage(info, message)` -- Decrypt a secret encrypted message
+- `encryptComment(info, message)` -- Encrypt a comment for a message
+- `encryptPollVote(info, vote)` -- Encrypt a poll vote
+- `encryptReaction(info, reaction)` -- Encrypt a reaction
+
+### Web Message Parsing
+
+- `parseWebMessage(chatJid, webMsg)` -- Parse a WebMessageInfo (from history sync) into a message event
 
 ### Generic
 
@@ -463,6 +504,46 @@ const nextConfig: NextConfig = {
 ```
 
 Only your deployment platform's package will be installed (npm resolves by `os`/`cpu`), but listing all of them ensures it works in any environment.
+
+## Rate Limiting
+
+WhatsApp enforces rate limits that can result in temporary bans if exceeded. There are no officially published limits, but the community has observed these approximate thresholds:
+
+- **Messages**: ~50-80 messages per minute for individual chats, lower for new/unverified numbers
+- **Group operations**: Creating groups, adding participants, and modifying settings are more tightly limited
+- **Media uploads**: Slower rate limit than text messages; large files count more heavily
+- **Contact checks** (`isOnWhatsApp`): ~50 numbers per request, batched automatically by whatsmeow
+- **Newsletter operations**: Lower limits than regular messaging
+
+**Safe sending pattern:**
+
+```typescript
+async function sendWithBackoff(client: WhatsmeowClient, messages: Array<{ jid: string; text: string }>) {
+  for (const { jid, text } of messages) {
+    try {
+      await client.sendMessage(jid, { conversation: text });
+    } catch (err) {
+      if (err instanceof WhatsmeowError && err.code === "ERR_SEND") {
+        // Back off and retry
+        await new Promise((r) => setTimeout(r, 5000));
+        await client.sendMessage(jid, { conversation: text });
+      } else {
+        throw err;
+      }
+    }
+    // Space out messages: 1-3 seconds between sends
+    await new Promise((r) => setTimeout(r, 1000 + Math.random() * 2000));
+  }
+}
+```
+
+**General guidance:**
+
+- Space out messages (1-3 seconds between sends)
+- Avoid bulk operations on new/freshly paired numbers
+- Handle `temporary_ban` events — they include an expiry time
+- Monitor `stream_error` and `keep_alive_timeout` events as early warning signs
+- Use `sendPresence("available")` before sending to simulate normal client behavior
 
 ## Differences from whatsmeow
 

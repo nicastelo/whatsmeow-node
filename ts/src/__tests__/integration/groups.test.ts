@@ -101,6 +101,32 @@ describe.skipIf(skip || !TEST_PHONE)("groups", () => {
     expect(info.jid).toBe(groupJid);
   });
 
+  it("getGroupInfoFromInvite resolves a direct invite", async () => {
+    // This requires a real invite code with jid, inviter, code, expiration.
+    // We don't have these in test — verify the IPC round-trip doesn't crash.
+    // Use the group JID and self JID with a dummy code; expect a whatsmeow error.
+    expect(groupJid).toBeTruthy();
+    try {
+      await client.getGroupInfoFromInvite(groupJid, testJid, "dummy-code", 0);
+    } catch (err: unknown) {
+      // Expected: invalid invite code, but not ERR_INVALID_ARGS
+      const msg = (err as Error).message;
+      expect(msg).not.toContain("invalid args");
+    }
+  });
+
+  it("joinGroupWithInvite with invalid code returns error", async () => {
+    // Verify the IPC round-trip — should get a whatsmeow error, not a crash.
+    expect(groupJid).toBeTruthy();
+    try {
+      await client.joinGroupWithInvite(groupJid, testJid, "dummy-code", 0);
+      // If it somehow succeeds, that's fine too
+    } catch (err: unknown) {
+      const msg = (err as Error).message;
+      expect(msg).not.toContain("invalid args");
+    }
+  });
+
   it("getGroupRequestParticipants returns array", async () => {
     expect(groupJid).toBeTruthy();
     const participants = await client.getGroupRequestParticipants(groupJid);

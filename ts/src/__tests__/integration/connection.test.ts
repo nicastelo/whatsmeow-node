@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { client, skip, setupClient } from "./setup.js";
+import { client, selfJid, skip, setupClient } from "./setup.js";
 
 describe.skipIf(skip)("connection", () => {
   setupClient();
 
-  it("init returns jid for paired session", async () => {
-    const result = await client.init();
-    expect(result.jid).toBeTruthy();
-    expect(result.jid).toContain("@s.whatsapp.net");
+  it("init returned jid for paired session", () => {
+    // init() is called by setupClient(); we verify the result here
+    expect(selfJid).toBeTruthy();
+    expect(selfJid).toContain("@s.whatsapp.net");
   });
 
   it("isConnected returns true", async () => {
@@ -20,6 +20,23 @@ describe.skipIf(skip)("connection", () => {
 
   it("waitForConnection returns true when already connected", async () => {
     expect(await client.waitForConnection(5_000)).toBe(true);
+  });
+
+  it("resetConnection resets without crash", async () => {
+    await client.resetConnection();
+    // After reset, connection may briefly drop — wait for reconnect
+    const alreadyConnected = await client.isConnected();
+    if (!alreadyConnected) {
+      const reconnected = new Promise<void>((res, rej) => {
+        const timer = setTimeout(() => rej(new Error("reconnect timeout after reset")), 15_000);
+        client.once("connected", () => {
+          clearTimeout(timer);
+          res();
+        });
+      });
+      await reconnected;
+    }
+    expect(await client.isConnected()).toBe(true);
   });
 
   it("disconnect and reconnect", async () => {

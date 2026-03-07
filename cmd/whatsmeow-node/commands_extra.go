@@ -2,13 +2,19 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"sort"
 	"time"
 
 	"go.mau.fi/whatsmeow"
+	"go.mau.fi/whatsmeow/appstate"
+	waProto "go.mau.fi/whatsmeow/proto/waE2E"
+	waWeb "go.mau.fi/whatsmeow/proto/waWeb"
 	"go.mau.fi/whatsmeow/types"
 	"go.mau.fi/whatsmeow/types/events"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 )
 
 func privacySettingsToMap(settings types.PrivacySettings) map[string]interface{} {
@@ -1431,4 +1437,968 @@ func serializeNewsletterMessage(m *types.NewsletterMessage) map[string]interface
 		data["reactions"] = reactions
 	}
 	return data
+}
+
+// ── Newsletter Updates & TOS ──────────────────────────
+
+// cmdAcceptTOSNotice accepts a Terms of Service notice.
+// Maps to: client.AcceptTOSNotice()
+func (a *App) cmdAcceptTOSNotice(cmd Command) {
+	args, ok := parseArgs[struct {
+		NoticeID string `json:"noticeId"`
+		Stage    string `json:"stage"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	err := client.AcceptTOSNotice(a.ctx, args.NoticeID, args.Stage)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_ACCEPT_TOS")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
+// cmdGetNewsletterMessageUpdates gets message updates for a newsletter.
+// Maps to: client.GetNewsletterMessageUpdates()
+func (a *App) cmdGetNewsletterMessageUpdates(cmd Command) {
+	args, ok := parseArgs[struct {
+		JID   string `json:"jid"`
+		Count int    `json:"count"`
+		Since int64  `json:"since"` // unix timestamp, 0 = omit
+		After int    `json:"after"` // server message ID, 0 = omit
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	jid, err := types.ParseJID(args.JID)
+	if err != nil {
+		sendError(cmd.ID, "invalid JID", "ERR_INVALID_JID")
+		return
+	}
+
+	params := &whatsmeow.GetNewsletterUpdatesParams{
+		Count: args.Count,
+	}
+	if args.Since > 0 {
+		params.Since = time.Unix(args.Since, 0)
+	}
+	if args.After > 0 {
+		params.After = types.MessageServerID(args.After)
+	}
+
+	msgs, err := client.GetNewsletterMessageUpdates(a.ctx, jid, params)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_NEWSLETTER_UPDATES")
+		return
+	}
+
+	out := make([]map[string]interface{}, len(msgs))
+	for i, m := range msgs {
+		out[i] = serializeNewsletterMessage(m)
+	}
+	sendResponse(cmd.ID, out)
+}
+
+// ── Group Invite Operations ───────────────────────────
+
+// cmdGetGroupInfoFromInvite gets group info using a direct invite.
+// Maps to: client.GetGroupInfoFromInvite()
+func (a *App) cmdGetGroupInfoFromInvite(cmd Command) {
+	args, ok := parseArgs[struct {
+		JID        string `json:"jid"`
+		Inviter    string `json:"inviter"`
+		Code       string `json:"code"`
+		Expiration int64  `json:"expiration"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	jid, err := types.ParseJID(args.JID)
+	if err != nil {
+		sendError(cmd.ID, "invalid JID", "ERR_INVALID_JID")
+		return
+	}
+
+	inviter, err := types.ParseJID(args.Inviter)
+	if err != nil {
+		sendError(cmd.ID, "invalid inviter JID", "ERR_INVALID_JID")
+		return
+	}
+
+	info, err := client.GetGroupInfoFromInvite(a.ctx, jid, inviter, args.Code, args.Expiration)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_GROUP_INFO")
+		return
+	}
+	sendResponse(cmd.ID, serializeGroupInfo(info))
+}
+
+// cmdJoinGroupWithInvite joins a group using a direct invite.
+// Maps to: client.JoinGroupWithInvite()
+func (a *App) cmdJoinGroupWithInvite(cmd Command) {
+	args, ok := parseArgs[struct {
+		JID        string `json:"jid"`
+		Inviter    string `json:"inviter"`
+		Code       string `json:"code"`
+		Expiration int64  `json:"expiration"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	jid, err := types.ParseJID(args.JID)
+	if err != nil {
+		sendError(cmd.ID, "invalid JID", "ERR_INVALID_JID")
+		return
+	}
+
+	inviter, err := types.ParseJID(args.Inviter)
+	if err != nil {
+		sendError(cmd.ID, "invalid inviter JID", "ERR_INVALID_JID")
+		return
+	}
+
+	err = client.JoinGroupWithInvite(a.ctx, jid, inviter, args.Code, args.Expiration)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_JOIN_GROUP")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
+// ── Newsletter Upload ─────────────────────────────────
+
+// cmdUploadNewsletter uploads media for newsletter messages.
+// Maps to: client.UploadNewsletterReader()
+func (a *App) cmdUploadNewsletter(cmd Command) {
+	args, ok := parseArgs[struct {
+		Path      string `json:"path"`
+		MediaType string `json:"mediaType"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	file, err := os.Open(args.Path)
+	if err != nil {
+		sendError(cmd.ID, "failed to read file: "+err.Error(), "ERR_READ_FILE")
+		return
+	}
+	defer file.Close()
+
+	var mediaType whatsmeow.MediaType
+	switch args.MediaType {
+	case "image":
+		mediaType = whatsmeow.MediaImage
+	case "video":
+		mediaType = whatsmeow.MediaVideo
+	case "audio":
+		mediaType = whatsmeow.MediaAudio
+	case "document":
+		mediaType = whatsmeow.MediaDocument
+	default:
+		sendError(cmd.ID, "invalid media type: "+args.MediaType, "ERR_INVALID_ARGS")
+		return
+	}
+
+	resp, err := client.UploadNewsletterReader(a.ctx, file, mediaType)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_UPLOAD")
+		return
+	}
+
+	sendResponse(cmd.ID, map[string]interface{}{
+		"URL":           resp.URL,
+		"directPath":    resp.DirectPath,
+		"mediaKey":      resp.MediaKey,
+		"fileEncSHA256": resp.FileEncSHA256,
+		"fileSHA256":    resp.FileSHA256,
+		"fileLength":    resp.FileLength,
+	})
+}
+
+// ── Download Any ──────────────────────────────────────
+
+// cmdDownloadAny downloads media from any message type by auto-detecting the media field.
+// Maps to: client.DownloadAny()
+func (a *App) cmdDownloadAny(cmd Command) {
+	args, ok := parseArgs[struct {
+		Message map[string]interface{} `json:"message"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	msg, err := buildProtoMessage(args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	data, err := client.DownloadAny(a.ctx, msg)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_DOWNLOAD")
+		return
+	}
+
+	tmpFile, err := os.CreateTemp("", "whatsmeow-*")
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_TEMPFILE")
+		return
+	}
+	if _, err := tmpFile.Write(data); err != nil {
+		tmpFile.Close()
+		os.Remove(tmpFile.Name())
+		sendError(cmd.ID, err.Error(), "ERR_WRITE")
+		return
+	}
+	tmpFile.Close()
+
+	sendResponse(cmd.ID, map[string]interface{}{
+		"path": tmpFile.Name(),
+	})
+}
+
+// ── Connection Internals ──────────────────────────────
+
+// cmdResetConnection resets the WebSocket connection.
+// Maps to: client.ResetConnection()
+func (a *App) cmdResetConnection(cmd Command) {
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+	client.ResetConnection()
+	sendResponse(cmd.ID, nil)
+}
+
+// ── Message Helpers ───────────────────────────────────
+
+// cmdGenerateMessageID generates a unique message ID.
+// Maps to: client.GenerateMessageID()
+func (a *App) cmdGenerateMessageID(cmd Command) {
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+	id := client.GenerateMessageID()
+	sendResponse(cmd.ID, map[string]interface{}{"id": string(id)})
+}
+
+// cmdBuildMessageKey builds a message key proto.
+// Maps to: client.BuildMessageKey()
+func (a *App) cmdBuildMessageKey(cmd Command) {
+	args, ok := parseArgs[struct {
+		Chat   string `json:"chat"`
+		Sender string `json:"sender"`
+		ID     string `json:"id"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	chat, err := types.ParseJID(args.Chat)
+	if err != nil {
+		sendError(cmd.ID, "invalid chat JID", "ERR_INVALID_JID")
+		return
+	}
+	sender, err := types.ParseJID(args.Sender)
+	if err != nil {
+		sendError(cmd.ID, "invalid sender JID", "ERR_INVALID_JID")
+		return
+	}
+
+	key := client.BuildMessageKey(chat, sender, args.ID)
+	sendResponse(cmd.ID, protoToMap(key))
+}
+
+// cmdBuildUnavailableMessageRequest builds a request for unavailable messages.
+// Maps to: client.BuildUnavailableMessageRequest()
+func (a *App) cmdBuildUnavailableMessageRequest(cmd Command) {
+	args, ok := parseArgs[struct {
+		Chat   string `json:"chat"`
+		Sender string `json:"sender"`
+		ID     string `json:"id"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	chat, err := types.ParseJID(args.Chat)
+	if err != nil {
+		sendError(cmd.ID, "invalid chat JID", "ERR_INVALID_JID")
+		return
+	}
+	sender, err := types.ParseJID(args.Sender)
+	if err != nil {
+		sendError(cmd.ID, "invalid sender JID", "ERR_INVALID_JID")
+		return
+	}
+
+	msg := client.BuildUnavailableMessageRequest(chat, sender, args.ID)
+	sendResponse(cmd.ID, protoToMap(msg))
+}
+
+// cmdBuildHistorySyncRequest builds a history sync request message.
+// Maps to: client.BuildHistorySyncRequest()
+func (a *App) cmdBuildHistorySyncRequest(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info  map[string]interface{} `json:"info"`
+		Count int                    `json:"count"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	info, err := parseMessageInfo(args.Info)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	msg := client.BuildHistorySyncRequest(&info, args.Count)
+	sendResponse(cmd.ID, protoToMap(msg))
+}
+
+// cmdSendPeerMessage sends a message to own devices.
+// Maps to: client.SendPeerMessage()
+func (a *App) cmdSendPeerMessage(cmd Command) {
+	args, ok := parseArgs[struct {
+		Message map[string]interface{} `json:"message"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	msg, err := buildProtoMessage(args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	resp, err := client.SendPeerMessage(a.ctx, msg)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_SEND")
+		return
+	}
+
+	sendResponse(cmd.ID, map[string]interface{}{
+		"id":        resp.ID,
+		"timestamp": resp.Timestamp.Unix(),
+	})
+}
+
+// cmdSendMediaRetryReceipt requests a re-upload of media from the sender.
+// Maps to: client.SendMediaRetryReceipt()
+func (a *App) cmdSendMediaRetryReceipt(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info     map[string]interface{} `json:"info"`
+		MediaKey []byte                 `json:"mediaKey"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	info, err := parseMessageInfo(args.Info)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	err = client.SendMediaRetryReceipt(a.ctx, &info, args.MediaKey)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_SEND")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
+// ── Download Variants ─────────────────────────────────
+
+// cmdDownloadMediaWithPath downloads media using direct path and keys.
+// Maps to: client.DownloadMediaWithPath()
+func (a *App) cmdDownloadMediaWithPath(cmd Command) {
+	args, ok := parseArgs[struct {
+		DirectPath  string `json:"directPath"`
+		EncFileHash []byte `json:"encFileHash"`
+		FileHash    []byte `json:"fileHash"`
+		MediaKey    []byte `json:"mediaKey"`
+		FileLength  int    `json:"fileLength"`
+		MediaType   string `json:"mediaType"`
+		MmsType     string `json:"mmsType"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	var mediaType whatsmeow.MediaType
+	switch args.MediaType {
+	case "image":
+		mediaType = whatsmeow.MediaImage
+	case "video":
+		mediaType = whatsmeow.MediaVideo
+	case "audio":
+		mediaType = whatsmeow.MediaAudio
+	case "document":
+		mediaType = whatsmeow.MediaDocument
+	default:
+		sendError(cmd.ID, "invalid media type: "+args.MediaType, "ERR_INVALID_ARGS")
+		return
+	}
+
+	data, err := client.DownloadMediaWithPath(a.ctx, args.DirectPath, args.EncFileHash, args.FileHash, args.MediaKey, args.FileLength, mediaType, args.MmsType)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_DOWNLOAD")
+		return
+	}
+
+	tmpFile, err := os.CreateTemp("", "whatsmeow-*")
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_TEMPFILE")
+		return
+	}
+	if _, err := tmpFile.Write(data); err != nil {
+		tmpFile.Close()
+		os.Remove(tmpFile.Name())
+		sendError(cmd.ID, err.Error(), "ERR_WRITE")
+		return
+	}
+	tmpFile.Close()
+
+	sendResponse(cmd.ID, map[string]interface{}{"path": tmpFile.Name()})
+}
+
+// ── Bot APIs ──────────────────────────────────────────
+
+// cmdGetBotListV2 gets the list of available bots.
+// Maps to: client.GetBotListV2()
+func (a *App) cmdGetBotListV2(cmd Command) {
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	bots, err := client.GetBotListV2(a.ctx)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_BOT_LIST")
+		return
+	}
+
+	out := make([]map[string]interface{}, len(bots))
+	for i, b := range bots {
+		out[i] = map[string]interface{}{
+			"botJid":    b.BotJID.String(),
+			"personaId": b.PersonaID,
+		}
+	}
+	sendResponse(cmd.ID, out)
+}
+
+// cmdGetBotProfiles gets profiles for bots.
+// Maps to: client.GetBotProfiles()
+func (a *App) cmdGetBotProfiles(cmd Command) {
+	args, ok := parseArgs[struct {
+		Bots []struct {
+			BotJID    string `json:"botJid"`
+			PersonaID string `json:"personaId"`
+		} `json:"bots"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	botInfos := make([]types.BotListInfo, len(args.Bots))
+	for i, b := range args.Bots {
+		jid, err := types.ParseJID(b.BotJID)
+		if err != nil {
+			sendError(cmd.ID, "invalid bot JID: "+b.BotJID, "ERR_INVALID_JID")
+			return
+		}
+		botInfos[i] = types.BotListInfo{BotJID: jid, PersonaID: b.PersonaID}
+	}
+
+	profiles, err := client.GetBotProfiles(a.ctx, botInfos)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_BOT_PROFILES")
+		return
+	}
+
+	out := make([]map[string]interface{}, len(profiles))
+	for i, p := range profiles {
+		profile := map[string]interface{}{
+			"jid":                 p.JID.String(),
+			"name":                p.Name,
+			"description":         p.Description,
+			"category":            p.Category,
+			"isDefault":           p.IsDefault,
+			"personaId":           p.PersonaID,
+			"commandsDescription": p.CommandsDescription,
+		}
+		if p.Attributes != "" {
+			profile["attributes"] = p.Attributes
+		}
+		if len(p.Prompts) > 0 {
+			profile["prompts"] = p.Prompts
+		}
+		if len(p.Commands) > 0 {
+			cmdsJSON, _ := json.Marshal(p.Commands)
+			var cmds interface{}
+			_ = json.Unmarshal(cmdsJSON, &cmds)
+			profile["commands"] = cmds
+		}
+		out[i] = profile
+	}
+	sendResponse(cmd.ID, out)
+}
+
+// ── App State ─────────────────────────────────────────
+
+// cmdFetchAppState fetches app state from the server.
+// Maps to: client.FetchAppState()
+func (a *App) cmdFetchAppState(cmd Command) {
+	args, ok := parseArgs[struct {
+		Name             string `json:"name"`
+		FullSync         bool   `json:"fullSync"`
+		OnlyIfNotSynced  bool   `json:"onlyIfNotSynced"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	err := client.FetchAppState(a.ctx, appstate.WAPatchName(args.Name), args.FullSync, args.OnlyIfNotSynced)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_FETCH_APP_STATE")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
+// cmdMarkNotDirty marks an app state patch as not dirty.
+// Maps to: client.MarkNotDirty()
+func (a *App) cmdMarkNotDirty(cmd Command) {
+	args, ok := parseArgs[struct {
+		CleanType string `json:"cleanType"`
+		Timestamp int64  `json:"timestamp"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	ts := time.Unix(args.Timestamp, 0)
+	err := client.MarkNotDirty(a.ctx, args.CleanType, ts)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_MARK_NOT_DIRTY")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
+// ── Decrypt/Encrypt ───────────────────────────────────
+
+// cmdDecryptComment decrypts a comment message.
+// Maps to: client.DecryptComment()
+func (a *App) cmdDecryptComment(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info    map[string]interface{} `json:"info"`
+		Message map[string]interface{} `json:"message"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	evt, err := parseEventsMessage(args.Info, args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	decrypted, err := client.DecryptComment(a.ctx, evt)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_DECRYPT")
+		return
+	}
+	sendResponse(cmd.ID, protoToMap(decrypted))
+}
+
+// cmdDecryptPollVote decrypts a poll vote message.
+// Maps to: client.DecryptPollVote()
+func (a *App) cmdDecryptPollVote(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info    map[string]interface{} `json:"info"`
+		Message map[string]interface{} `json:"message"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	evt, err := parseEventsMessage(args.Info, args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	decrypted, err := client.DecryptPollVote(a.ctx, evt)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_DECRYPT")
+		return
+	}
+	sendResponse(cmd.ID, protoToMap(decrypted))
+}
+
+// cmdDecryptReaction decrypts a reaction message.
+// Maps to: client.DecryptReaction()
+func (a *App) cmdDecryptReaction(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info    map[string]interface{} `json:"info"`
+		Message map[string]interface{} `json:"message"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	evt, err := parseEventsMessage(args.Info, args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	decrypted, err := client.DecryptReaction(a.ctx, evt)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_DECRYPT")
+		return
+	}
+	sendResponse(cmd.ID, protoToMap(decrypted))
+}
+
+// cmdDecryptSecretEncryptedMessage decrypts a secret encrypted message.
+// Maps to: client.DecryptSecretEncryptedMessage()
+func (a *App) cmdDecryptSecretEncryptedMessage(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info    map[string]interface{} `json:"info"`
+		Message map[string]interface{} `json:"message"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	evt, err := parseEventsMessage(args.Info, args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	decrypted, err := client.DecryptSecretEncryptedMessage(a.ctx, evt)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_DECRYPT")
+		return
+	}
+	sendResponse(cmd.ID, protoToMap(decrypted))
+}
+
+// cmdEncryptComment encrypts a comment for a message.
+// Maps to: client.EncryptComment()
+func (a *App) cmdEncryptComment(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info    map[string]interface{} `json:"info"`
+		Message map[string]interface{} `json:"message"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	info, err := parseMessageInfo(args.Info)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	msg, err := buildProtoMessage(args.Message)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	encrypted, err := client.EncryptComment(a.ctx, &info, msg)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_ENCRYPT")
+		return
+	}
+	sendResponse(cmd.ID, protoToMap(encrypted))
+}
+
+// cmdEncryptPollVote encrypts a poll vote.
+// Maps to: client.EncryptPollVote()
+func (a *App) cmdEncryptPollVote(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info map[string]interface{} `json:"info"`
+		Vote map[string]interface{} `json:"vote"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	info, err := parseMessageInfo(args.Info)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	vote := &waProto.PollVoteMessage{}
+	if err := unmarshalProtoJSON(args.Vote, vote); err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	encrypted, err := client.EncryptPollVote(a.ctx, &info, vote)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_ENCRYPT")
+		return
+	}
+	sendResponse(cmd.ID, protoToMap(encrypted))
+}
+
+// cmdEncryptReaction encrypts a reaction.
+// Maps to: client.EncryptReaction()
+func (a *App) cmdEncryptReaction(cmd Command) {
+	args, ok := parseArgs[struct {
+		Info     map[string]interface{} `json:"info"`
+		Reaction map[string]interface{} `json:"reaction"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	info, err := parseMessageInfo(args.Info)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	reaction := &waProto.ReactionMessage{}
+	if err := unmarshalProtoJSON(args.Reaction, reaction); err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	encrypted, err := client.EncryptReaction(a.ctx, &info, reaction)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_ENCRYPT")
+		return
+	}
+	sendResponse(cmd.ID, protoToMap(encrypted))
+}
+
+// ── Web Message Parsing ───────────────────────────────
+
+// cmdParseWebMessage parses a WebMessageInfo (from history sync) into a message event.
+// Maps to: client.ParseWebMessage()
+func (a *App) cmdParseWebMessage(cmd Command) {
+	args, ok := parseArgs[struct {
+		ChatJID string                 `json:"chatJid"`
+		WebMsg  map[string]interface{} `json:"webMsg"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	chatJID, err := types.ParseJID(args.ChatJID)
+	if err != nil {
+		sendError(cmd.ID, "invalid chat JID", "ERR_INVALID_JID")
+		return
+	}
+
+	webMsg := &waWeb.WebMessageInfo{}
+	if err := unmarshalProtoJSON(args.WebMsg, webMsg); err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_INVALID_ARGS")
+		return
+	}
+
+	evt, err := client.ParseWebMessage(chatJID, webMsg)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_PARSE")
+		return
+	}
+
+	sendResponse(cmd.ID, map[string]interface{}{
+		"info":    serializeMessageInfo(evt.Info),
+		"message": protoToMap(evt.Message),
+	})
+}
+
+// ── Helpers ───────────────────────────────────────────
+
+// parseMessageInfo reconstructs a types.MessageInfo from a JSON map.
+func parseMessageInfo(raw map[string]interface{}) (types.MessageInfo, error) {
+	info := types.MessageInfo{}
+	if chat, ok := raw["chat"].(string); ok {
+		parsed, err := types.ParseJID(chat)
+		if err != nil {
+			return info, fmt.Errorf("invalid chat JID: %w", err)
+		}
+		info.Chat = parsed
+	}
+	if sender, ok := raw["sender"].(string); ok {
+		parsed, err := types.ParseJID(sender)
+		if err != nil {
+			return info, fmt.Errorf("invalid sender JID: %w", err)
+		}
+		info.Sender = parsed
+	}
+	if id, ok := raw["id"].(string); ok {
+		info.ID = id
+	}
+	if isFromMe, ok := raw["isFromMe"].(bool); ok {
+		info.IsFromMe = isFromMe
+	}
+	if isGroup, ok := raw["isGroup"].(bool); ok {
+		info.IsGroup = isGroup
+	}
+	if ts, ok := raw["timestamp"].(float64); ok {
+		info.Timestamp = time.Unix(int64(ts), 0)
+	}
+	if pushName, ok := raw["pushName"].(string); ok {
+		info.PushName = pushName
+	}
+	return info, nil
+}
+
+// parseEventsMessage reconstructs an events.Message from info + message JSON maps.
+func parseEventsMessage(infoRaw, messageRaw map[string]interface{}) (*events.Message, error) {
+	info, err := parseMessageInfo(infoRaw)
+	if err != nil {
+		return nil, err
+	}
+	msg, err := buildProtoMessage(messageRaw)
+	if err != nil {
+		return nil, err
+	}
+	return &events.Message{Info: info, Message: msg}, nil
+}
+
+// unmarshalProtoJSON unmarshals a JSON map into a protobuf message.
+func unmarshalProtoJSON(m map[string]interface{}, target proto.Message) error {
+	data, err := json.Marshal(m)
+	if err != nil {
+		return fmt.Errorf("failed to marshal JSON: %w", err)
+	}
+	return protojson.Unmarshal(data, target)
 }
