@@ -198,10 +198,10 @@ jobs:
           if npx semver "$VERSION" -r ">=${MAIN_VERSION}"; then
             cd ts && npm version "${VERSION}" --no-git-tag-version --allow-same-version && cd ..
             node scripts/sync-versions.mjs
-            if git diff --quiet; then
+            git add ts/package.json npm/*/package.json
+            if git diff --cached --quiet; then
               echo "Versions already in sync"
             else
-              git add ts/package.json npm/*/package.json
               git commit -m "Sync package versions to ${VERSION}"
               git push origin main
             fi
