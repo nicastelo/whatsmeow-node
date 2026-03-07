@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs-site/static/img/image.png" alt="whatsmeow-node" width="120" />
+  <img src="https://raw.githubusercontent.com/nicastelo/whatsmeow-node/main/docs-site/static/img/image.png" alt="whatsmeow-node" width="120" />
 </p>
 
 # whatsmeow-node
