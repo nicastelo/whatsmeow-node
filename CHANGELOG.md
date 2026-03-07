@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 > **Alpha** — During alpha (0.x), breaking changes may occur on minor version bumps. Pin your version if stability matters.
 
+## [0.5.0] - 2026-03-07
+
+### Added
+
+- 20 new method wrappers — API coverage now **100/126** (up from 80), P1/P2/P3 backlogs cleared:
+  - Connection: `resetConnection`
+  - Message helpers: `generateMessageID`, `buildMessageKey`, `buildUnavailableMessageRequest`, `buildHistorySyncRequest`
+  - Peer & retry: `sendPeerMessage`, `sendMediaRetryReceipt`
+  - Download: `downloadMediaWithPath`
+  - Bots: `getBotListV2`, `getBotProfiles`
+  - App state: `fetchAppState`, `markNotDirty`
+  - Crypto: `decryptComment`, `decryptPollVote`, `decryptReaction`, `decryptSecretEncryptedMessage`, `encryptComment`, `encryptPollVote`, `encryptReaction`
+  - Parsing: `parseWebMessage`
+- New types: `BotListInfo`, `BotProfileInfo`, `AppStatePatchName`, `NewsletterUploadResponse`
+- Integration test suite: 88 tests across 14 files (bots, crypto, media, messages, groups, newsletters, etc.)
+- 119 unit tests (up from 98)
+- `UploadResponse` aligned with proto field naming (`URL`, `fileSHA256`, `fileEncSHA256`)
+- Examples type-checked in CI via `check:examples`
+
+### Changed
+
+- `uploadNewsletter()` now returns `NewsletterUploadResponse` (encryption fields are `string | null`) instead of `UploadResponse` — newsletter uploads may not include E2E encryption metadata
+- Integration test `commandTimeout` reduced from 30s to 15s to prevent timeout races with vitest
+- 26 methods moved to intentional exclusions with documented rationale (context variants, file variants, FB/push APIs)
+
 ## [0.4.0] - 2026-03-05
 
 ### Added
@@ -77,6 +102,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.5.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.2.3...v0.3.0
 [0.2.3]: https://github.com/nicastelo/whatsmeow-node/compare/v0.2.2...v0.2.3
