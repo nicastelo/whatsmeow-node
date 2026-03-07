@@ -49,10 +49,10 @@ Message fields must use exact protobuf casing, **not** camelCase:
 
 ```typescript
 // Correct
-{ URL: "...", fileSHA256: "...", fileEncSHA256: "..." }
+const correct = { URL: "...", fileSHA256: "...", fileEncSHA256: "..." };
 
 // Wrong — will silently fail
-{ url: "...", fileSha256: "...", fileEncSha256: "..." }
+const wrong = { url: "...", fileSha256: "...", fileEncSha256: "..." };
 ```
 
 When in doubt, check the [whatsmeow proto schema](https://pkg.go.dev/go.mau.fi/whatsmeow/proto/waE2E#Message).

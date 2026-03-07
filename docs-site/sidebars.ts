@@ -18,6 +18,7 @@ const sidebars: SidebarsConfig = {
       label: 'Troubleshooting',
       items: ['troubleshooting/common-issues'],
     },
+    'acknowledgments',
   ],
 };
 

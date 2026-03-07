@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs-site/static/img/image.png" alt="whatsmeow-node" width="120" />
+</p>
+
 # whatsmeow-node
 
 [![CI](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml/badge.svg)](https://github.com/nicastelo/whatsmeow-node/actions/workflows/ci.yml)
@@ -12,6 +16,13 @@ TypeScript/Node.js bindings for [whatsmeow](https://github.com/tulir/whatsmeow),
 Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CGo, no native addons, no WebSocket reimplementation -- just a subprocess.
 
 > **0.x** -- The binding API is stable, but we stay on 0.x because the upstream whatsmeow library is itself pre-1.0. See [Versioning](#versioning) for details.
+
+> [!CAUTION]
+> **Disclaimer:** This project is not affiliated, associated, authorized, endorsed by, or in any way officially connected with WhatsApp or any of its subsidiaries or affiliates. "WhatsApp" as well as related names, marks, emblems and images are registered trademarks of their respective owners.
+>
+> Use of this library may violate WhatsApp's Terms of Service. WhatsApp does not allow unofficial clients or automated messaging on their platform. Your account may be banned. Use at your own risk.
+>
+> Do not use this for spamming, stalkerware, bulk messaging, or any purpose that violates WhatsApp's Terms of Service. The maintainers do not condone such use and bear no liability for misuse.
 
 **Current upstream**: whatsmeow [`0.0.0-20260305`](https://pkg.go.dev/go.mau.fi/whatsmeow)
 
@@ -620,7 +631,15 @@ To set up E2E for CI:
 
 ## Acknowledgments
 
-This project is entirely built on [whatsmeow](https://github.com/tulir/whatsmeow) by [@tulir](https://github.com/tulir) and [contributors](https://github.com/tulir/whatsmeow/graphs/contributors). Thank you for building and maintaining such a reliable library.
+This project is entirely built on [whatsmeow](https://github.com/tulir/whatsmeow) by [@tulir](https://github.com/tulir) and [contributors](https://github.com/tulir/whatsmeow/graphs/contributors). All the hard work of protocol implementation, encryption, and WhatsApp compliance happens in whatsmeow — we just bridge it to Node.js.
+
+**whatsmeow-node is an independent project.** It is not affiliated with, endorsed by, or connected to whatsmeow or its maintainers in any way.
+
+If you find this project useful and want to support it financially, **please sponsor whatsmeow's maintainer instead** — without whatsmeow, this project wouldn't exist: [github.com/sponsors/tulir](https://github.com/sponsors/tulir)
+
+### whatsmeow Resources
+
+- [GitHub](https://github.com/tulir/whatsmeow) · [Go Docs](https://pkg.go.dev/go.mau.fi/whatsmeow) · [Matrix Chat](https://matrix.to/#/#whatsmeow:maunium.net) · [Protocol Q&A](https://github.com/tulir/whatsmeow/discussions/categories/whatsapp-protocol-q-a)
 
 ## License
 

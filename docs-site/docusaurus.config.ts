@@ -3,8 +3,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'whatsmeow-node Docs',
-  tagline: 'TypeScript bindings for whatsmeow via subprocess IPC',
+  title: 'whatsmeow-node',
+  tagline: 'WhatsApp for Node.js — powered by the most battle-tested WhatsApp Web library',
   favicon: 'img/favicon.ico',
   future: {
     v4: true,
@@ -39,6 +39,10 @@ const config: Config = {
     },
     navbar: {
       title: 'whatsmeow-node',
+      logo: {
+        alt: 'whatsmeow-node',
+        src: 'img/image.png',
+      },
       items: [
         {
           type: 'docSidebar',
@@ -69,7 +73,7 @@ const config: Config = {
               to: '/docs/intro',
             },
             {
-              label: 'API Overview',
+              label: 'API Reference',
               to: '/docs/api/overview',
             },
           ],
@@ -78,17 +82,38 @@ const config: Config = {
           title: 'Project',
           items: [
             {
-              label: 'Repository',
+              label: 'GitHub',
               href: 'https://github.com/nicastelo/whatsmeow-node',
             },
             {
-              label: 'npm Package',
+              label: 'npm',
               href: 'https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node',
             },
           ],
         },
+        {
+          title: 'whatsmeow (upstream)',
+          items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/tulir/whatsmeow',
+            },
+            {
+              label: 'Go Docs',
+              href: 'https://pkg.go.dev/go.mau.fi/whatsmeow',
+            },
+            {
+              label: 'Matrix Chat',
+              href: 'https://matrix.to/#/#whatsmeow:maunium.net',
+            },
+            {
+              label: 'Sponsor @tulir',
+              href: 'https://github.com/sponsors/tulir',
+            },
+          ],
+        },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} whatsmeow-node contributors.`,
+      copyright: `Copyright © ${new Date().getFullYear()} whatsmeow-node contributors. Not affiliated with WhatsApp or whatsmeow.`,
     },
     prism: {
       theme: prismThemes.github,

@@ -20,7 +20,7 @@ Scans a QR code in the terminal to pair a new WhatsApp session.
 
 ```bash
 cd ts
-npx tsx examples/send-test.ts <phone>
+npx tsx examples/send-test.ts PHONE_NUMBER
 ```
 
 Sends a test message to the given phone number using an existing paired session.

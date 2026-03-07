@@ -18,11 +18,14 @@ client.on("message", ({ info, message }) => {
   console.log(`${info.pushName}: ${message.conversation ?? JSON.stringify(message)}`);
 });
 
-const { jid } = await client.init();
-if (!jid) {
-  await client.getQRChannel();
+async function main() {
+  const { jid } = await client.init();
+  if (!jid) {
+    await client.getQRChannel();
+  }
+  await client.connect();
 }
-await client.connect();
+main();
 ```
 
 ## Client Options
@@ -95,6 +98,39 @@ await client.sendRawMessage(jid, {
 ```
 
 `sendRawMessage` accepts any `Record<string, unknown>` matching the [whatsmeow `waE2E.Message` proto schema](https://pkg.go.dev/go.mau.fi/whatsmeow/proto/waE2E#Message).
+
+## Downloading Media
+
+When you receive a message with media, download it to a temp file:
+
+```typescript
+client.on("message", async ({ info, message }) => {
+  // downloadAny auto-detects the media type
+  if (message.imageMessage || message.videoMessage || message.audioMessage || message.documentMessage) {
+    const filePath = await client.downloadAny(message);
+    console.log("Media saved to:", filePath);
+  }
+});
+```
+
+For more control, use `downloadMediaWithPath` with explicit keys:
+
+```typescript
+const filePath = await client.downloadMediaWithPath({
+  directPath: msg.imageMessage.directPath,
+  mediaKey: msg.imageMessage.mediaKey,
+  fileHash: msg.imageMessage.fileSHA256,
+  encFileHash: msg.imageMessage.fileEncSHA256,
+  fileLength: msg.imageMessage.fileLength,
+  mediaType: "image",
+});
+```
+
+:::info Field naming
+When **receiving** messages, field names follow proto casing (`fileSHA256`, `fileEncSHA256`).
+When passing arguments **to download methods**, use the method's own parameter names (`fileHash`, `encFileHash`).
+See [Troubleshooting](/docs/troubleshooting/common-issues#proto-field-naming) for details.
+:::
 
 ## Close Cleanly
 
