@@ -207,6 +207,16 @@ export interface UploadResponse {
   fileLength: number;
 }
 
+/** Newsletter uploads are not E2E-encrypted, so encryption fields are null. */
+export interface NewsletterUploadResponse {
+  URL: string;
+  directPath: string;
+  mediaKey: null;
+  fileEncSHA256: null;
+  fileSHA256: null;
+  fileLength: number;
+}
+
 // ── Groups (extra) ─────────────────────────────────
 export interface GroupRequestParticipant {
   jid: JID;
@@ -222,6 +232,33 @@ export interface SubGroupInfo {
 export type GroupMemberAddMode = "admin_add" | "all_member_add";
 export type ParticipantRequestAction = "approve" | "reject";
 export type BlocklistAction = "block" | "unblock";
+
+// ── Bots ────────────────────────────────────────────
+export interface BotListInfo {
+  botJid: JID;
+  personaId: string;
+}
+
+export interface BotProfileInfo {
+  jid: JID;
+  name: string;
+  description: string;
+  category: string;
+  isDefault: boolean;
+  personaId: string;
+  commandsDescription: string;
+  attributes?: string;
+  prompts?: string[];
+  commands?: unknown[];
+}
+
+// ── App State ───────────────────────────────────────
+export type AppStatePatchName =
+  | "regular_high"
+  | "regular_low"
+  | "regular"
+  | "critical_block"
+  | "critical_unblock_low";
 
 // ── Connection ─────────────────────────────────────
 export interface InitResult {

@@ -891,6 +891,358 @@ describe("WhatsmeowClient", () => {
     });
   });
 
+  // ── Newsletter Updates & TOS ───────────────────
+
+  describe("newsletter updates & TOS", () => {
+    it("acceptTOSNotice sends noticeId and stage", async () => {
+      mockResolve(send);
+      await client.acceptTOSNotice("notice-1", "accept");
+      expect(send).toHaveBeenCalledWith("acceptTOSNotice", {
+        noticeId: "notice-1",
+        stage: "accept",
+      });
+    });
+
+    it("getNewsletterMessageUpdates sends jid and count with defaults", async () => {
+      mockResolve(send, []);
+      const result = await client.getNewsletterMessageUpdates("news@newsletter", 10);
+      expect(send).toHaveBeenCalledWith("getNewsletterMessageUpdates", {
+        jid: "news@newsletter",
+        count: 10,
+        since: 0,
+        after: 0,
+      });
+      expect(result).toEqual([]);
+    });
+
+    it("getNewsletterMessageUpdates passes since and after opts", async () => {
+      mockResolve(send, [{ serverId: 1, timestamp: 100, viewsCount: 5 }]);
+      const result = await client.getNewsletterMessageUpdates("news@newsletter", 5, {
+        since: 1700000000,
+        after: 42,
+      });
+      expect(send).toHaveBeenCalledWith("getNewsletterMessageUpdates", {
+        jid: "news@newsletter",
+        count: 5,
+        since: 1700000000,
+        after: 42,
+      });
+      expect(result).toHaveLength(1);
+    });
+  });
+
+  // ── Group Invite Operations ───────────────────
+
+  describe("group invite operations", () => {
+    it("getGroupInfoFromInvite sends all invite params", async () => {
+      mockResolve(send, {
+        jid: "group@g.us",
+        name: "Test Group",
+        announce: false,
+        locked: false,
+        ephemeral: false,
+        participants: [],
+      });
+      const result = await client.getGroupInfoFromInvite(
+        "group@g.us",
+        "inviter@s.whatsapp.net",
+        "invite-code",
+        1700000000,
+      );
+      expect(send).toHaveBeenCalledWith("getGroupInfoFromInvite", {
+        jid: "group@g.us",
+        inviter: "inviter@s.whatsapp.net",
+        code: "invite-code",
+        expiration: 1700000000,
+      });
+      expect(result.name).toBe("Test Group");
+    });
+
+    it("joinGroupWithInvite sends all invite params", async () => {
+      mockResolve(send);
+      await client.joinGroupWithInvite(
+        "group@g.us",
+        "inviter@s.whatsapp.net",
+        "invite-code",
+        1700000000,
+      );
+      expect(send).toHaveBeenCalledWith("joinGroupWithInvite", {
+        jid: "group@g.us",
+        inviter: "inviter@s.whatsapp.net",
+        code: "invite-code",
+        expiration: 1700000000,
+      });
+    });
+  });
+
+  // ── Newsletter Upload ─────────────────────────
+
+  describe("newsletter upload", () => {
+    it("uploadNewsletter sends path and mediaType", async () => {
+      mockResolve(send, {
+        URL: "https://example.com/file",
+        directPath: "/path",
+        mediaKey: null,
+        fileEncSHA256: null,
+        fileSHA256: null,
+        fileLength: 1024,
+      });
+      const result = await client.uploadNewsletter("/tmp/photo.jpg", "image");
+      expect(send).toHaveBeenCalledWith("uploadNewsletter", {
+        path: "/tmp/photo.jpg",
+        mediaType: "image",
+      });
+      expect(result.URL).toBe("https://example.com/file");
+      expect(result.mediaKey).toBeNull();
+    });
+  });
+
+  // ── Download Any ──────────────────────────────
+
+  describe("download any", () => {
+    it("downloadAny sends message and returns path", async () => {
+      mockResolve(send, { path: "/tmp/whatsmeow-123" });
+      const result = await client.downloadAny({ imageMessage: { url: "https://example.com" } });
+      expect(send).toHaveBeenCalledWith("downloadAny", {
+        message: { imageMessage: { url: "https://example.com" } },
+      });
+      expect(result).toBe("/tmp/whatsmeow-123");
+    });
+  });
+
+  // ── Connection Internals ──────────────────────
+
+  describe("connection internals", () => {
+    it("resetConnection sends command", async () => {
+      mockResolve(send);
+      await client.resetConnection();
+      expect(send).toHaveBeenCalledWith("resetConnection");
+    });
+  });
+
+  // ── Message Helpers ──────────────────────────
+
+  describe("message helpers", () => {
+    it("generateMessageID returns id", async () => {
+      mockResolve(send, { id: "MSG-123" });
+      const id = await client.generateMessageID();
+      expect(send).toHaveBeenCalledWith("generateMessageID");
+      expect(id).toBe("MSG-123");
+    });
+
+    it("buildMessageKey sends chat, sender, id", async () => {
+      mockResolve(send, { remoteJid: "chat@g.us" });
+      const result = await client.buildMessageKey("chat@g.us", "sender@s.whatsapp.net", "msg-1");
+      expect(send).toHaveBeenCalledWith("buildMessageKey", {
+        chat: "chat@g.us",
+        sender: "sender@s.whatsapp.net",
+        id: "msg-1",
+      });
+      expect(result.remoteJid).toBe("chat@g.us");
+    });
+
+    it("buildUnavailableMessageRequest sends chat, sender, id", async () => {
+      mockResolve(send, { key: {} });
+      await client.buildUnavailableMessageRequest("chat@g.us", "sender@s.whatsapp.net", "msg-1");
+      expect(send).toHaveBeenCalledWith("buildUnavailableMessageRequest", {
+        chat: "chat@g.us",
+        sender: "sender@s.whatsapp.net",
+        id: "msg-1",
+      });
+    });
+
+    it("buildHistorySyncRequest sends info and count", async () => {
+      mockResolve(send, { protocolMessage: {} });
+      await client.buildHistorySyncRequest(
+        { chat: "chat@g.us", sender: "sender@s.whatsapp.net", id: "msg-1" },
+        10,
+      );
+      expect(send).toHaveBeenCalledWith("buildHistorySyncRequest", {
+        info: { chat: "chat@g.us", sender: "sender@s.whatsapp.net", id: "msg-1" },
+        count: 10,
+      });
+    });
+  });
+
+  // ── Peer & Retry ─────────────────────────────
+
+  describe("peer & retry", () => {
+    it("sendPeerMessage sends message and returns response", async () => {
+      mockResolve(send, { id: "peer-1", timestamp: 1700000000 });
+      const result = await client.sendPeerMessage({ protocolMessage: {} });
+      expect(send).toHaveBeenCalledWith("sendPeerMessage", {
+        message: { protocolMessage: {} },
+      });
+      expect(result.id).toBe("peer-1");
+    });
+
+    it("sendMediaRetryReceipt sends info and mediaKey", async () => {
+      mockResolve(send);
+      await client.sendMediaRetryReceipt(
+        { chat: "chat@g.us", sender: "sender@s.whatsapp.net", id: "msg-1" },
+        [1, 2, 3],
+      );
+      expect(send).toHaveBeenCalledWith("sendMediaRetryReceipt", {
+        info: { chat: "chat@g.us", sender: "sender@s.whatsapp.net", id: "msg-1" },
+        mediaKey: [1, 2, 3],
+      });
+    });
+  });
+
+  // ── Download Variants ────────────────────────
+
+  describe("download variants", () => {
+    it("downloadMediaWithPath sends opts and returns path", async () => {
+      mockResolve(send, { path: "/tmp/media-123" });
+      const result = await client.downloadMediaWithPath({
+        directPath: "/media/file",
+        encFileHash: [1, 2],
+        fileHash: [3, 4],
+        mediaKey: [5, 6],
+        fileLength: 1024,
+        mediaType: "image",
+      });
+      expect(send).toHaveBeenCalledWith("downloadMediaWithPath", {
+        directPath: "/media/file",
+        encFileHash: [1, 2],
+        fileHash: [3, 4],
+        mediaKey: [5, 6],
+        fileLength: 1024,
+        mediaType: "image",
+        mmsType: "",
+      });
+      expect(result).toBe("/tmp/media-123");
+    });
+  });
+
+  // ── Bot APIs ─────────────────────────────────
+
+  describe("bot APIs", () => {
+    it("getBotListV2 returns bot list", async () => {
+      mockResolve(send, [{ botJid: "bot@s.whatsapp.net", personaId: "p1" }]);
+      const result = await client.getBotListV2();
+      expect(send).toHaveBeenCalledWith("getBotListV2");
+      expect(result).toHaveLength(1);
+      expect(result[0].botJid).toBe("bot@s.whatsapp.net");
+    });
+
+    it("getBotProfiles sends bots array", async () => {
+      mockResolve(send, [{ jid: "bot@s.whatsapp.net", name: "TestBot" }]);
+      const result = await client.getBotProfiles([
+        { botJid: "bot@s.whatsapp.net", personaId: "p1" },
+      ]);
+      expect(send).toHaveBeenCalledWith("getBotProfiles", {
+        bots: [{ botJid: "bot@s.whatsapp.net", personaId: "p1" }],
+      });
+      expect(result[0].name).toBe("TestBot");
+    });
+  });
+
+  // ── App State ────────────────────────────────
+
+  describe("app state", () => {
+    it("fetchAppState sends name with defaults", async () => {
+      mockResolve(send);
+      await client.fetchAppState("regular");
+      expect(send).toHaveBeenCalledWith("fetchAppState", {
+        name: "regular",
+        fullSync: false,
+        onlyIfNotSynced: false,
+      });
+    });
+
+    it("fetchAppState with fullSync=true", async () => {
+      mockResolve(send);
+      await client.fetchAppState("critical_block", true, true);
+      expect(send).toHaveBeenCalledWith("fetchAppState", {
+        name: "critical_block",
+        fullSync: true,
+        onlyIfNotSynced: true,
+      });
+    });
+
+    it("markNotDirty sends cleanType and timestamp", async () => {
+      mockResolve(send);
+      await client.markNotDirty("contacts", 1700000000);
+      expect(send).toHaveBeenCalledWith("markNotDirty", {
+        cleanType: "contacts",
+        timestamp: 1700000000,
+      });
+    });
+  });
+
+  // ── Decrypt / Encrypt ────────────────────────
+
+  describe("decrypt / encrypt", () => {
+    const info = { chat: "chat@g.us", sender: "sender@s.whatsapp.net", id: "msg-1" };
+    const message = { commentMessage: { text: "hello" } };
+
+    it("decryptComment sends info and message", async () => {
+      mockResolve(send, { commentMessage: { text: "decrypted" } });
+      const result = await client.decryptComment(info, message);
+      expect(send).toHaveBeenCalledWith("decryptComment", { info, message });
+      expect(result.commentMessage).toBeTruthy();
+    });
+
+    it("decryptPollVote sends info and message", async () => {
+      mockResolve(send, { pollVoteMessage: {} });
+      await client.decryptPollVote(info, message);
+      expect(send).toHaveBeenCalledWith("decryptPollVote", { info, message });
+    });
+
+    it("decryptReaction sends info and message", async () => {
+      mockResolve(send, { reactionMessage: {} });
+      await client.decryptReaction(info, message);
+      expect(send).toHaveBeenCalledWith("decryptReaction", { info, message });
+    });
+
+    it("decryptSecretEncryptedMessage sends info and message", async () => {
+      mockResolve(send, { secretMessage: {} });
+      await client.decryptSecretEncryptedMessage(info, message);
+      expect(send).toHaveBeenCalledWith("decryptSecretEncryptedMessage", { info, message });
+    });
+
+    it("encryptComment sends info and message", async () => {
+      mockResolve(send, { commentMessage: { text: "encrypted" } });
+      await client.encryptComment(info, message);
+      expect(send).toHaveBeenCalledWith("encryptComment", { info, message });
+    });
+
+    it("encryptPollVote sends info and vote", async () => {
+      const vote = { selectedOptions: ["opt1"] };
+      mockResolve(send, { pollVoteMessage: {} });
+      await client.encryptPollVote(info, vote);
+      expect(send).toHaveBeenCalledWith("encryptPollVote", { info, vote });
+    });
+
+    it("encryptReaction sends info and reaction", async () => {
+      const reaction = { text: "👍" };
+      mockResolve(send, { reactionMessage: {} });
+      await client.encryptReaction(info, reaction);
+      expect(send).toHaveBeenCalledWith("encryptReaction", { info, reaction });
+    });
+  });
+
+  // ── Web Message Parsing ──────────────────────
+
+  describe("web message parsing", () => {
+    it("parseWebMessage sends chatJid and webMsg", async () => {
+      mockResolve(send, {
+        info: { chat: "chat@g.us", id: "msg-1" },
+        message: { conversation: "hello" },
+      });
+      const result = await client.parseWebMessage("chat@g.us", {
+        key: { remoteJid: "chat@g.us" },
+      });
+      expect(send).toHaveBeenCalledWith("parseWebMessage", {
+        chatJid: "chat@g.us",
+        webMsg: { key: { remoteJid: "chat@g.us" } },
+      });
+      expect(result.info.chat).toBe("chat@g.us");
+      expect(result.message.conversation).toBe("hello");
+    });
+  });
+
   // ── Generic fallback ───────────────────────────
 
   describe("generic", () => {

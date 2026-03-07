@@ -12,6 +12,9 @@ ts/coverage/
 # Platform packages (populated at release time)
 npm/*/bin/
 
+# Environment
+.env
+
 # OS
 .DS_Store
 Thumbs.db

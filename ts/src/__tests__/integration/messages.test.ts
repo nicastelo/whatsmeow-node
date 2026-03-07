@@ -65,6 +65,67 @@ describe.skipIf(skip || !TEST_PHONE)("messages", () => {
     await client.markRead([sentId], testJid);
   });
 
+  it("generateMessageID returns a message ID", async () => {
+    const id = await client.generateMessageID();
+    expect(id).toBeTruthy();
+    expect(typeof id).toBe("string");
+  });
+
+  it("buildMessageKey returns a proto key object", async () => {
+    expect(sentId).toBeTruthy();
+    const key = await client.buildMessageKey(testJid, selfJid, sentId);
+    expect(key).toBeTruthy();
+    expect(typeof key).toBe("object");
+  });
+
+  it("buildUnavailableMessageRequest returns a proto message", async () => {
+    expect(sentId).toBeTruthy();
+    const msg = await client.buildUnavailableMessageRequest(testJid, selfJid, sentId);
+    expect(msg).toBeTruthy();
+    expect(typeof msg).toBe("object");
+  });
+
+  it("buildHistorySyncRequest returns a proto message", async () => {
+    expect(sentId).toBeTruthy();
+    const msg = await client.buildHistorySyncRequest(
+      { chat: testJid, sender: selfJid, id: sentId, timestamp: Math.floor(Date.now() / 1000) },
+      5,
+    );
+    expect(msg).toBeTruthy();
+    expect(typeof msg).toBe("object");
+  });
+
+  it("sendPeerMessage sends to own devices", async () => {
+    // Send a protocol message (app state sync key request) to own devices
+    // This should succeed or fail with a whatsmeow error, not an IPC error
+    try {
+      const resp = await client.sendPeerMessage({
+        protocolMessage: {
+          type: 14, // APP_STATE_SYNC_KEY_REQUEST
+        },
+      });
+      expect(resp.id).toBeTruthy();
+    } catch (err: unknown) {
+      // Some protocol messages may be rejected, but not with ERR_INVALID_ARGS
+      const msg = (err as Error).message;
+      expect(msg).not.toContain("invalid args");
+    }
+  });
+
+  it("sendMediaRetryReceipt round-trip doesn't crash", async () => {
+    expect(sentId).toBeTruthy();
+    try {
+      await client.sendMediaRetryReceipt(
+        { chat: testJid, sender: selfJid, id: sentId, timestamp: Math.floor(Date.now() / 1000) },
+        [1, 2, 3, 4],
+      );
+    } catch (err: unknown) {
+      // Expected to fail (no actual media to retry), but should not be ERR_INVALID_ARGS
+      const msg = (err as Error).message;
+      expect(msg).not.toContain("invalid args");
+    }
+  });
+
   let pollId: string;
   let pollTimestamp: number;
 

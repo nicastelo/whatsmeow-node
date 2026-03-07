@@ -7,6 +7,7 @@ import type { WhatsmeowClient } from "../../client.js";
 const SESSION_DB = process.env.E2E_SESSION_DB ?? resolve(__dirname, "../../../session.db");
 const BINARY_PATH = process.env.E2E_BINARY_PATH ?? resolve(__dirname, "../../../../whatsmeow-node");
 const CONNECT_TIMEOUT = 30_000;
+const COMMAND_TIMEOUT = 15_000;
 
 export let client: WhatsmeowClient;
 export let selfJid: string;
@@ -27,7 +28,7 @@ export function setupClient() {
     client = createClient({
       store: `file:${SESSION_DB}`,
       binaryPath: BINARY_PATH,
-      commandTimeout: CONNECT_TIMEOUT,
+      commandTimeout: COMMAND_TIMEOUT,
     });
 
     const init = await client.init();

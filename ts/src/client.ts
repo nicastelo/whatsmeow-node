@@ -36,6 +36,10 @@ import type {
   Presence,
   ChatPresence,
   ChatPresenceMedia,
+  BotListInfo,
+  BotProfileInfo,
+  AppStatePatchName,
+  NewsletterUploadResponse,
 } from "./types.js";
 
 export class WhatsmeowClient extends EventEmitter {
@@ -541,6 +545,229 @@ export class WhatsmeowClient extends EventEmitter {
 
   async setForceActiveDeliveryReceipts(active: boolean): Promise<void> {
     await this.proc.send("setForceActiveDeliveryReceipts", { active });
+  }
+
+  // ── Newsletter Updates & TOS ────────────────────
+
+  async acceptTOSNotice(noticeId: string, stage: string): Promise<void> {
+    await this.proc.send("acceptTOSNotice", { noticeId, stage });
+  }
+
+  async getNewsletterMessageUpdates(
+    jid: JID,
+    count: number,
+    opts?: { since?: number; after?: number },
+  ): Promise<NewsletterMessage[]> {
+    return (await this.proc.send("getNewsletterMessageUpdates", {
+      jid,
+      count,
+      since: opts?.since ?? 0,
+      after: opts?.after ?? 0,
+    })) as NewsletterMessage[];
+  }
+
+  // ── Group Invite Operations ───────────────────
+
+  async getGroupInfoFromInvite(
+    jid: JID,
+    inviter: JID,
+    code: string,
+    expiration: number,
+  ): Promise<GroupInfo> {
+    return (await this.proc.send("getGroupInfoFromInvite", {
+      jid,
+      inviter,
+      code,
+      expiration,
+    })) as GroupInfo;
+  }
+
+  async joinGroupWithInvite(
+    jid: JID,
+    inviter: JID,
+    code: string,
+    expiration: number,
+  ): Promise<void> {
+    await this.proc.send("joinGroupWithInvite", { jid, inviter, code, expiration });
+  }
+
+  // ── Newsletter Upload ─────────────────────────
+
+  async uploadNewsletter(path: string, mediaType: MediaType): Promise<NewsletterUploadResponse> {
+    return (await this.proc.send("uploadNewsletter", {
+      path,
+      mediaType,
+    })) as NewsletterUploadResponse;
+  }
+
+  // ── Download Any ──────────────────────────────
+
+  async downloadAny(message: Record<string, unknown>): Promise<string> {
+    const result = (await this.proc.send("downloadAny", { message })) as { path: string };
+    return result.path;
+  }
+
+  // ── Connection Internals ────────────────────────
+
+  async resetConnection(): Promise<void> {
+    await this.proc.send("resetConnection");
+  }
+
+  // ── Message Helpers ───────────────────────────
+
+  async generateMessageID(): Promise<string> {
+    const result = (await this.proc.send("generateMessageID")) as { id: string };
+    return result.id;
+  }
+
+  async buildMessageKey(chat: JID, sender: JID, id: string): Promise<Record<string, unknown>> {
+    return (await this.proc.send("buildMessageKey", { chat, sender, id })) as Record<
+      string,
+      unknown
+    >;
+  }
+
+  async buildUnavailableMessageRequest(
+    chat: JID,
+    sender: JID,
+    id: string,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("buildUnavailableMessageRequest", {
+      chat,
+      sender,
+      id,
+    })) as Record<string, unknown>;
+  }
+
+  async buildHistorySyncRequest(
+    info: { chat: JID; sender: JID; id: string; timestamp?: number },
+    count: number,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("buildHistorySyncRequest", {
+      info,
+      count,
+    })) as Record<string, unknown>;
+  }
+
+  // ── Peer & Retry ──────────────────────────────
+
+  async sendPeerMessage(message: Record<string, unknown>): Promise<SendResponse> {
+    return (await this.proc.send("sendPeerMessage", { message })) as SendResponse;
+  }
+
+  async sendMediaRetryReceipt(
+    info: { chat: JID; sender: JID; id: string; timestamp?: number },
+    mediaKey: number[],
+  ): Promise<void> {
+    await this.proc.send("sendMediaRetryReceipt", { info, mediaKey });
+  }
+
+  // ── Download Variants ─────────────────────────
+
+  async downloadMediaWithPath(opts: {
+    directPath: string;
+    encFileHash: number[];
+    fileHash: number[];
+    mediaKey: number[];
+    fileLength: number;
+    mediaType: MediaType;
+    mmsType?: string;
+  }): Promise<string> {
+    const result = (await this.proc.send("downloadMediaWithPath", {
+      ...opts,
+      mmsType: opts.mmsType ?? "",
+    })) as { path: string };
+    return result.path;
+  }
+
+  // ── Bot APIs ──────────────────────────────────
+
+  async getBotListV2(): Promise<BotListInfo[]> {
+    return (await this.proc.send("getBotListV2")) as BotListInfo[];
+  }
+
+  async getBotProfiles(bots: BotListInfo[]): Promise<BotProfileInfo[]> {
+    return (await this.proc.send("getBotProfiles", { bots })) as BotProfileInfo[];
+  }
+
+  // ── App State ─────────────────────────────────
+
+  async fetchAppState(
+    name: AppStatePatchName,
+    fullSync = false,
+    onlyIfNotSynced = false,
+  ): Promise<void> {
+    await this.proc.send("fetchAppState", { name, fullSync, onlyIfNotSynced });
+  }
+
+  async markNotDirty(cleanType: string, timestamp: number): Promise<void> {
+    await this.proc.send("markNotDirty", { cleanType, timestamp });
+  }
+
+  // ── Decrypt / Encrypt ─────────────────────────
+
+  async decryptComment(
+    info: Record<string, unknown>,
+    message: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("decryptComment", { info, message })) as Record<string, unknown>;
+  }
+
+  async decryptPollVote(
+    info: Record<string, unknown>,
+    message: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("decryptPollVote", { info, message })) as Record<string, unknown>;
+  }
+
+  async decryptReaction(
+    info: Record<string, unknown>,
+    message: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("decryptReaction", { info, message })) as Record<string, unknown>;
+  }
+
+  async decryptSecretEncryptedMessage(
+    info: Record<string, unknown>,
+    message: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("decryptSecretEncryptedMessage", {
+      info,
+      message,
+    })) as Record<string, unknown>;
+  }
+
+  async encryptComment(
+    info: Record<string, unknown>,
+    message: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("encryptComment", { info, message })) as Record<string, unknown>;
+  }
+
+  async encryptPollVote(
+    info: Record<string, unknown>,
+    vote: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("encryptPollVote", { info, vote })) as Record<string, unknown>;
+  }
+
+  async encryptReaction(
+    info: Record<string, unknown>,
+    reaction: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return (await this.proc.send("encryptReaction", { info, reaction })) as Record<string, unknown>;
+  }
+
+  // ── Web Message Parsing ───────────────────────
+
+  async parseWebMessage(
+    chatJid: JID,
+    webMsg: Record<string, unknown>,
+  ): Promise<{ info: Record<string, unknown>; message: Record<string, unknown> }> {
+    return (await this.proc.send("parseWebMessage", { chatJid, webMsg })) as {
+      info: Record<string, unknown>;
+      message: Record<string, unknown>;
+    };
   }
 
   // ── Generic fallback ─────────────────────────────

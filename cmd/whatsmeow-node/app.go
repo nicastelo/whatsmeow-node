@@ -220,6 +220,82 @@ func (a *App) handleCommand(cmd Command) {
 	case "setForceActiveDeliveryReceipts":
 		a.cmdSetForceActiveDeliveryReceipts(cmd)
 
+	// ── Extra: Newsletter Updates & TOS ────────────
+	case "acceptTOSNotice":
+		a.cmdAcceptTOSNotice(cmd)
+	case "getNewsletterMessageUpdates":
+		a.cmdGetNewsletterMessageUpdates(cmd)
+
+	// ── Extra: Group Invite Operations ─────────────
+	case "getGroupInfoFromInvite":
+		a.cmdGetGroupInfoFromInvite(cmd)
+	case "joinGroupWithInvite":
+		a.cmdJoinGroupWithInvite(cmd)
+
+	// ── Extra: Newsletter Upload ───────────────────
+	case "uploadNewsletter":
+		a.cmdUploadNewsletter(cmd)
+
+	// ── Extra: Download Any ───────────────────────
+	case "downloadAny":
+		a.cmdDownloadAny(cmd)
+
+	// ── Extra: Connection Internals ───────────────
+	case "resetConnection":
+		a.cmdResetConnection(cmd)
+
+	// ── Extra: Message Helpers ────────────────────
+	case "generateMessageID":
+		a.cmdGenerateMessageID(cmd)
+	case "buildMessageKey":
+		a.cmdBuildMessageKey(cmd)
+	case "buildUnavailableMessageRequest":
+		a.cmdBuildUnavailableMessageRequest(cmd)
+	case "buildHistorySyncRequest":
+		a.cmdBuildHistorySyncRequest(cmd)
+
+	// ── Extra: Peer & Retry ──────────────────────
+	case "sendPeerMessage":
+		a.cmdSendPeerMessage(cmd)
+	case "sendMediaRetryReceipt":
+		a.cmdSendMediaRetryReceipt(cmd)
+
+	// ── Extra: Download Variants ─────────────────
+	case "downloadMediaWithPath":
+		a.cmdDownloadMediaWithPath(cmd)
+
+	// ── Extra: Bot APIs ──────────────────────────
+	case "getBotListV2":
+		a.cmdGetBotListV2(cmd)
+	case "getBotProfiles":
+		a.cmdGetBotProfiles(cmd)
+
+	// ── Extra: App State ─────────────────────────
+	case "fetchAppState":
+		a.cmdFetchAppState(cmd)
+	case "markNotDirty":
+		a.cmdMarkNotDirty(cmd)
+
+	// ── Extra: Decrypt / Encrypt ─────────────────
+	case "decryptComment":
+		a.cmdDecryptComment(cmd)
+	case "decryptPollVote":
+		a.cmdDecryptPollVote(cmd)
+	case "decryptReaction":
+		a.cmdDecryptReaction(cmd)
+	case "decryptSecretEncryptedMessage":
+		a.cmdDecryptSecretEncryptedMessage(cmd)
+	case "encryptComment":
+		a.cmdEncryptComment(cmd)
+	case "encryptPollVote":
+		a.cmdEncryptPollVote(cmd)
+	case "encryptReaction":
+		a.cmdEncryptReaction(cmd)
+
+	// ── Extra: Web Message Parsing ───────────────
+	case "parseWebMessage":
+		a.cmdParseWebMessage(cmd)
+
 	default:
 		sendError(cmd.ID, "unknown command: "+cmd.Cmd, "ERR_UNKNOWN_CMD")
 	}
