@@ -157,81 +157,32 @@ jobs:
           npm run build
           npm publish --access public --provenance
 
-      - name: Prepare release notes
+      - name: Extract changelog for this version
         id: changelog
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          # Check if CHANGELOG.md already has an entry for this version
           NOTES=$(awk "/^## \\[${VERSION}\\]/{found=1; next} /^## \\[/{if(found) exit} found{print}" CHANGELOG.md)
           if [ -n "$NOTES" ]; then
-            echo "Found existing CHANGELOG.md entry for ${VERSION}"
             echo "$NOTES" > /tmp/release-notes.md
+            echo "has_changelog=true" >> "$GITHUB_OUTPUT"
           else
-            echo "No CHANGELOG.md entry for ${VERSION}, generating from PRs/commits..."
-            # Get the previous tag
-            PREV_TAG=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1)
-            # Generate notes via GitHub API
-            GENERATED=$(gh api repos/${{ github.repository }}/releases/generate-notes \
-              -f tag_name="${GITHUB_REF_NAME}" \
-              -f target_commitish=main \
-              ${PREV_TAG:+-f previous_tag_name="${PREV_TAG}"} \
-              --jq '.body')
-            echo "$GENERATED" > /tmp/release-notes.md
-            # Insert into CHANGELOG.md
-            DATE=$(date +%Y-%m-%d)
-            HEADER="## [${VERSION}] - ${DATE}"
-            # Build the new entry
-            {
-              echo "${HEADER}"
-              echo ""
-              echo "${GENERATED}"
-              echo ""
-            } > /tmp/changelog-entry.md
-            # Insert after the header line (line 6: after the alpha notice)
-            # Find the line number of the first ## [ entry
-            INSERT_LINE=$(grep -n "^## \[" CHANGELOG.md | head -1 | cut -d: -f1)
-            if [ -n "$INSERT_LINE" ]; then
-              {
-                head -n $((INSERT_LINE - 1)) CHANGELOG.md
-                cat /tmp/changelog-entry.md
-                tail -n +${INSERT_LINE} CHANGELOG.md
-              } > /tmp/CHANGELOG.md
-            else
-              {
-                cat CHANGELOG.md
-                echo ""
-                cat /tmp/changelog-entry.md
-              } > /tmp/CHANGELOG.md
-            fi
-            # Add compare link
-            if [ -n "$PREV_TAG" ]; then
-              LINK="[${VERSION}]: https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${GITHUB_REF_NAME}"
-              # Append before existing links or at end
-              if grep -q "^\[" /tmp/CHANGELOG.md; then
-                LINK_LINE=$(grep -n "^\[" /tmp/CHANGELOG.md | head -1 | cut -d: -f1)
-                {
-                  head -n $((LINK_LINE - 1)) /tmp/CHANGELOG.md
-                  echo "$LINK"
-                  tail -n +${LINK_LINE} /tmp/CHANGELOG.md
-                } > /tmp/CHANGELOG2.md
-                mv /tmp/CHANGELOG2.md /tmp/CHANGELOG.md
-              else
-                echo "$LINK" >> /tmp/CHANGELOG.md
-              fi
-            fi
-            cp /tmp/CHANGELOG.md CHANGELOG.md
-            echo "changelog_updated=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::No CHANGELOG.md entry for ${VERSION} — use scripts/release.sh to generate one before tagging"
+            echo "has_changelog=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --title "$GITHUB_REF_NAME" \
-            --notes-file /tmp/release-notes.md
+          if [ "${{ steps.changelog.outputs.has_changelog }}" = "true" ]; then
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --notes-file /tmp/release-notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --generate-notes
+          fi
 
       - name: Sync versions back to main
         env:
@@ -244,14 +195,10 @@ jobs:
           if npx semver "$VERSION" -r ">=${MAIN_VERSION}"; then
             cd ts && npm version "${VERSION}" --no-git-tag-version --allow-same-version && cd ..
             node scripts/sync-versions.mjs
-            git add ts/package.json npm/*/package.json
-            # Also include CHANGELOG.md if it was auto-generated
-            if [ "${{ steps.changelog.outputs.changelog_updated }}" = "true" ]; then
-              git add CHANGELOG.md
-            fi
-            if git diff --cached --quiet; then
-              echo "Nothing to sync"
+            if git diff --quiet; then
+              echo "Versions already in sync"
             else
+              git add ts/package.json npm/*/package.json
               git commit -m "Sync package versions to ${VERSION}"
               git push origin main
             fi
