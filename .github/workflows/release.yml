@@ -157,13 +157,34 @@ jobs:
           npm run build
           npm publish --access public --provenance
 
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          # Extract the section between ## [VERSION] and the next ## [
+          NOTES=$(awk "/^## \\[${VERSION}\\]/{found=1; next} /^## \\[/{if(found) exit} found{print}" CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+            echo "::warning::No CHANGELOG.md entry for ${VERSION}, using auto-generated notes"
+            echo "has_changelog=false" >> "$GITHUB_OUTPUT"
+          else
+            # Write to file to preserve multiline content
+            echo "$NOTES" > /tmp/release-notes.md
+            echo "has_changelog=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --title "$GITHUB_REF_NAME" \
-            --generate-notes
+          if [ "${{ steps.changelog.outputs.has_changelog }}" = "true" ]; then
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --notes-file /tmp/release-notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --generate-notes
+          fi
 
       - name: Sync versions back to main
         env:
