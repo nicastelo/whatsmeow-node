@@ -207,13 +207,13 @@ export interface UploadResponse {
   fileLength: number;
 }
 
-/** Newsletter uploads are not E2E-encrypted, so encryption fields are null. */
+/** Newsletter uploads may or may not include encryption fields depending on the server. */
 export interface NewsletterUploadResponse {
   URL: string;
   directPath: string;
-  mediaKey: null;
-  fileEncSHA256: null;
-  fileSHA256: null;
+  mediaKey: string | null;
+  fileEncSHA256: string | null;
+  fileSHA256: string | null;
   fileLength: number;
 }
 

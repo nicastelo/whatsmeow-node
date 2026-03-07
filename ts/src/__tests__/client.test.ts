@@ -993,7 +993,7 @@ describe("WhatsmeowClient", () => {
         mediaType: "image",
       });
       expect(result.URL).toBe("https://example.com/file");
-      expect(result.mediaKey).toBeNull();
+      expect(result.fileLength).toBe(1024);
     });
   });
 
