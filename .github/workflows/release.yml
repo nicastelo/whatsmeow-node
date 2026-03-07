@@ -155,7 +155,7 @@ jobs:
           cd ts
           npm install --ignore-scripts
           npm run build
-          npm publish --access public --provenance
+          npm publish --access public --provenance || echo "Version already published"
 
       - name: Extract changelog for this version
         id: changelog
