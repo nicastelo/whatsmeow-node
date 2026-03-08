@@ -36,6 +36,9 @@ const config: Config = {
           editUrl: 'https://github.com/nicastelo/whatsmeow-node/tree/main/docs-site/',
         },
         blog: false,
+        gtag: {
+          trackingID: 'G-65NY6175QQ',
+        },
         theme: {
           customCss: './src/css/custom.css',
         },
