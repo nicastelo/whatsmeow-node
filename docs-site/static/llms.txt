@@ -1,0 +1,48 @@
+# whatsmeow-node
+
+> WhatsApp for Node.js — powered by the most battle-tested WhatsApp Web library
+
+whatsmeow-node is a fully typed Node.js client for WhatsApp Web. It wraps [whatsmeow](https://github.com/tulir/whatsmeow), the Go library that powers the Mautrix WhatsApp bridge (used by thousands of Matrix users daily), and exposes it as a native npm package with 100 typed methods.
+
+The Go binary communicates with Node.js via JSON-line IPC over stdin/stdout. No native compilation required — prebuilt binaries are provided for macOS, Linux, and Windows (x64 and arm64).
+
+## Key Features
+
+- Battle-tested upstream: backed by whatsmeow, the most reliable WhatsApp Web library
+- Lightweight: 10–20 MB prebuilt binary, no Chromium or browser dependency
+- Fully typed: 100 async methods with TypeScript interfaces
+- Multi-platform: macOS, Linux, Windows (x64, arm64, musl)
+- Persistent sessions: SQLite (dev) or PostgreSQL (prod)
+
+## Documentation
+
+- [Why whatsmeow-node](https://nicastelo.github.io/whatsmeow-node/docs/intro): Problem statement, design philosophy, comparison with Baileys and whatsapp-web.js
+- [Installation](https://nicastelo.github.io/whatsmeow-node/docs/installation): Node.js 18+ requirement, npm install, platform support, store options
+- [Getting Started](https://nicastelo.github.io/whatsmeow-node/docs/getting-started): Quick start, client options, sending messages, media, contacts, cleanup
+- [Connection Lifecycle](https://nicastelo.github.io/whatsmeow-node/docs/connection-lifecycle): Flow diagram, key events, resilient connection pattern
+- [Rate Limiting](https://nicastelo.github.io/whatsmeow-node/docs/rate-limiting): Observed thresholds, safe sending patterns, backoff strategies
+- [Examples](https://nicastelo.github.io/whatsmeow-node/docs/examples): Runnable example scripts (pair, send, smoke test)
+- [API Overview](https://nicastelo.github.io/whatsmeow-node/docs/api/overview): Full method reference across 18 categories (messaging, media, groups, newsletters, privacy, and more)
+- [Events](https://nicastelo.github.io/whatsmeow-node/docs/api/events): All emitted events (connection, message, presence, group, media, call, history sync)
+- [Errors](https://nicastelo.github.io/whatsmeow-node/docs/api/errors): Error classes, common error codes, method-specific error codes
+- [Common Issues](https://nicastelo.github.io/whatsmeow-node/docs/troubleshooting/common-issues): QR issues, ERR_NOT_INIT, send failures, timeouts, proto field naming
+- [Acknowledgments](https://nicastelo.github.io/whatsmeow-node/docs/acknowledgments): Upstream attribution, licensing (MIT / MPL-2.0)
+
+## Quick Start
+
+```typescript
+import { createClient } from '@whatsmeow-node/whatsmeow-node';
+
+const client = createClient({ store: 'session.db' });
+await client.init();
+const qr = await client.getQRChannel();
+await client.connect();
+// Scan QR code, then send a message:
+await client.sendMessage('1234567890@s.whatsapp.net', { conversation: 'Hello!' });
+```
+
+## Links
+
+- npm: https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node
+- GitHub: https://github.com/nicastelo/whatsmeow-node
+- Upstream (whatsmeow): https://github.com/tulir/whatsmeow

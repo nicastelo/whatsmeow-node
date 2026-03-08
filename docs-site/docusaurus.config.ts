@@ -14,6 +14,15 @@ const config: Config = {
   organizationName: 'nicastelo',
   projectName: 'whatsmeow-node',
   onBrokenLinks: 'throw',
+  headTags: [
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'google-site-verification',
+        content: 'sI3nw3-Hgxfuhcf6qt7z47BgAVtgqGbekxcrMk_yXuI',
+      },
+    },
+  ],
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
