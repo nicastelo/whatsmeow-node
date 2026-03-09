@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://nicastelo.github.io/whatsmeow-node/sitemap.xml
+
