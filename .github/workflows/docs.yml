@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "docs-site/**"
+      - ".github/workflows/docs.yml"
 
 permissions:
   pages: write
