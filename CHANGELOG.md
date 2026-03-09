@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 > **0.x** — We stay on 0.x because the upstream whatsmeow library is pre-1.0. Breaking changes are signaled by minor version bumps (`0.5 → 0.6`). Pin your version if stability matters.
 
+## [0.5.1] - 2026-03-08
+
+### Added
+
+- Documentation site with Docusaurus + GitHub Pages deployment
+- Google Search Console verification and `llms.txt` for AI discoverability
+- Google Analytics (GA4) tracking on docs site
+- `robots.txt` with sitemap reference for search engine indexing
+- Open Graph and Twitter Card meta tags for social previews
+- Comparison guide: whatsmeow-node vs Baileys vs whatsapp-web.js vs official API
+
+### Fixed
+
+- Logo URL in README for npm rendering
+- Release workflow: fetch main branch before checkout
+- Release sync: check staged changes, not working tree
+- Main npm publish made idempotent for re-runs
+
 ## [0.5.0] - 2026-03-07
 
 ### Added
@@ -102,6 +120,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.5.1]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.2.3...v0.3.0

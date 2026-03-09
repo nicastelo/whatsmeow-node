@@ -22,6 +22,50 @@ const config: Config = {
         content: 'sI3nw3-Hgxfuhcf6qt7z47BgAVtgqGbekxcrMk_yXuI',
       },
     },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:title',
+        content: 'whatsmeow-node — WhatsApp API for Node.js',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:description',
+        content:
+          'TypeScript/Node.js bindings for whatsmeow, the most battle-tested WhatsApp Web library. No Puppeteer, no browser, just npm install.',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:image',
+        content: 'https://nicastelo.github.io/whatsmeow-node/img/image.png',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:type',
+        content: 'website',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'twitter:card',
+        content: 'summary',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'description',
+        content:
+          'TypeScript/Node.js bindings for whatsmeow, the most battle-tested WhatsApp Web library. No Puppeteer, no browser, just npm install.',
+      },
+    },
   ],
   i18n: {
     defaultLocale: 'en',
