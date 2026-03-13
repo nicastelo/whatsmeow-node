@@ -13,6 +13,7 @@ const config: Config = {
   baseUrl: '/whatsmeow-node/',
   organizationName: 'nicastelo',
   projectName: 'whatsmeow-node',
+  trailingSlash: false,
   onBrokenLinks: 'throw',
   headTags: [
     {
