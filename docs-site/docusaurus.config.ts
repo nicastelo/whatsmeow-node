@@ -62,7 +62,12 @@ const config: Config = {
   ],
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'pt-BR', 'es'],
+    localeConfigs: {
+      en: {label: 'English'},
+      'pt-BR': {label: 'Português', htmlLang: 'pt-BR'},
+      es: {label: 'Español'},
+    },
   },
   presets: [
     [
@@ -145,6 +150,10 @@ const config: Config = {
           label: 'Examples',
           to: '/docs/examples/overview',
           position: 'left',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
         {
           href: 'https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node',
