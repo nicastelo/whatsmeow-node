@@ -6,6 +6,25 @@ description: "Download and save WhatsApp images, videos, audio, documents, and s
 keywords: [download whatsapp media nodejs, save whatsapp images api, download whatsapp videos programmatically, whatsapp media download typescript]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Download WhatsApp Media with Node.js",
+      "description": "Download and save WhatsApp images, videos, audio, documents, and stickers to disk with Node.js using whatsmeow-node.",
+      "step": [
+        {"@type": "HowToStep", "name": "Listen for Incoming Messages", "text": "Subscribe to the message event and filter for media messages."},
+        {"@type": "HowToStep", "name": "Detect the Media Type", "text": "Check for imageMessage, videoMessage, audioMessage, documentMessage, or stickerMessage fields."},
+        {"@type": "HowToStep", "name": "Download with downloadAny()", "text": "Call downloadAny(message) to decrypt and save media to a temporary file."},
+        {"@type": "HowToStep", "name": "Save to a Permanent Location", "text": "Copy the temp file to a permanent directory using fs.copyFile()."}
+      ]
+    })}
+  </script>
+</Head>
+
 # How to Download WhatsApp Media with Node.js
 
 whatsmeow-node can download any media type — images, videos, audio, documents, and stickers — with a single `downloadAny()` call. The file is decrypted and saved to a temporary path on disk.

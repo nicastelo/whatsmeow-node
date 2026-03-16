@@ -6,6 +6,24 @@ description: "Send and receive WhatsApp stickers programmatically with Node.js �
 keywords: [send stickers whatsapp bot, whatsapp sticker api nodejs, send webp sticker whatsapp, download whatsapp stickers nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Send Stickers on WhatsApp with Node.js",
+      "description": "Send and receive WhatsApp stickers programmatically with Node.js — upload WebP files, set dimensions, and download incoming stickers.",
+      "step": [
+        {"@type": "HowToStep", "name": "Upload the Sticker File", "text": "Use uploadMedia() with the WebP file path and 'image' media type."},
+        {"@type": "HowToStep", "name": "Send the Sticker Message", "text": "Use sendRawMessage with stickerMessage including width, height (512x512), and mimetype image/webp."},
+        {"@type": "HowToStep", "name": "Download Incoming Stickers", "text": "Listen for messages with stickerMessage and call downloadAny() to save to disk."}
+      ]
+    })}
+  </script>
+</Head>
+
 # How to Send Stickers on WhatsApp with Node.js
 
 Stickers in WhatsApp are WebP images sent with a `stickerMessage` proto shape. whatsmeow-node handles the upload and encryption — you just provide the file and dimensions.

@@ -6,6 +6,25 @@ description: "Build an AI-powered WhatsApp chatbot by connecting whatsmeow-node 
 keywords: [connect whatsapp to claude, whatsapp ai bot, claude whatsapp integration, whatsapp chatbot ai nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Connect WhatsApp to Claude AI",
+      "description": "Build an AI-powered WhatsApp chatbot by connecting whatsmeow-node to Claude via the Anthropic SDK. Includes conversation history and typing indicators.",
+      "step": [
+        {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and Anthropic client with new Anthropic()."},
+        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
+        {"@type": "HowToStep", "name": "Send to Claude", "text": "Call anthropic.messages.create() with the user message and send the response back via sendMessage."},
+        {"@type": "HowToStep", "name": "Add Conversation History", "text": "Store message history per user JID in a Map and pass it to Claude for multi-turn conversations."}
+      ]
+    })}
+  </script>
+</Head>
+
 # How to Connect WhatsApp to Claude AI
 
 Combine whatsmeow-node with the Anthropic SDK to build a WhatsApp chatbot powered by Claude. Messages come in via WhatsApp, get sent to Claude for a response, and the reply goes back to the user — with typing indicators while Claude thinks.

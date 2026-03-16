@@ -6,6 +6,26 @@ description: "Show typing and recording indicators on WhatsApp with Node.js — 
 keywords: [whatsapp typing indicator bot, show typing whatsapp api, whatsapp composing status nodejs, whatsapp presence api typescript]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Show Typing Indicators on WhatsApp",
+      "description": "Show typing and recording indicators on WhatsApp with Node.js — control composing state, online presence, and subscribe to others' typing.",
+      "step": [
+        {"@type": "HowToStep", "name": "Show typing...", "text": "Call sendChatPresence(chatJid, 'composing') to show the typing indicator."},
+        {"@type": "HowToStep", "name": "Show recording audio...", "text": "Call sendChatPresence(chatJid, 'composing', 'audio') for the recording indicator."},
+        {"@type": "HowToStep", "name": "Clear the Indicator", "text": "Call sendChatPresence(chatJid, 'paused') to stop the indicator without sending a message."},
+        {"@type": "HowToStep", "name": "Set Online/Offline Status", "text": "Call sendPresence('available') before typing indicators work, and 'unavailable' when shutting down."},
+        {"@type": "HowToStep", "name": "Subscribe to Others' Typing", "text": "Call subscribePresence(jid) and listen for presence and chat_presence events."}
+      ]
+    })}
+  </script>
+</Head>
+
 # How to Show Typing Indicators on WhatsApp
 
 WhatsApp's typing indicators ("typing..." and "recording audio...") make bots feel more natural. whatsmeow-node gives you full control over these indicators with `sendChatPresence()`.

@@ -6,6 +6,33 @@ description: "Frequently asked questions about whatsmeow-node — requirements, 
 keywords: [whatsmeow-node faq, whatsapp bot questions, whatsapp nodejs faq, whatsmeow-node requirements]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "What is whatsmeow-node?", "acceptedAnswer": {"@type": "Answer", "text": "whatsmeow-node is a TypeScript/Node.js client for WhatsApp Web. It wraps whatsmeow, a Go library that implements the WhatsApp Web multi-device protocol. You get whatsmeow's reliability with TypeScript's developer experience — 100 typed async methods, typed events, and typed errors."}},
+        {"@type": "Question", "name": "Is this the official WhatsApp API?", "acceptedAnswer": {"@type": "Answer", "text": "No. whatsmeow-node is an unofficial client that connects as a linked device (like WhatsApp Web). The only official API is the WhatsApp Business Cloud API from Meta, which requires business verification and has per-conversation pricing."}},
+        {"@type": "Question", "name": "Can my account get banned?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Using unofficial clients violates WhatsApp's Terms of Service, and your account may be banned. This risk applies to all unofficial libraries (Baileys, whatsapp-web.js, etc.), not just whatsmeow-node."}},
+        {"@type": "Question", "name": "Is whatsmeow-node free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. whatsmeow-node is MIT-licensed and free to use. The upstream whatsmeow library is MPL-2.0 licensed."}},
+        {"@type": "Question", "name": "Do I need Go installed?", "acceptedAnswer": {"@type": "Answer", "text": "No. Precompiled Go binaries are bundled for all supported platforms (macOS, Linux, Windows — x64 and arm64). The correct binary is installed automatically via npm's optionalDependencies."}},
+        {"@type": "Question", "name": "Do I need a WhatsApp Business account?", "acceptedAnswer": {"@type": "Answer", "text": "No. whatsmeow-node works with any regular WhatsApp account. It connects as a linked device, the same way WhatsApp Web or Desktop does."}},
+        {"@type": "Question", "name": "Does the phone need to stay online?", "acceptedAnswer": {"@type": "Answer", "text": "No. WhatsApp's multi-device protocol allows linked devices to operate independently. Your phone can be offline, turned off, or disconnected — the linked device session stays active."}},
+        {"@type": "Question", "name": "Can I use multiple WhatsApp accounts?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Create a separate client instance for each account, each with its own store path. Each client spawns its own Go process."}},
+        {"@type": "Question", "name": "Does it work with serverless (AWS Lambda, Vercel)?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on the use case. For fire-and-forget tasks like sending an OTP, serverless works. For long-running bots, serverless is a poor fit because whatsmeow-node maintains a persistent WebSocket connection. For always-on bots, a persistent server tends to work better."}},
+        {"@type": "Question", "name": "Does it work with Docker?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Use a Node.js base image. The Go binary is included in the npm package — no additional setup needed."}},
+        {"@type": "Question", "name": "How much memory does it use?", "acceptedAnswer": {"@type": "Answer", "text": "The Go binary uses ~10-20 MB of RAM. Total process memory (Node.js + Go) is typically 50-80 MB, compared to 200-500 MB for browser-based solutions."}},
+        {"@type": "Question", "name": "How is this different from Baileys?", "acceptedAnswer": {"@type": "Answer", "text": "Baileys implements the WhatsApp protocol in pure JavaScript. whatsmeow-node wraps a Go implementation (whatsmeow) that powers the Mautrix WhatsApp bridge, used by thousands of Matrix users. The main trade-off: whatsmeow-node spawns an external process but inherits whatsmeow's reliability and maintenance."}},
+        {"@type": "Question", "name": "How is this different from whatsapp-web.js?", "acceptedAnswer": {"@type": "Answer", "text": "whatsapp-web.js automates a headless Chrome browser, requiring 200-500 MB of RAM and breaking when WhatsApp updates their web client. whatsmeow-node implements the protocol directly with ~10-20 MB of RAM and no browser dependency."}},
+        {"@type": "Question", "name": "Should I use this or the official WhatsApp Business API?", "acceptedAnswer": {"@type": "Answer", "text": "The official API is the only safe choice if you need guaranteed uptime, compliance, and no risk of account bans. whatsmeow-node is better for personal projects, prototyping, internal tools, or cases where the official API's cost or approval process is prohibitive."}}
+      ]
+    })}
+  </script>
+</Head>
+
 # FAQ
 
 ## General

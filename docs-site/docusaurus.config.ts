@@ -17,6 +17,22 @@ const config: Config = {
   onBrokenLinks: 'throw',
   headTags: [
     {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/whatsmeow-node/img/image.png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'apple-touch-icon',
+        href: '/whatsmeow-node/img/image.png',
+      },
+    },
+    {
       tagName: 'meta',
       attributes: {
         name: 'google-site-verification',
@@ -58,6 +74,25 @@ const config: Config = {
         name: 'twitter:card',
         content: 'summary',
       },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:site_name',
+        content: 'whatsmeow-node',
+      },
+    },
+    {
+      tagName: 'script',
+      attributes: {
+        type: 'application/ld+json',
+      },
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'whatsmeow-node',
+        url: 'https://nicastelo.github.io/whatsmeow-node/',
+      }),
     },
   ],
   i18n: {

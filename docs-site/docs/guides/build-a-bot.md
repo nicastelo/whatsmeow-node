@@ -6,6 +6,27 @@ description: "Build a WhatsApp bot with Node.js and TypeScript — receive messa
 keywords: [whatsapp bot nodejs, build whatsapp bot typescript, whatsapp bot tutorial, whatsapp automation nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Build a WhatsApp Bot with Node.js",
+      "description": "Build a WhatsApp bot with Node.js and TypeScript — receive messages, handle commands, reply with quotes, and manage connections.",
+      "step": [
+        {"@type": "HowToStep", "name": "Create the Client", "text": "Initialize a WhatsmeowClient with createClient() and a session store."},
+        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event and extract text from conversation or extendedTextMessage."},
+        {"@type": "HowToStep", "name": "Reply to Messages", "text": "Use sendMessage for text or sendRawMessage with contextInfo for quoted replies."},
+        {"@type": "HowToStep", "name": "Add Commands", "text": "Route messages starting with ! to command handlers like !ping and !help."},
+        {"@type": "HowToStep", "name": "Handle Errors and Reconnection", "text": "Listen for logged_out and disconnected events. Auto-reconnect is built-in."},
+        {"@type": "HowToStep", "name": "Graceful Shutdown", "text": "Handle SIGINT to set presence unavailable and disconnect cleanly."}
+      ]
+    })}
+  </script>
+</Head>
+
 # How to Build a WhatsApp Bot with Node.js
 
 whatsmeow-node lets you build a fully functional WhatsApp bot in under 60 lines of TypeScript. The bot connects as a linked device (like WhatsApp Web), receives messages in real time, and can reply with text, media, or structured messages.

@@ -6,6 +6,25 @@ description: "Link a WhatsApp account to your Node.js app using QR code scanning
 keywords: [pair whatsapp nodejs, whatsapp qr code api, link whatsapp device programmatically, whatsapp linked devices nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Pair WhatsApp with Node.js",
+      "description": "Link a WhatsApp account to your Node.js app using QR code scanning or phone number code entry. Includes session persistence and reconnection.",
+      "step": [
+        {"@type": "HowToStep", "name": "QR Code Pairing", "text": "Call getQRChannel() then connect(). Listen for the qr event and render the code with qrcode-terminal."},
+        {"@type": "HowToStep", "name": "Phone Number Pairing", "text": "Call connect() first, then pairCode(phoneNumber). The user enters the 8-digit code in WhatsApp."},
+        {"@type": "HowToStep", "name": "Session Persistence", "text": "The session is stored in the database. On next run, init() returns the stored JID and you skip pairing."},
+        {"@type": "HowToStep", "name": "Choose a Store", "text": "Use SQLite (session.db) for development or PostgreSQL for production."}
+      ]
+    })}
+  </script>
+</Head>
+
 # How to Pair WhatsApp with Node.js
 
 whatsmeow-node connects to WhatsApp as a linked device — just like WhatsApp Web or Desktop. You can pair using a QR code or a phone number code. Once paired, the session is persisted and your app reconnects automatically.
