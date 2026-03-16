@@ -16,11 +16,11 @@
     "description": "The generated-index page title for category Examples in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.API Reference": {
-    "message": "Referencia de API",
+    "message": "Referencia de la API",
     "description": "The label for category API Reference in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.API Reference.link.generated-index.title": {
-    "message": "Referencia de API",
+    "message": "Referencia de la API",
     "description": "The generated-index page title for category API Reference in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.Troubleshooting": {

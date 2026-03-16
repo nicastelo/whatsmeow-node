@@ -30,7 +30,7 @@ El binario Go se comunica con Node.js vía JSON-line IPC sobre stdin/stdout. Sin
   - [Vincular WhatsApp](https://nicastelo.github.io/whatsmeow-node/es/docs/guides/pair-whatsapp): Vinculación por código QR y número de teléfono, persistencia de sesión
   - [Conectar con IA](https://nicastelo.github.io/whatsmeow-node/es/docs/guides/connect-to-ai): Crear un chatbot de WhatsApp con Claude e historial de conversación
 - [Ejemplos](https://nicastelo.github.io/whatsmeow-node/es/docs/examples/overview): Scripts de ejemplo ejecutables (vinculación, mensajes, multimedia, grupos, presencia, bots)
-- [Referencia de API](https://nicastelo.github.io/whatsmeow-node/es/docs/api/overview): Referencia completa de métodos en 18 categorías
+- [Referencia de la API](https://nicastelo.github.io/whatsmeow-node/es/docs/api/overview): Referencia completa de métodos en 18 categorías
 - [Eventos](https://nicastelo.github.io/whatsmeow-node/es/docs/api/events): Todos los eventos emitidos (conexión, mensaje, presencia, grupo, multimedia, llamada, history sync)
 - [Errores](https://nicastelo.github.io/whatsmeow-node/es/docs/api/errors): Clases de error, códigos de error comunes, códigos específicos por método
 - [Problemas Comunes](https://nicastelo.github.io/whatsmeow-node/es/docs/troubleshooting/common-issues): Problemas con QR, ERR_NOT_INIT, fallos de envío, timeouts, nombres de campos proto

@@ -76,10 +76,49 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/nicastelo/whatsmeow-node/tree/main/docs-site/',
+          showLastUpdateTime: true,
         },
         blog: false,
         gtag: {
           trackingID: 'G-65NY6175QQ',
+        },
+        sitemap: {
+          lastmod: 'date',
+          changefreq: null,
+          priority: null,
+          createSitemapItems: async (params) => {
+            const {defaultCreateSitemapItems, ...rest} = params;
+            const items = await defaultCreateSitemapItems(rest);
+            return items.map((item) => {
+              const url = item.url;
+              // Landing page
+              if (url.endsWith('/whatsmeow-node/') || url.match(/\/(pt-BR|es)\/$/)) {
+                return {...item, priority: 1.0, changefreq: 'weekly'};
+              }
+              // Key entry points: intro, getting-started, installation, comparison
+              if (url.match(/\/docs\/(intro|getting-started|installation|comparison)$/)) {
+                return {...item, priority: 0.9, changefreq: 'weekly'};
+              }
+              // Guides (SEO-targeted how-to pages)
+              if (url.includes('/docs/guides/')) {
+                return {...item, priority: 0.8, changefreq: 'weekly'};
+              }
+              // FAQ
+              if (url.includes('/docs/faq')) {
+                return {...item, priority: 0.8, changefreq: 'monthly'};
+              }
+              // API reference
+              if (url.includes('/docs/api/')) {
+                return {...item, priority: 0.7, changefreq: 'monthly'};
+              }
+              // Examples
+              if (url.includes('/docs/examples/')) {
+                return {...item, priority: 0.6, changefreq: 'monthly'};
+              }
+              // Everything else (connection-lifecycle, rate-limiting, troubleshooting, acknowledgments)
+              return {...item, priority: 0.5, changefreq: 'monthly'};
+            });
+          },
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -182,7 +221,7 @@ const config: Config = {
               to: '/docs/guides/overview',
             },
             {
-              label: 'FAQ',
+              label: 'FAQs',
               to: '/docs/faq',
             },
             {

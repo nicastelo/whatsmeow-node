@@ -1,6 +1,6 @@
 ---
 title: Perguntas Frequentes
-sidebar_label: FAQ
+sidebar_label: Perguntas Frequentes
 sidebar_position: 6
 description: "Perguntas frequentes sobre o whatsmeow-node — requisitos, tipos de conta WhatsApp, deploy, multi-device, serverless e mais."
 keywords: [whatsmeow-node faq, perguntas bot whatsapp, faq whatsapp nodejs, requisitos whatsmeow-node, como criar bot whatsapp]

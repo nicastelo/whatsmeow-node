@@ -1,6 +1,6 @@
 ---
-title: FAQ
-sidebar_label: FAQ
+title: FAQs
+sidebar_label: FAQs
 sidebar_position: 6
 description: "Frequently asked questions about whatsmeow-node — requirements, WhatsApp account types, deployment, multi-device, serverless, and more."
 keywords: [whatsmeow-node faq, whatsapp bot questions, whatsapp nodejs faq, whatsmeow-node requirements]

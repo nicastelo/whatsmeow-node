@@ -252,4 +252,4 @@ WhatsApp limita la tasa de envío de mensajes. Si tu bot envía demasiados mensa
 - [Cómo Mostrar Indicadores de Escritura](typing-indicators) — haz que tu bot se sienta más humano
 - [Cómo Enviar Stickers](send-stickers) — envía y recibe stickers
 - [Ejemplo de Echo Bot](/docs/examples/bots-and-resilience#echo-bot) — bot de referencia completo
-- [Referencia de API](/docs/api/overview) — todos los métodos disponibles
+- [Referencia de la API](/docs/api/overview) — todos los métodos disponibles

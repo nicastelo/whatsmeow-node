@@ -19,12 +19,12 @@
     "message": "Guías",
     "description": "The label of footer link with label=Guides"
   },
-  "link.item.label.FAQ": {
+  "link.item.label.FAQs": {
     "message": "Preguntas Frecuentes",
     "description": "The label of footer link with label=FAQ"
   },
   "link.item.label.API Reference": {
-    "message": "Referencia de API",
+    "message": "Referencia de la API",
     "description": "The label of footer link with label=API Reference"
   },
   "link.item.label.GitHub": {

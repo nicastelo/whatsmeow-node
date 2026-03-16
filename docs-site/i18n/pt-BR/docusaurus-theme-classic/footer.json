@@ -19,7 +19,7 @@
     "message": "Guias",
     "description": "The label of footer link with label=Guides"
   },
-  "link.item.label.FAQ": {
+  "link.item.label.FAQs": {
     "message": "Perguntas Frequentes",
     "description": "The label of footer link with label=FAQ"
   },

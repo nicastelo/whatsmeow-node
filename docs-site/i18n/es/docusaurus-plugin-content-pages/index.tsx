@@ -60,7 +60,7 @@ export default function Home() {
             Primeros Pasos
           </Link>
           <Link className="button button--outline button--lg" to="/docs/api/overview">
-            Referencia de API
+            Referencia de la API
           </Link>
         </div>
 
