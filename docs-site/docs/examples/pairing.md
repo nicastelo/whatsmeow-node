@@ -8,6 +8,10 @@ keywords: [whatsapp qr code nodejs, pair whatsapp device nodejs, whatsapp linked
 
 # Pairing
 
+:::tip Looking for a step-by-step tutorial?
+See [How to Pair WhatsApp with Node.js](/docs/guides/pair-whatsapp).
+:::
+
 Two ways to link your WhatsApp account: QR code scanning or phone number code entry.
 
 ## QR Code Pairing

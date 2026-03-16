@@ -1,3 +1,8 @@
+/* Contain code blocks and footer rows on mobile */
+.theme-code-block {
+  max-width: calc(100vw - 3rem);
+}
+
 :root {
   --ifm-color-primary: #25855a;
   --ifm-color-primary-dark: #207549;

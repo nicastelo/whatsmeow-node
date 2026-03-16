@@ -2,6 +2,7 @@
 title: Why whatsmeow-node
 sidebar_position: 1
 slug: /intro
+description: "What whatsmeow-node is and why it exists — lightweight TypeScript bindings for the Go-based whatsmeow WhatsApp Web library."
 ---
 
 # Why whatsmeow-node

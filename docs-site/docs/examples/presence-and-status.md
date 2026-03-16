@@ -7,6 +7,10 @@ keywords: [whatsapp typing indicator api, whatsapp online status nodejs, whatsap
 
 # Presence & Status
 
+:::tip Looking for a step-by-step tutorial?
+See [How to Show Typing Indicators](/docs/guides/typing-indicators).
+:::
+
 Online/offline status, typing indicators, privacy settings, and disappearing messages.
 
 ## Presence & Typing Indicators

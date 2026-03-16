@@ -16,7 +16,9 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "src"
+    "src",
+    "examples",
+    "!src/__tests__"
   ],
   "scripts": {
     "build": "tsup",

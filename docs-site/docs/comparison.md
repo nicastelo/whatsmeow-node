@@ -1,7 +1,7 @@
 ---
 title: Comparison with Alternatives
 sidebar_position: 2
-description: How whatsmeow-node compares to Baileys, whatsapp-web.js, and the official WhatsApp Business API for Node.js developers.
+description: "How whatsmeow-node compares to Baileys, whatsapp-web.js, and the official WhatsApp Business Cloud API for Node.js developers."
 keywords: [whatsapp api nodejs, baileys alternative, whatsapp-web.js alternative, whatsmeow nodejs, whatsapp bot typescript, whatsapp library comparison]
 ---
 

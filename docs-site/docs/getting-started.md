@@ -1,6 +1,7 @@
 ---
 title: Getting Started
 sidebar_position: 3
+description: "Quick start guide for whatsmeow-node — connect to WhatsApp, send messages, handle media, and manage events in TypeScript."
 ---
 
 # Getting Started
@@ -32,7 +33,7 @@ main();
 
 | Option           | Type     | Default   | Description                              |
 |------------------|----------|-----------|------------------------------------------|
-| `store`          | `string` | required  | SQLite path (`session.db`) or Postgres URL (`postgres://...`) |
+| `store`          | `string` | required  | SQLite path (`session.db`) or Postgres URL (`postgresql://host/db`) |
 | `binaryPath`     | `string` | auto      | Path to the Go binary (auto-resolved from platform package) |
 | `commandTimeout` | `number` | `30000`   | IPC command timeout in milliseconds      |
 

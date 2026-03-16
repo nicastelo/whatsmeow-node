@@ -8,6 +8,10 @@ keywords: [send image whatsapp nodejs, whatsapp media upload typescript, whatsap
 
 # Media
 
+:::tip Looking for a step-by-step tutorial?
+See [How to Send Stickers](/docs/guides/send-stickers) and [How to Download Media](/docs/guides/download-media).
+:::
+
 Uploading and sending images, video, audio, documents, and stickers. All media follows the same two-step pattern: upload, then send.
 
 ## Send an Image

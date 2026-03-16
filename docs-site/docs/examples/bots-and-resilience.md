@@ -7,6 +7,10 @@ keywords: [whatsapp bot nodejs, build whatsapp bot typescript, whatsapp bot temp
 
 # Bots & Resilience
 
+:::tip Looking for a step-by-step tutorial?
+See [How to Build a WhatsApp Bot](/docs/guides/build-a-bot).
+:::
+
 A full bot template and resilient connection handling.
 
 ## Echo Bot
