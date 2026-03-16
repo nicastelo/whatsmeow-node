@@ -64,7 +64,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <CodeBlock language="typescript" title="5 lines to connect">
+        <CodeBlock language="typescript" title="Quick start">
           {quickStart}
         </CodeBlock>
 
@@ -86,7 +86,7 @@ export default function Home() {
           />
           <Feature
             title="Fully typed"
-            description="100 of 126 upstream methods wrapped, typed events, typed errors. Messages, groups, newsletters, media, polls, privacy, encryption, and more."
+            description="100+ typed async methods, typed events, typed errors. Messages, groups, newsletters, media, polls, privacy, encryption, and more."
           />
         </div>
 

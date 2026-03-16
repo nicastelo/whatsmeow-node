@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <Layout
       title="WhatsApp para Node.js"
-      description="Crie integrações com o WhatsApp em TypeScript usando whatsmeow-node — powered by the most battle-tested Go WhatsApp library. Sem navegador."
+      description="Crie integrações com o WhatsApp em TypeScript usando whatsmeow-node — baseado na biblioteca Go para WhatsApp mais testada em produção. Sem navegador."
     >
       <main style={{maxWidth: 800, margin: '0 auto', padding: '4rem 1.5rem'}}>
         <img
@@ -64,7 +64,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <CodeBlock language="typescript" title="5 linhas para conectar">
+        <CodeBlock language="typescript" title="Início rápido">
           {quickStart}
         </CodeBlock>
 
@@ -86,7 +86,7 @@ export default function Home() {
           />
           <Feature
             title="Totalmente tipado"
-            description="100 de 126 métodos do upstream com wrapper, eventos tipados, erros tipados. Mensagens, grupos, newsletters, mídia, enquetes, privacidade, criptografia e mais."
+            description="Mais de 100 métodos async tipados, eventos tipados, erros tipados. Mensagens, grupos, newsletters, mídia, enquetes, privacidade, criptografia e mais."
           />
         </div>
 
