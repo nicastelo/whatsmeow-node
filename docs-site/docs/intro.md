@@ -2,6 +2,8 @@
 title: Why whatsmeow-node
 sidebar_position: 1
 slug: /intro
+description: "What whatsmeow-node is and why it exists — lightweight TypeScript bindings for the Go-based whatsmeow WhatsApp Web library."
+keywords: [whatsmeow-node, whatsapp api nodejs, whatsapp typescript, whatsmeow bindings, whatsapp automation node, whatsapp web api]
 ---
 
 # Why whatsmeow-node

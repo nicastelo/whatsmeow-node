@@ -1,0 +1,34 @@
+{
+  "sidebar.docsSidebar.category.Guides": {
+    "message": "Guías",
+    "description": "The label for category Guides in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Guides.link.generated-index.title": {
+    "message": "Guías",
+    "description": "The generated-index page title for category Guides in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Examples": {
+    "message": "Ejemplos",
+    "description": "The label for category Examples in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Examples.link.generated-index.title": {
+    "message": "Ejemplos",
+    "description": "The generated-index page title for category Examples in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.API Reference": {
+    "message": "Referencia de la API",
+    "description": "The label for category API Reference in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.API Reference.link.generated-index.title": {
+    "message": "Referencia de la API",
+    "description": "The generated-index page title for category API Reference in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Troubleshooting": {
+    "message": "Solución de Problemas",
+    "description": "The label for category Troubleshooting in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Troubleshooting.link.generated-index.title": {
+    "message": "Solución de Problemas",
+    "description": "The generated-index page title for category Troubleshooting in sidebar docsSidebar"
+  }
+}

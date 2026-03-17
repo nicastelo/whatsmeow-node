@@ -1,6 +1,9 @@
 ---
-title: Installation
+title: Installation Guide
+sidebar_label: Installation
 sidebar_position: 2
+description: "Install whatsmeow-node with npm. Prebuilt Go binaries for macOS, Linux, and Windows. Supports SQLite and PostgreSQL stores."
+keywords: [whatsmeow-node install, npm whatsapp, whatsapp nodejs setup, prebuilt go binary, sqlite postgresql whatsapp]
 ---
 
 # Installation
@@ -30,7 +33,7 @@ The correct Go binary for your platform is installed automatically via `optional
 The `store` option accepts:
 
 - **SQLite**: `session.db` or `./data/wa.db` — Creates a local database file. Plain paths are auto-prefixed with `file:`.
-- **PostgreSQL**: `postgres://user:pass@host/db` — For multi-instance deployments or serverless.
+- **PostgreSQL**: `postgresql://myuser:mypassword@localhost:5432/whatsmeow` — For multi-instance deployments or serverless.
 
 SQLite is configured automatically with WAL mode, foreign keys, and busy timeout.
 

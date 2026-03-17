@@ -1,0 +1,54 @@
+{
+  "link.title.Docs": {
+    "message": "Documentación",
+    "description": "The title of the footer links column with title=Docs"
+  },
+  "link.title.Project": {
+    "message": "Proyecto",
+    "description": "The title of the footer links column with title=Project"
+  },
+  "link.title.whatsmeow (upstream)": {
+    "message": "whatsmeow (upstream)",
+    "description": "The title of the footer links column with title=whatsmeow (upstream)"
+  },
+  "link.item.label.Getting Started": {
+    "message": "Primeros Pasos",
+    "description": "The label of footer link with label=Getting Started"
+  },
+  "link.item.label.Guides": {
+    "message": "Guías",
+    "description": "The label of footer link with label=Guides"
+  },
+  "link.item.label.FAQs": {
+    "message": "Preguntas Frecuentes",
+    "description": "The label of footer link with label=FAQ"
+  },
+  "link.item.label.API Reference": {
+    "message": "Referencia de la API",
+    "description": "The label of footer link with label=API Reference"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub"
+  },
+  "link.item.label.npm": {
+    "message": "npm",
+    "description": "The label of footer link with label=npm"
+  },
+  "link.item.label.Go Docs": {
+    "message": "Documentación Go",
+    "description": "The label of footer link with label=Go Docs"
+  },
+  "link.item.label.Matrix Chat": {
+    "message": "Chat Matrix",
+    "description": "The label of footer link with label=Matrix Chat"
+  },
+  "link.item.label.Sponsor @tulir": {
+    "message": "Apoya a @tulir",
+    "description": "The label of footer link with label=Sponsor @tulir"
+  },
+  "copyright": {
+    "message": "Copyright © 2025 contribuidores de whatsmeow-node. No afiliado a WhatsApp ni a whatsmeow.",
+    "description": "The footer copyright"
+  }
+}

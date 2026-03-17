@@ -1,0 +1,50 @@
+{
+  "title": {
+    "message": "whatsmeow-node",
+    "description": "The title in the navbar"
+  },
+  "item.label.Docs": {
+    "message": "Documentação",
+    "description": "Navbar item with label Docs"
+  },
+  "item.label.Getting Started": {
+    "message": "Primeiros Passos",
+    "description": "Navbar item with label Getting Started"
+  },
+  "item.label.Installation": {
+    "message": "Instalação",
+    "description": "Navbar item with label Installation"
+  },
+  "item.label.Connection Lifecycle": {
+    "message": "Ciclo de Conexão",
+    "description": "Navbar item with label Connection Lifecycle"
+  },
+  "item.label.Comparison": {
+    "message": "Comparação",
+    "description": "Navbar item with label Comparison"
+  },
+  "item.label.Troubleshooting": {
+    "message": "Resolução de Problemas",
+    "description": "Navbar item with label Troubleshooting"
+  },
+  "item.label.Guides": {
+    "message": "Guias",
+    "description": "Navbar item with label Guides"
+  },
+  "item.label.API": {
+    "message": "API",
+    "description": "Navbar item with label API"
+  },
+  "item.label.Examples": {
+    "message": "Exemplos",
+    "description": "Navbar item with label Examples"
+  },
+  "item.label.npm": {
+    "message": "npm",
+    "description": "Navbar item with label npm"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

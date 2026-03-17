@@ -22,7 +22,7 @@ main();`;
 function Feature({title, description}: {title: string; description: string}) {
   return (
     <div style={{flex: 1, minWidth: 220}}>
-      <h3 style={{marginBottom: '0.5rem'}}>{title}</h3>
+      <h2 style={{marginBottom: '0.5rem', fontSize: '1.25rem'}}>{title}</h2>
       <p style={{color: 'var(--ifm-color-emphasis-700)', margin: 0}}>{description}</p>
     </div>
   );
@@ -32,12 +32,14 @@ export default function Home() {
   return (
     <Layout
       title="WhatsApp for Node.js"
-      description="Build WhatsApp integrations in TypeScript. Powered by whatsmeow, the most battle-tested WhatsApp Web library."
+      description="Build WhatsApp integrations in TypeScript with whatsmeow-node — powered by the most battle-tested Go WhatsApp library. No browser needed."
     >
       <main style={{maxWidth: 800, margin: '0 auto', padding: '4rem 1.5rem'}}>
         <img
           src={useBaseUrl('/img/image.png')}
           alt="whatsmeow-node logo"
+          width={120}
+          height={120}
           style={{width: 120, height: 120, marginBottom: '1.5rem'}}
         />
         <Heading as="h1" style={{fontSize: '2.5rem'}}>
@@ -49,11 +51,11 @@ export default function Home() {
           <code>npm&nbsp;install</code>.
         </p>
 
-        <pre style={{padding: '1rem', borderRadius: '8px', margin: '1.5rem 0'}}>
+        <pre style={{padding: '1rem', borderRadius: '8px', margin: '1.5rem 0', overflowX: 'auto', maxWidth: 'calc(100vw - 3rem)'}}>
           <code>npm install @whatsmeow-node/whatsmeow-node</code>
         </pre>
 
-        <div style={{display: 'flex', gap: '0.75rem', margin: '2rem 0'}}>
+        <div style={{display: 'flex', gap: '0.75rem', margin: '2rem 0', flexWrap: 'wrap'}}>
           <Link className="button button--primary button--lg" to="/docs/getting-started">
             Get Started
           </Link>
@@ -62,7 +64,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <CodeBlock language="typescript" title="5 lines to connect">
+        <CodeBlock language="typescript" title="Quick start">
           {quickStart}
         </CodeBlock>
 
@@ -84,7 +86,7 @@ export default function Home() {
           />
           <Feature
             title="Fully typed"
-            description="100 of 126 upstream methods wrapped, typed events, typed errors. Messages, groups, newsletters, media, polls, privacy, encryption, and more."
+            description="100+ typed async methods, typed events, typed errors. Messages, groups, newsletters, media, polls, privacy, encryption, and more."
           />
         </div>
 

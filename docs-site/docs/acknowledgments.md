@@ -1,6 +1,7 @@
 ---
 title: Acknowledgments
 sidebar_position: 10
+description: "Credits and acknowledgments for whatsmeow-node — the whatsmeow Go library by tulir, sponsorship links, and project licensing."
 ---
 
 # Acknowledgments

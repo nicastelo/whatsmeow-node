@@ -1,6 +1,8 @@
 ---
 title: Connection Lifecycle
 sidebar_position: 4
+description: "How whatsmeow-node manages WhatsApp connections — init, connect, QR pairing, auto-reconnect, graceful disconnects, and logouts."
+keywords: [whatsapp connection management, qr code pairing, auto reconnect whatsapp, whatsmeow connection lifecycle]
 ---
 
 # Connection Lifecycle

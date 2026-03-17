@@ -1,6 +1,8 @@
 ---
 title: Rate Limiting
 sidebar_position: 5
+description: "WhatsApp rate limit guidance for whatsmeow-node — approximate thresholds, safe sending patterns, and handling temporary bans."
+keywords: [whatsapp rate limit, whatsapp message limit, whatsapp ban prevention, whatsapp sending limits]
 ---
 
 # Rate Limiting

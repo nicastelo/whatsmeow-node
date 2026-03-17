@@ -17,6 +17,22 @@ const config: Config = {
   onBrokenLinks: 'throw',
   headTags: [
     {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/whatsmeow-node/img/image.png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'apple-touch-icon',
+        href: '/whatsmeow-node/img/image.png',
+      },
+    },
+    {
       tagName: 'meta',
       attributes: {
         name: 'google-site-verification',
@@ -35,7 +51,7 @@ const config: Config = {
       attributes: {
         property: 'og:description',
         content:
-          'TypeScript/Node.js bindings for whatsmeow, the most battle-tested WhatsApp Web library. No Puppeteer, no browser, just npm install.',
+          'TypeScript/Node.js bindings for whatsmeow, the most battle-tested WhatsApp Web library. No Puppeteer, no browser — just npm install.',
       },
     },
     {
@@ -62,15 +78,31 @@ const config: Config = {
     {
       tagName: 'meta',
       attributes: {
-        name: 'description',
-        content:
-          'TypeScript/Node.js bindings for whatsmeow, the most battle-tested WhatsApp Web library. No Puppeteer, no browser, just npm install.',
+        property: 'og:site_name',
+        content: 'whatsmeow-node',
       },
+    },
+    {
+      tagName: 'script',
+      attributes: {
+        type: 'application/ld+json',
+      },
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'whatsmeow-node',
+        url: 'https://nicastelo.github.io/whatsmeow-node/',
+      }),
     },
   ],
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'pt-BR', 'es'],
+    localeConfigs: {
+      en: {label: 'English'},
+      'pt-BR': {label: 'Português', htmlLang: 'pt-BR'},
+      es: {label: 'Español'},
+    },
   },
   presets: [
     [
@@ -79,10 +111,49 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/nicastelo/whatsmeow-node/tree/main/docs-site/',
+          showLastUpdateTime: true,
         },
         blog: false,
         gtag: {
           trackingID: 'G-65NY6175QQ',
+        },
+        sitemap: {
+          lastmod: 'date',
+          changefreq: null,
+          priority: null,
+          createSitemapItems: async (params) => {
+            const {defaultCreateSitemapItems, ...rest} = params;
+            const items = await defaultCreateSitemapItems(rest);
+            return items.map((item) => {
+              const url = item.url;
+              // Landing page
+              if (url.endsWith('/whatsmeow-node/') || url.match(/\/(pt-BR|es)\/$/)) {
+                return {...item, priority: 1.0, changefreq: 'weekly'};
+              }
+              // Key entry points: intro, getting-started, installation, comparison
+              if (url.match(/\/docs\/(intro|getting-started|installation|comparison)$/)) {
+                return {...item, priority: 0.9, changefreq: 'weekly'};
+              }
+              // Guides (SEO-targeted how-to pages)
+              if (url.includes('/docs/guides/')) {
+                return {...item, priority: 0.8, changefreq: 'weekly'};
+              }
+              // FAQ
+              if (url.includes('/docs/faq')) {
+                return {...item, priority: 0.8, changefreq: 'monthly'};
+              }
+              // API reference
+              if (url.includes('/docs/api/')) {
+                return {...item, priority: 0.7, changefreq: 'monthly'};
+              }
+              // Examples
+              if (url.includes('/docs/examples/')) {
+                return {...item, priority: 0.6, changefreq: 'monthly'};
+              }
+              // Everything else (connection-lifecycle, rate-limiting, troubleshooting, acknowledgments)
+              return {...item, priority: 0.5, changefreq: 'monthly'};
+            });
+          },
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -90,7 +161,31 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: '/docs/examples',
+            to: '/docs/examples/overview',
+          },
+          {
+            from: '/docs/guides',
+            to: '/docs/guides/overview',
+          },
+        ],
+      },
+    ],
+  ],
   themeConfig: {
+    metadata: [
+      {
+        name: 'description',
+        content:
+          'TypeScript/Node.js bindings for whatsmeow, the most battle-tested WhatsApp Web library. No Puppeteer, no browser — just npm install.',
+      },
+    ],
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -99,13 +194,40 @@ const config: Config = {
       logo: {
         alt: 'whatsmeow-node',
         src: 'img/image.png',
+        width: 32,
+        height: 32,
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
-          position: 'left',
+          type: 'dropdown',
           label: 'Docs',
+          position: 'left',
+          items: [
+            {label: 'Getting Started', to: '/docs/getting-started'},
+            {label: 'Installation', to: '/docs/installation'},
+            {label: 'Connection Lifecycle', to: '/docs/connection-lifecycle'},
+            {label: 'Comparison', to: '/docs/comparison'},
+            {label: 'Troubleshooting', to: '/docs/troubleshooting/common-issues'},
+          ],
+        },
+        {
+          label: 'Guides',
+          to: '/docs/guides/overview',
+          position: 'left',
+        },
+        {
+          label: 'API',
+          to: '/docs/api/overview',
+          position: 'left',
+        },
+        {
+          label: 'Examples',
+          to: '/docs/examples/overview',
+          position: 'left',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
         {
           href: 'https://www.npmjs.com/package/@whatsmeow-node/whatsmeow-node',
@@ -128,6 +250,14 @@ const config: Config = {
             {
               label: 'Getting Started',
               to: '/docs/intro',
+            },
+            {
+              label: 'Guides',
+              to: '/docs/guides/overview',
+            },
+            {
+              label: 'FAQs',
+              to: '/docs/faq',
             },
             {
               label: 'API Reference',

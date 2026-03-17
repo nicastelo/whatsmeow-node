@@ -21,7 +21,15 @@ The Go binary communicates with Node.js via JSON-line IPC over stdin/stdout. No 
 - [Getting Started](https://nicastelo.github.io/whatsmeow-node/docs/getting-started): Quick start, client options, sending messages, media, contacts, cleanup
 - [Connection Lifecycle](https://nicastelo.github.io/whatsmeow-node/docs/connection-lifecycle): Flow diagram, key events, resilient connection pattern
 - [Rate Limiting](https://nicastelo.github.io/whatsmeow-node/docs/rate-limiting): Observed thresholds, safe sending patterns, backoff strategies
-- [Examples](https://nicastelo.github.io/whatsmeow-node/docs/examples): Runnable example scripts (pair, send, smoke test)
+- [Guides](https://nicastelo.github.io/whatsmeow-node/docs/guides/overview): Step-by-step tutorials for common tasks
+  - [Build a Bot](https://nicastelo.github.io/whatsmeow-node/docs/guides/build-a-bot): Receive messages, handle commands, send replies, graceful shutdown
+  - [Send Stickers](https://nicastelo.github.io/whatsmeow-node/docs/guides/send-stickers): Upload WebP files, set dimensions, download incoming stickers
+  - [Download Media](https://nicastelo.github.io/whatsmeow-node/docs/guides/download-media): Save images, videos, audio, documents, and stickers to disk
+  - [Typing Indicators](https://nicastelo.github.io/whatsmeow-node/docs/guides/typing-indicators): Show composing/recording indicators, subscribe to others' presence
+  - [Pair WhatsApp](https://nicastelo.github.io/whatsmeow-node/docs/guides/pair-whatsapp): QR code and phone number pairing, session persistence
+  - [Connect to AI](https://nicastelo.github.io/whatsmeow-node/docs/guides/connect-to-ai): Build a Claude-powered WhatsApp chatbot with conversation history
+- [FAQ](https://nicastelo.github.io/whatsmeow-node/docs/faq): Frequently asked questions — requirements, account types, deployment, multi-device, serverless, capabilities, comparison with Baileys/whatsapp-web.js/official API
+- [Examples](https://nicastelo.github.io/whatsmeow-node/docs/examples/overview): Runnable example scripts (pairing, messaging, media, groups, presence, bots)
 - [API Overview](https://nicastelo.github.io/whatsmeow-node/docs/api/overview): Full method reference across 18 categories (messaging, media, groups, newsletters, privacy, and more)
 - [Events](https://nicastelo.github.io/whatsmeow-node/docs/api/events): All emitted events (connection, message, presence, group, media, call, history sync)
 - [Errors](https://nicastelo.github.io/whatsmeow-node/docs/api/errors): Error classes, common error codes, method-specific error codes
