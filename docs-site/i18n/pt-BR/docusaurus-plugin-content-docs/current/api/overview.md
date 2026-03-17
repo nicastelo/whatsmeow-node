@@ -3,6 +3,7 @@ title: Referencia da API
 sidebar_label: Visao Geral
 sidebar_position: 1
 description: "Referencia completa da API whatsmeow-node — 100 metodos tipados para mensagens, grupos, midia, newsletters, presenca e mais."
+keywords: [api whatsmeow-node, referencia api whatsapp, metodos cliente whatsapp, api typescript whatsmeow]
 ---
 
 # Visao Geral da API

@@ -3,6 +3,7 @@ title: Límites de Tasa
 sidebar_label: Límites de tasa
 sidebar_position: 5
 description: "Guía de límites de tasa de WhatsApp para whatsmeow-node — umbrales aproximados, patrones seguros de envío y manejo de baneos temporales."
+keywords: [límite tasa whatsapp, límite mensajes whatsapp, prevención ban whatsapp, límites envío whatsapp]
 ---
 
 # Límites de Tasa

@@ -3,6 +3,7 @@ title: Manejo de Errores
 sidebar_label: Errores
 sidebar_position: 3
 description: "Manejo de errores en whatsmeow-node — clases de errores tipados, códigos de error para cada categoría de método y patrones de captura recomendados."
+keywords: [manejo errores whatsmeow, errores api whatsapp, códigos error whatsapp, tipos error whatsmeow-node]
 ---
 
 # Manejo de Errores

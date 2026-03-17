@@ -3,6 +3,7 @@ title: Guia de Instalacao
 sidebar_label: Instalacao
 sidebar_position: 2
 description: "Instale o whatsmeow-node com npm. Binarios Go pre-compilados para macOS, Linux e Windows. Suporte a SQLite e PostgreSQL."
+keywords: [instalar whatsmeow-node, npm whatsapp, configurar whatsapp nodejs, binario go pre-compilado, sqlite postgresql whatsapp]
 ---
 
 # Instalacao

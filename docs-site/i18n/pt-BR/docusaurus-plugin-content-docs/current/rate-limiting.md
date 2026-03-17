@@ -2,6 +2,7 @@
 title: Limites de Taxa
 sidebar_position: 5
 description: "Orientacoes sobre limites de taxa do WhatsApp para whatsmeow-node — limites aproximados, padroes seguros de envio e como lidar com banimentos temporarios."
+keywords: [limite taxa whatsapp, limite mensagens whatsapp, prevencao ban whatsapp, limites envio whatsapp]
 ---
 
 # Limites de Taxa

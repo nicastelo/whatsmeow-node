@@ -13,12 +13,12 @@ Se voce esta construindo automacao WhatsApp em Node.js, provavelmente ja encontr
 
 | | whatsmeow-node | Baileys | whatsapp-web.js | API Cloud Oficial |
 |---|---|---|---|---|
-| Protocolo | Multi-device (nativo) | Multi-device (JS) | Web client (Puppeteer) | REST API |
+| Protocolo | Multi-device (whatsmeow) | Multi-device (JS) | Web client (Puppeteer) | REST API |
 | Linguagem | Binario Go + wrapper TS | TypeScript | JavaScript | Qualquer (HTTP) |
 | Memoria | ~10-20 MB | ~50 MB | ~200-500 MB | N/A (server-side) |
 | Setup | `npm install` | `npm install` | Chrome + `npm install` | Verificacao Meta Business |
 | Manutencao | Ativo | Multiplos forks | Inativo | Meta |
-| Custo | Gratuito | Gratuito | Gratuito | Preco por conversa |
+| Custo | Gratuito | Gratuito | Gratuito | Preco por mensagem |
 
 ## Baileys
 
@@ -63,21 +63,27 @@ A [API oficial](https://developers.facebook.com/docs/whatsapp/cloud-api) da Meta
 
 **Desvantagens:**
 - Requer verificacao Meta Business (pode levar dias a semanas)
-- Preco por conversa que se acumula com o volume
+- Cobranca por mensagem (mensagens de marketing, utilidade e autenticacao sao cobradas individualmente)
 - Mensagens template precisam ser pre-aprovadas para envio ativo
-- Mais limitada que o protocolo completo do WhatsApp (sem gerenciamento de grupos, etc.)
+- Suporte a grupos muito limitado — so funciona com grupos criados pela API (nao e possivel enviar mensagens ou gerenciar grupos existentes), requer 100K+ conversas mensais, maximo de 8 participantes por grupo e limite de 10K grupos
 
 **Quando usar a API oficial:** Se voce precisa de uptime garantido, esta enviando mensagens para clientes em escala, ou seu negocio exige conformidade oficial.
 
-## whatsmeow-node
+## Por que whatsmeow-node?
 
-whatsmeow-node encapsula o [whatsmeow](https://github.com/tulir/whatsmeow), a biblioteca Go que e a base da [Mautrix WhatsApp bridge](https://github.com/mautrix/whatsapp) — usada 24/7 por milhares de servidores Matrix.
+Primeiro tentei o [Baileys](https://github.com/WhiskeySockets/Baileys) e nao consegui nem fazer funcionar direito por conta de alguns problemas em aberto. Tambem olhei o [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js), mas nao queria ir pelo caminho do Puppeteer — rodar uma instancia completa de navegador parecia exagero para o que eu precisava.
 
-**Por que e diferente:**
-- **Upstream testado em batalha** — o whatsmeow cuida do protocolo. Quando o WhatsApp muda algo, os mantenedores do whatsmeow (que tambem mantêm a bridge Mautrix) corrigem. Voce herda essa estabilidade.
-- **Leve** — um unico binario Go, ~10-20 MB de memoria. Sem navegador, sem runtime pesado.
-- **DX completa em TypeScript** — 100 metodos async tipados, eventos tipados, erros tipados. Parece nativo em um projeto TS.
-- **Go nao e necessario** — binarios pre-compilados para macOS, Linux e Windows. Basta `npm install`.
+Eu ja conhecia o [whatsmeow](https://github.com/tulir/whatsmeow) porque estava usando ele atraves do [OpenClaw](https://openclaw.com), e percebi que era a biblioteca Go por tras dele. Com o OpenClaw crescendo rapido, o whatsmeow estava sendo usado por uma tonelada de usuarios todos os dias — o que pra mim era prova de que simplesmente funciona.
+
+O unico problema? E escrito em Go. Se voce trabalha principalmente com Node/TypeScript — ou quer plugar em algo como um app Next.js, que era o meu caso — nao e exatamente plug-and-play.
+
+Entao eu construi um wrapper Node com metodos tipados e suporte async, pra que parecesse nativo em um projeto TS. Sem necessidade de configurar Go do seu lado — binarios pre-compilados para macOS, Linux e Windows. Basta `npm install`.
+
+### Por que nao reimplementar o whatsmeow em TypeScript?
+
+Manter uma biblioteca de protocolo do WhatsApp exige engenharia reversa constante toda vez que o WhatsApp faz mudancas. Os [mantenedores do whatsmeow](https://github.com/tulir/whatsmeow/graphs/contributors) (que tambem mantêm a [bridge Mautrix WhatsApp](https://github.com/mautrix/whatsapp), usada 24/7 por milhares de servidores Matrix) ja fazem isso incrivelmente bem. Nao faz sentido duplicar esse esforco em outra linguagem — e melhor focar em manter uma implementacao solida do protocolo e expô-la para outros ambientes.
+
+E exatamente isso que o whatsmeow-node faz: voce ganha o tratamento de protocolo testado em batalha do whatsmeow com uma experiencia de desenvolvimento nativa em TypeScript.
 
 **Trade-offs:**
 - Inicia um processo Go externo (gerenciado automaticamente)
@@ -87,8 +93,10 @@ whatsmeow-node encapsula o [whatsmeow](https://github.com/tulir/whatsmeow), a bi
 
 Para a maioria dos projetos, o setup pratico e:
 
-1. **Use whatsmeow-node (ou similar) para desenvolvimento e mensagens primarias** — rapido, leve, acesso completo ao protocolo
+1. **Use whatsmeow-node (ou similar) para desenvolvimento e mensagens primarias** — rapido, leve, acesso completo ao protocolo incluindo grupos
 2. **Tenha a API oficial da Meta como fallback** — se uptime e absolutamente critico, a API oficial e a unica opcao segura garantida a longo prazo
+
+Lembre-se que a API oficial da Meta tem suporte a grupos muito limitado — so pode gerenciar grupos criados pela propria API (nao grupos existentes), e restrito a 100K+ conversas mensais e limita grupos a 8 participantes. Se seu projeto precisa de funcionalidade completa de grupos, uma biblioteca open-source como whatsmeow-node e sua unica opcao.
 
 Isso te da o melhor dos dois mundos: a experiencia de desenvolvimento e cobertura de protocolo de uma biblioteca open-source, com a seguranca da API oficial quando isso importa mais.
 

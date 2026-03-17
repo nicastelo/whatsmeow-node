@@ -3,6 +3,7 @@ title: Referencia de Eventos
 sidebar_label: Eventos
 sidebar_position: 2
 description: "Todos os eventos do whatsmeow-node — conexao, mensagem, grupo, presenca, chamada, newsletter e eventos QR com payloads totalmente tipados."
+keywords: [eventos whatsmeow, evento mensagem whatsapp, webhook whatsapp nodejs, listener eventos whatsapp typescript]
 ---
 
 # Eventos

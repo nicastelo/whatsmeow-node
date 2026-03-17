@@ -3,6 +3,7 @@ title: API Reference Overview
 sidebar_label: API Overview
 sidebar_position: 1
 description: "Complete API reference for whatsmeow-node — 100 typed methods for messaging, groups, media, newsletters, presence, and more."
+keywords: [whatsmeow-node api, whatsapp api reference, whatsapp client methods, whatsmeow typescript api]
 ---
 
 # API Overview

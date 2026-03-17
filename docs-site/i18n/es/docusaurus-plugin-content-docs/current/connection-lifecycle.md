@@ -3,6 +3,7 @@ title: Ciclo de Vida de la Conexión
 sidebar_label: Conexión
 sidebar_position: 4
 description: "Cómo whatsmeow-node gestiona las conexiones de WhatsApp — init, connect, emparejamiento QR, reconexión automática, desconexiones y logouts."
+keywords: [gestión conexión whatsapp, emparejamiento código qr, reconexión automática whatsapp, ciclo vida conexión whatsmeow]
 ---
 
 # Ciclo de Vida de la Conexión

@@ -2,6 +2,7 @@
 title: Primeiros Passos
 sidebar_position: 3
 description: "Guia de inicio rapido do whatsmeow-node — conecte ao WhatsApp, envie mensagens, manipule midia e gerencie eventos em TypeScript."
+keywords: [whatsmeow-node inicio rapido, tutorial bot whatsapp, enviar mensagem whatsapp nodejs, tutorial whatsapp typescript]
 ---
 
 # Primeiros Passos

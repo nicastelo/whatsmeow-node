@@ -2,6 +2,7 @@
 title: Problemas Comunes
 sidebar_position: 1
 description: "Soluciones para problemas comunes de whatsmeow-node — QR que no aparece, errores de conexión, nombres de campos proto y fallos al enviar mensajes."
+keywords: [solución problemas whatsmeow-node, qr whatsapp no aparece, error conexión whatsapp, fallo envío mensaje whatsapp]
 ---
 
 # Problemas Comunes

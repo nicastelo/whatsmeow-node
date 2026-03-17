@@ -2,6 +2,7 @@
 title: Getting Started
 sidebar_position: 3
 description: "Quick start guide for whatsmeow-node — connect to WhatsApp, send messages, handle media, and manage events in TypeScript."
+keywords: [whatsmeow-node quickstart, whatsapp bot tutorial, send whatsapp message nodejs, whatsapp typescript tutorial]
 ---
 
 # Getting Started

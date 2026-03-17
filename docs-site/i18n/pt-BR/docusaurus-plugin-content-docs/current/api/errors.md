@@ -3,6 +3,7 @@ title: Tratamento de Erros
 sidebar_label: Erros
 sidebar_position: 3
 description: "Tratamento de erros no whatsmeow-node — classes de erro tipadas, codigos de erro para cada categoria de metodo e padroes de catch recomendados."
+keywords: [tratamento erros whatsmeow, erros api whatsapp, codigos erro whatsapp, tipos erro whatsmeow-node]
 ---
 
 # Tratamento de Erros

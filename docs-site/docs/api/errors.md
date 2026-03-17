@@ -3,6 +3,7 @@ title: Error Handling
 sidebar_label: Errors
 sidebar_position: 3
 description: "Error handling in whatsmeow-node — typed error classes, error codes for every method category, and recommended catch patterns."
+keywords: [whatsmeow error handling, whatsapp api errors, whatsapp error codes, whatsmeow-node error types]
 ---
 
 # Error Handling
