@@ -104,4 +104,6 @@ This gives you the best of both worlds: the developer experience and protocol co
 
 - [Install whatsmeow-node](./installation)
 - [Send your first message](./getting-started)
+- [Migrate from Baileys](./guides/migrate-from-baileys) — step-by-step migration guide
+- [Migrate from whatsapp-web.js](./guides/migrate-from-whatsapp-web-js) — drop Puppeteer, get typed async methods
 - [Explore the API](./api/overview)

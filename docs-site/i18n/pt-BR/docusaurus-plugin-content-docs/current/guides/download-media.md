@@ -6,6 +6,42 @@ description: "Baixe e salve imagens, vídeos, áudios, documentos e stickers do 
 keywords: [baixar midia whatsapp nodejs, salvar imagens whatsapp api, baixar videos whatsapp programaticamente, download midia whatsapp typescript]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/download-media.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/download-media.png" />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Como Baixar Mídias do WhatsApp com Node.js",
+      "description": "Baixe e salve imagens, vídeos, áudios, documentos e stickers do WhatsApp no disco com Node.js usando whatsmeow-node.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/download-media.png",
+      "step": [
+        {"@type": "HowToStep", "name": "Listen for Incoming Messages", "text": "Subscribe to the message event and filter for media messages."},
+        {"@type": "HowToStep", "name": "Detect the Media Type", "text": "Check for imageMessage, videoMessage, audioMessage, documentMessage, or stickerMessage fields."},
+        {"@type": "HowToStep", "name": "Download with downloadAny()", "text": "Call downloadAny(message) to decrypt and save media to a temporary file."},
+        {"@type": "HowToStep", "name": "Save to a Permanent Location", "text": "Copy the temp file to a permanent directory using fs.copyFile()."}
+      ]
+    })}
+  </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Como Baixar Mídias do WhatsApp com Node.js",
+      "description": "Baixe e salve imagens, vídeos, áudios, documentos e stickers do WhatsApp no disco com Node.js usando whatsmeow-node.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/download-media.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
+</Head>
+
+![Como Baixar Mídias do WhatsApp com Node.js](/img/guides/pt-BR/download-media.png)
+![Como Baixar Mídias do WhatsApp com Node.js](/img/guides/pt-BR/download-media-light.png)
+
 # Como Baixar Mídias do WhatsApp com Node.js
 
 whatsmeow-node pode baixar qualquer tipo de mídia — imagens, vídeos, áudios, documentos e stickers — com uma única chamada a `downloadAny()`. O arquivo é descriptografado e salvo em um caminho temporário no disco.

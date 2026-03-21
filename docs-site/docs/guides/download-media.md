@@ -9,12 +9,15 @@ keywords: [download whatsapp media nodejs, save whatsapp images api, download wh
 import Head from '@docusaurus/Head';
 
 <Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/download-media.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/download-media.png" />
   <script type="application/ld+json">
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
       "name": "How to Download WhatsApp Media with Node.js",
       "description": "Download and save WhatsApp images, videos, audio, documents, and stickers to disk with Node.js using whatsmeow-node.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/download-media.png",
       "step": [
         {"@type": "HowToStep", "name": "Listen for Incoming Messages", "text": "Subscribe to the message event and filter for media messages."},
         {"@type": "HowToStep", "name": "Detect the Media Type", "text": "Check for imageMessage, videoMessage, audioMessage, documentMessage, or stickerMessage fields."},
@@ -23,7 +26,21 @@ import Head from '@docusaurus/Head';
       ]
     })}
   </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Download WhatsApp Media with Node.js",
+      "description": "Download and save WhatsApp images, videos, audio, documents, and stickers to disk with Node.js using whatsmeow-node.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/download-media.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
 </Head>
+
+![How to Download WhatsApp Media with Node.js](/img/guides/download-media.png)
+![How to Download WhatsApp Media with Node.js](/img/guides/download-media-light.png)
 
 # How to Download WhatsApp Media with Node.js
 

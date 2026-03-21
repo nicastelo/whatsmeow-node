@@ -9,12 +9,15 @@ keywords: [whatsapp bot nodejs, build whatsapp bot typescript, whatsapp bot tuto
 import Head from '@docusaurus/Head';
 
 <Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/build-a-bot.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/build-a-bot.png" />
   <script type="application/ld+json">
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
       "name": "How to Build a WhatsApp Bot with Node.js",
       "description": "Build a WhatsApp bot with Node.js and TypeScript — receive messages, handle commands, reply with quotes, and manage connections.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/build-a-bot.png",
       "step": [
         {"@type": "HowToStep", "name": "Create the Client", "text": "Initialize a WhatsmeowClient with createClient() and a session store."},
         {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event and extract text from conversation or extendedTextMessage."},
@@ -25,7 +28,21 @@ import Head from '@docusaurus/Head';
       ]
     })}
   </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Build a WhatsApp Bot with Node.js",
+      "description": "Build a WhatsApp bot with Node.js and TypeScript — receive messages, handle commands, reply with quotes, and manage connections.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/build-a-bot.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
 </Head>
+
+![How to Build a WhatsApp Bot with Node.js](/img/guides/build-a-bot.png)
+![How to Build a WhatsApp Bot with Node.js](/img/guides/build-a-bot-light.png)
 
 # How to Build a WhatsApp Bot with Node.js
 

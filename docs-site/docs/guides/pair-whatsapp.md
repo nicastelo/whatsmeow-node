@@ -9,12 +9,15 @@ keywords: [pair whatsapp nodejs, whatsapp qr code api, link whatsapp device prog
 import Head from '@docusaurus/Head';
 
 <Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pair-whatsapp.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pair-whatsapp.png" />
   <script type="application/ld+json">
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
       "name": "How to Pair WhatsApp with Node.js",
       "description": "Link a WhatsApp account to your Node.js app using QR code scanning or phone number code entry. Includes session persistence and reconnection.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pair-whatsapp.png",
       "step": [
         {"@type": "HowToStep", "name": "QR Code Pairing", "text": "Call getQRChannel() then connect(). Listen for the qr event and render the code with qrcode-terminal."},
         {"@type": "HowToStep", "name": "Phone Number Pairing", "text": "Call connect() first, then pairCode(phoneNumber). The user enters the 8-digit code in WhatsApp."},
@@ -23,7 +26,21 @@ import Head from '@docusaurus/Head';
       ]
     })}
   </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Pair WhatsApp with Node.js",
+      "description": "Link a WhatsApp account to your Node.js app using QR code scanning or phone number code entry. Includes session persistence and reconnection.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pair-whatsapp.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
 </Head>
+
+![How to Pair WhatsApp with Node.js](/img/guides/pair-whatsapp.png)
+![How to Pair WhatsApp with Node.js](/img/guides/pair-whatsapp-light.png)
 
 # How to Pair WhatsApp with Node.js
 

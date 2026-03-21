@@ -46,3 +46,92 @@
   border-color: var(--ifm-color-primary-light) !important;
   background: rgba(56, 185, 126, 0.1) !important;
 }
+
+/* Guide hero images — styling + theme switching.
+   Docusaurus hashes image filenames into /assets/images/slug-HASH.png,
+   so we match on the "-light-" segment in the hashed filename. */
+.markdown img[alt*="How to"],
+.markdown img[alt*="Como"],
+.markdown img[alt*="Cómo"] {
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.markdown img[src*="-light-"] {
+  display: none;
+}
+
+[data-theme='light'] .markdown img[src*="-light-"] {
+  display: inline;
+}
+
+[data-theme='light'] .markdown img[alt*="How to"]:not([src*="-light-"]),
+[data-theme='light'] .markdown img[alt*="Como"]:not([src*="-light-"]),
+[data-theme='light'] .markdown img[alt*="Cómo"]:not([src*="-light-"]) {
+  display: none;
+}
+
+/* Guide cards */
+.guide-section h2 {
+  margin-bottom: 0.75rem;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.guide-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.guide-card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-decoration: none !important;
+}
+
+[data-theme='dark'] .guide-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.guide-card__image {
+  width: 100%;
+  display: block;
+}
+
+.guide-card__image--light {
+  display: none;
+}
+
+[data-theme='light'] .guide-card__image--dark {
+  display: none;
+}
+
+[data-theme='light'] .guide-card__image--light {
+  display: block;
+}
+
+.guide-card__body {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.guide-card__body h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.guide-card__body p {
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9rem;
+}

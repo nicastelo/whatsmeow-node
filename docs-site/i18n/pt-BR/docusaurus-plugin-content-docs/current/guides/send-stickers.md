@@ -6,6 +6,41 @@ description: "Envie e receba stickers de WhatsApp programaticamente com Node.js 
 keywords: [enviar stickers bot whatsapp, api sticker whatsapp nodejs, enviar sticker webp whatsapp, baixar stickers whatsapp nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/send-stickers.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/send-stickers.png" />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Como Enviar Stickers no WhatsApp com Node.js",
+      "description": "Envie e receba stickers de WhatsApp programaticamente com Node.js — faça upload de arquivos WebP, defina dimensões e baixe stickers recebidos.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/send-stickers.png",
+      "step": [
+        {"@type": "HowToStep", "name": "Upload the Sticker File", "text": "Use uploadMedia() with the WebP file path and 'image' media type."},
+        {"@type": "HowToStep", "name": "Send the Sticker Message", "text": "Use sendRawMessage with stickerMessage including width, height (512x512), and mimetype image/webp."},
+        {"@type": "HowToStep", "name": "Download Incoming Stickers", "text": "Listen for messages with stickerMessage and call downloadAny() to save to disk."}
+      ]
+    })}
+  </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Como Enviar Stickers no WhatsApp com Node.js",
+      "description": "Envie e receba stickers de WhatsApp programaticamente com Node.js — faça upload de arquivos WebP, defina dimensões e baixe stickers recebidos.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/send-stickers.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
+</Head>
+
+![Como Enviar Stickers no WhatsApp com Node.js](/img/guides/pt-BR/send-stickers.png)
+![Como Enviar Stickers no WhatsApp com Node.js](/img/guides/pt-BR/send-stickers-light.png)
+
 # Como Enviar Stickers no WhatsApp com Node.js
 
 Stickers no WhatsApp são imagens WebP enviadas com o formato proto `stickerMessage`. whatsmeow-node cuida do upload e da criptografia — você só precisa fornecer o arquivo e as dimensões.

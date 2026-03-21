@@ -1,0 +1,125 @@
+---
+title: Guides
+sidebar_label: Guides
+sidebar_position: 1
+description: "Step-by-step WhatsApp bot tutorials for Node.js and TypeScript — build bots, send stickers, download media, and integrate with AI."
+keywords: [whatsapp nodejs guides, whatsapp bot tutorials, whatsapp api typescript tutorials]
+---
+
+import Head from '@docusaurus/Head';
+import {GuideCard, GuideSection} from '@site/src/components/GuideCard';
+
+<Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/image.png" />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "whatsmeow-node Guides",
+      "description": "Step-by-step WhatsApp bot tutorials for Node.js and TypeScript — build bots, send stickers, download media, and integrate with AI.",
+      "numberOfItems": 11,
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "How to Use whatsmeow in Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/whatsmeow-in-node"},
+        {"@type": "ListItem", "position": 2, "name": "How to Build a WhatsApp Bot with Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/build-a-bot"},
+        {"@type": "ListItem", "position": 3, "name": "How to Pair WhatsApp with Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/pair-whatsapp"},
+        {"@type": "ListItem", "position": 4, "name": "How to Send WhatsApp Messages from TypeScript", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/send-messages-typescript"},
+        {"@type": "ListItem", "position": 5, "name": "How to Automate Group Messages in WhatsApp", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/automate-group-messages"},
+        {"@type": "ListItem", "position": 6, "name": "How to Send Stickers on WhatsApp with Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/send-stickers"},
+        {"@type": "ListItem", "position": 7, "name": "How to Show Typing Indicators on WhatsApp", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/typing-indicators"},
+        {"@type": "ListItem", "position": 8, "name": "How to Download WhatsApp Media with Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/download-media"},
+        {"@type": "ListItem", "position": 9, "name": "How to Replace Baileys with whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/migrate-from-baileys"},
+        {"@type": "ListItem", "position": 10, "name": "How to Replace whatsapp-web.js with whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/migrate-from-whatsapp-web-js"},
+        {"@type": "ListItem", "position": 11, "name": "How to Connect WhatsApp to Claude AI", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/connect-to-ai"}
+      ]
+    })}
+  </script>
+</Head>
+
+# Guides
+
+Hands-on tutorials that walk you through common WhatsApp automation tasks with whatsmeow-node.
+
+<GuideSection title="Getting Started">
+  <GuideCard
+    title="Use whatsmeow in Node.js"
+    description="Install the npm package, connect to WhatsApp, and start using whatsmeow from TypeScript — no Go setup needed."
+    to="whatsmeow-in-node"
+    image="/img/guides/whatsmeow-in-node.png"
+  />
+  <GuideCard
+    title="Build a Bot"
+    description="Create a WhatsApp bot from scratch — receive messages, handle commands, send replies."
+    to="build-a-bot"
+    image="/img/guides/build-a-bot.png"
+  />
+  <GuideCard
+    title="Pair WhatsApp"
+    description="Link a WhatsApp account via QR code or phone number code."
+    to="pair-whatsapp"
+    image="/img/guides/pair-whatsapp.png"
+  />
+</GuideSection>
+
+<GuideSection title="Messaging">
+  <GuideCard
+    title="Send Messages from TypeScript"
+    description="Text, replies, mentions, media, polls, and reactions — all with full type safety."
+    to="send-messages-typescript"
+    image="/img/guides/send-messages-typescript.png"
+  />
+  <GuideCard
+    title="Automate Group Messages"
+    description="Send to groups, mention members, broadcast to multiple groups, and manage participants."
+    to="automate-group-messages"
+    image="/img/guides/automate-group-messages.png"
+  />
+  <GuideCard
+    title="Send Stickers"
+    description="Upload and send WebP stickers, download incoming stickers."
+    to="send-stickers"
+    image="/img/guides/send-stickers.png"
+  />
+  <GuideCard
+    title="Typing Indicators"
+    description="Show 'typing...' and 'recording audio...' indicators, subscribe to others' presence."
+    to="typing-indicators"
+    image="/img/guides/typing-indicators.png"
+  />
+</GuideSection>
+
+<GuideSection title="Media">
+  <GuideCard
+    title="Download Media"
+    description="Save incoming images, videos, audio, and documents to disk."
+    to="download-media"
+    image="/img/guides/download-media.png"
+  />
+</GuideSection>
+
+<GuideSection title="Migration">
+  <GuideCard
+    title="Migrate from Baileys"
+    description="Side-by-side API comparison and step-by-step migration from Baileys to whatsmeow-node."
+    to="migrate-from-baileys"
+    image="/img/guides/migrate-from-baileys.png"
+  />
+  <GuideCard
+    title="Migrate from whatsapp-web.js"
+    description="Drop Puppeteer, cut memory from 500 MB to 20 MB, and get a typed async API."
+    to="migrate-from-whatsapp-web-js"
+    image="/img/guides/migrate-from-whatsapp-web-js.png"
+  />
+</GuideSection>
+
+<GuideSection title="Integrations">
+  <GuideCard
+    title="Connect to AI"
+    description="Build an AI-powered WhatsApp chatbot with Claude."
+    to="connect-to-ai"
+    image="/img/guides/connect-to-ai.png"
+  />
+</GuideSection>
+
+## Looking for code snippets?
+
+The [Examples](/docs/examples/overview) section has focused, copy-pasteable code for specific features — media, groups, polls, reactions, and more.
