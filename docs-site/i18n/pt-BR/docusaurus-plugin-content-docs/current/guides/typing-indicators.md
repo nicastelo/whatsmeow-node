@@ -19,11 +19,11 @@ import Head from '@docusaurus/Head';
       "description": "Mostre indicadores de digitação e gravação no WhatsApp com Node.js — controle o estado de composição, presença online e inscreva-se na digitação de outros.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/typing-indicators.png",
       "step": [
-        {"@type": "HowToStep", "name": "Show typing...", "text": "Call sendChatPresence(chatJid, 'composing') to show the typing indicator."},
-        {"@type": "HowToStep", "name": "Show recording audio...", "text": "Call sendChatPresence(chatJid, 'composing', 'audio') for the recording indicator."},
-        {"@type": "HowToStep", "name": "Clear the Indicator", "text": "Call sendChatPresence(chatJid, 'paused') to stop the indicator without sending a message."},
-        {"@type": "HowToStep", "name": "Set Online/Offline Status", "text": "Call sendPresence('available') before typing indicators work, and 'unavailable' when shutting down."},
-        {"@type": "HowToStep", "name": "Subscribe to Others' Typing", "text": "Call subscribePresence(jid) and listen for presence and chat_presence events."}
+        {"@type": "HowToStep", "name": "Mostrar digitando...", "text": "Chame sendChatPresence(chatJid, 'composing') para mostrar o indicador de digitação."},
+        {"@type": "HowToStep", "name": "Mostrar gravando áudio...", "text": "Chame sendChatPresence(chatJid, 'composing', 'audio') para o indicador de gravação."},
+        {"@type": "HowToStep", "name": "Limpar o Indicador", "text": "Chame sendChatPresence(chatJid, 'paused') para parar o indicador sem enviar uma mensagem."},
+        {"@type": "HowToStep", "name": "Definir Status Online/Offline", "text": "Chame sendPresence('available') antes de usar indicadores de digitação, e 'unavailable' ao encerrar."},
+        {"@type": "HowToStep", "name": "Inscrever-se na Digitação de Outros", "text": "Chame subscribePresence(jid) e escute os eventos presence e chat_presence."}
       ]
     })}
   </script>

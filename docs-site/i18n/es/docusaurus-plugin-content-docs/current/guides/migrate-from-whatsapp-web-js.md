@@ -16,15 +16,15 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Replace whatsapp-web.js with whatsmeow-node",
-      "description": "Migrate from whatsapp-web.js to whatsmeow-node — drop Puppeteer, cut memory from 500 MB to 20 MB, and get a typed async API.",
+      "name": "Cómo Reemplazar whatsapp-web.js con whatsmeow-node",
+      "description": "Migra de whatsapp-web.js a whatsmeow-node — elimina Puppeteer, reduce la memoria de 500 MB a 20 MB y obtén una API async tipada.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/migrate-from-whatsapp-web-js.png",
       "step": [
-        {"@type": "HowToStep", "name": "Install whatsmeow-node", "text": "Replace whatsapp-web.js and puppeteer with @whatsmeow-node/whatsmeow-node."},
-        {"@type": "HowToStep", "name": "Update Client Initialization", "text": "Replace new Client() with createClient(). No LocalAuth or Puppeteer configuration needed."},
-        {"@type": "HowToStep", "name": "Update Event Listeners", "text": "Replace client.on('message') callback shapes and update message property access patterns."},
-        {"@type": "HowToStep", "name": "Update Message Sending", "text": "Replace client.sendMessage() with the whatsmeow-node sendMessage or sendRawMessage methods."},
-        {"@type": "HowToStep", "name": "Remove Browser Dependencies", "text": "Remove Puppeteer, Chromium, and any browser-related configuration from your project."}
+        {"@type": "HowToStep", "name": "Instalar whatsmeow-node", "text": "Reemplaza whatsapp-web.js y puppeteer con @whatsmeow-node/whatsmeow-node."},
+        {"@type": "HowToStep", "name": "Actualizar la inicialización del cliente", "text": "Reemplaza new Client() con createClient(). No se necesita configuración de LocalAuth ni Puppeteer."},
+        {"@type": "HowToStep", "name": "Actualizar los listeners de eventos", "text": "Reemplaza las formas de callback de client.on('message') y actualiza los patrones de acceso a propiedades de mensajes."},
+        {"@type": "HowToStep", "name": "Actualizar el envío de mensajes", "text": "Reemplaza client.sendMessage() con los métodos sendMessage o sendRawMessage de whatsmeow-node."},
+        {"@type": "HowToStep", "name": "Eliminar dependencias del navegador", "text": "Elimina Puppeteer, Chromium y cualquier configuración relacionada con el navegador de tu proyecto."}
       ]
     })}
   </script>
@@ -32,8 +32,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Replace whatsapp-web.js with whatsmeow-node",
-      "description": "Migrate from whatsapp-web.js to whatsmeow-node — drop Puppeteer, cut memory from 500 MB to 20 MB, and get a typed async API.",
+      "headline": "Cómo Reemplazar whatsapp-web.js con whatsmeow-node",
+      "description": "Migra de whatsapp-web.js a whatsmeow-node — elimina Puppeteer, reduce la memoria de 500 MB a 20 MB y obtén una API async tipada.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/migrate-from-whatsapp-web-js.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/migrate-from-whatsapp-web-js.png"}}

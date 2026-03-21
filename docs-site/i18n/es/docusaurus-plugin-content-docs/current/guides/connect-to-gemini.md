@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Connect WhatsApp to Google Gemini",
-      "description": "Build a WhatsApp chatbot powered by Google Gemini using whatsmeow-node and the Google GenAI SDK. Includes conversation history and typing indicators.",
+      "name": "Cómo Conectar WhatsApp con Google Gemini",
+      "description": "Crea un chatbot de WhatsApp con Google Gemini usando whatsmeow-node y el SDK de Google GenAI. Incluye historial de conversación e indicadores de escritura.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/connect-to-gemini.png",
       "step": [
-        {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and Google GenAI with new GoogleGenAI()."},
-        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
-        {"@type": "HowToStep", "name": "Send to Gemini", "text": "Call ai.models.generateContent() with the user message and send the response back via sendMessage."},
-        {"@type": "HowToStep", "name": "Add Conversation History", "text": "Use Gemini's multi-turn chat feature to maintain conversation context per user."}
+        {"@type": "HowToStep", "name": "Configurar ambos clientes", "text": "Inicializa WhatsmeowClient con createClient() y Google GenAI con new GoogleGenAI()."},
+        {"@type": "HowToStep", "name": "Manejar mensajes entrantes", "text": "Escucha el evento message, omite los mensajes propios, muestra el indicador de escritura y extrae el texto."},
+        {"@type": "HowToStep", "name": "Enviar a Gemini", "text": "Llama a ai.models.generateContent() con el mensaje del usuario y envía la respuesta de vuelta con sendMessage."},
+        {"@type": "HowToStep", "name": "Agregar historial de conversación", "text": "Usa la función de chat multi-turno de Gemini para mantener el contexto de conversación por usuario."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Connect WhatsApp to Google Gemini",
-      "description": "Build a WhatsApp chatbot powered by Google Gemini using whatsmeow-node and the Google GenAI SDK. Includes conversation history and typing indicators.",
+      "headline": "Cómo Conectar WhatsApp con Google Gemini",
+      "description": "Crea un chatbot de WhatsApp con Google Gemini usando whatsmeow-node y el SDK de Google GenAI. Incluye historial de conversación e indicadores de escritura.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/connect-to-gemini.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

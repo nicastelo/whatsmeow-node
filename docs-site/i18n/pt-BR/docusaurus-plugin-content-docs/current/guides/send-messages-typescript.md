@@ -16,15 +16,15 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Send WhatsApp Messages from TypeScript",
-      "description": "Send WhatsApp messages from TypeScript with full type safety — text, replies, mentions, media, polls, and reactions using whatsmeow-node.",
+      "name": "Como Enviar Mensagens no WhatsApp com TypeScript",
+      "description": "Envie mensagens pelo WhatsApp com TypeScript e tipagem completa — texto, respostas, menções, mídia, enquetes e reações usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/send-messages-typescript.png",
       "step": [
-        {"@type": "HowToStep", "name": "Set Up the Client", "text": "Install whatsmeow-node and create a client with createClient(). Pair via QR code on first run."},
-        {"@type": "HowToStep", "name": "Send a Text Message", "text": "Use sendMessage(jid, { conversation: text }) for simple messages."},
-        {"@type": "HowToStep", "name": "Reply with Quotes and Mentions", "text": "Use sendRawMessage with extendedTextMessage and contextInfo for quoted replies and @mentions."},
-        {"@type": "HowToStep", "name": "Send Media Messages", "text": "Upload files with uploadMedia(), then send with sendRawMessage using the returned media metadata."},
-        {"@type": "HowToStep", "name": "React, Edit, and Delete", "text": "Use sendReaction(), editMessage(), and revokeMessage() to interact with sent messages."}
+        {"@type": "HowToStep", "name": "Configurar o Client", "text": "Instale o whatsmeow-node e crie um client com createClient(). Pareie via QR code na primeira execução."},
+        {"@type": "HowToStep", "name": "Enviar uma Mensagem de Texto", "text": "Use sendMessage(jid, { conversation: texto }) para mensagens simples."},
+        {"@type": "HowToStep", "name": "Responder com Citações e Menções", "text": "Use sendRawMessage com extendedTextMessage e contextInfo para respostas com citação e @menções."},
+        {"@type": "HowToStep", "name": "Enviar Mensagens de Mídia", "text": "Faça upload de arquivos com uploadMedia(), depois envie com sendRawMessage usando os metadados de mídia retornados."},
+        {"@type": "HowToStep", "name": "Reagir, Editar e Apagar", "text": "Use sendReaction(), editMessage() e revokeMessage() para interagir com mensagens enviadas."}
       ]
     })}
   </script>
@@ -32,8 +32,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Send WhatsApp Messages from TypeScript",
-      "description": "Send WhatsApp messages from TypeScript with full type safety — text, replies, mentions, media, polls, and reactions using whatsmeow-node.",
+      "headline": "Como Enviar Mensagens no WhatsApp com TypeScript",
+      "description": "Envie mensagens pelo WhatsApp com TypeScript e tipagem completa — texto, respostas, menções, mídia, enquetes e reações usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/send-messages-typescript.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/send-messages-typescript.png"}}

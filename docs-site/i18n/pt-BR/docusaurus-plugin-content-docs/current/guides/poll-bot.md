@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Create a WhatsApp Poll Bot",
-      "description": "Create and manage WhatsApp polls programmatically with Node.js — send polls, read votes, announce results, and build interactive group bots with whatsmeow-node.",
+      "name": "Como Criar um Bot de Enquete no WhatsApp",
+      "description": "Crie e gerencie enquetes no WhatsApp programaticamente com Node.js — envie enquetes, leia votos, anuncie resultados e construa bots interativos com whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/poll-bot.png",
       "step": [
-        {"@type": "HowToStep", "name": "Create a Poll", "text": "Use sendPollCreation() with a question, options array, and max selectable count."},
-        {"@type": "HowToStep", "name": "Listen for Votes", "text": "Handle incoming poll vote messages and decrypt them with decryptPollVote()."},
-        {"@type": "HowToStep", "name": "Track Results", "text": "Store votes in a Map and tally results per poll."},
-        {"@type": "HowToStep", "name": "Announce Results", "text": "Send a summary message with the vote counts when the poll closes."}
+        {"@type": "HowToStep", "name": "Criar uma Enquete", "text": "Use sendPollCreation() com uma pergunta, array de opções e quantidade máxima de seleções."},
+        {"@type": "HowToStep", "name": "Ouvir os Votos", "text": "Trate mensagens de voto de enquete recebidas e descriptografe-as com decryptPollVote()."},
+        {"@type": "HowToStep", "name": "Rastrear Resultados", "text": "Armazene os votos em um Map e contabilize os resultados por enquete."},
+        {"@type": "HowToStep", "name": "Anunciar Resultados", "text": "Envie uma mensagem de resumo com a contagem de votos quando a enquete encerrar."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Create a WhatsApp Poll Bot",
-      "description": "Create and manage WhatsApp polls programmatically with Node.js — send polls, read votes, announce results, and build interactive group bots with whatsmeow-node.",
+      "headline": "Como Criar um Bot de Enquete no WhatsApp",
+      "description": "Crie e gerencie enquetes no WhatsApp programaticamente com Node.js — envie enquetes, leia votos, anuncie resultados e construa bots interativos com whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/poll-bot.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

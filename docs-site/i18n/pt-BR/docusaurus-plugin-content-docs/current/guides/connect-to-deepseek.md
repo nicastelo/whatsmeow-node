@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Connect WhatsApp to DeepSeek",
-      "description": "Build a WhatsApp chatbot powered by DeepSeek using whatsmeow-node and the OpenAI SDK. DeepSeek uses an OpenAI-compatible API.",
+      "name": "Como Conectar o WhatsApp ao DeepSeek",
+      "description": "Crie um chatbot de WhatsApp com DeepSeek usando whatsmeow-node e o SDK da OpenAI. O DeepSeek usa uma API compatível com a OpenAI.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/connect-to-deepseek.png",
       "step": [
-        {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and OpenAI client pointing to DeepSeek's base URL."},
-        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
-        {"@type": "HowToStep", "name": "Send to DeepSeek", "text": "Call openai.chat.completions.create() with the deepseek-chat model and send the response back via sendMessage."},
-        {"@type": "HowToStep", "name": "Add Conversation History", "text": "Store message history per user JID in a Map and pass it to DeepSeek for multi-turn conversations."}
+        {"@type": "HowToStep", "name": "Configurar os Dois Clients", "text": "Inicialize o WhatsmeowClient com createClient() e o client da OpenAI apontando para a URL base do DeepSeek."},
+        {"@type": "HowToStep", "name": "Tratar Mensagens Recebidas", "text": "Escute o evento message, ignore mensagens próprias, mostre digitação e extraia o texto."},
+        {"@type": "HowToStep", "name": "Enviar para o DeepSeek", "text": "Chame openai.chat.completions.create() com o modelo deepseek-chat e envie a resposta de volta via sendMessage."},
+        {"@type": "HowToStep", "name": "Adicionar Histórico de Conversas", "text": "Armazene o histórico de mensagens por JID do usuário em um Map e passe para o DeepSeek para conversas com múltiplas trocas."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Connect WhatsApp to DeepSeek",
-      "description": "Build a WhatsApp chatbot powered by DeepSeek using whatsmeow-node and the OpenAI SDK. DeepSeek uses an OpenAI-compatible API.",
+      "headline": "Como Conectar o WhatsApp ao DeepSeek",
+      "description": "Crie um chatbot de WhatsApp com DeepSeek usando whatsmeow-node e o SDK da OpenAI. O DeepSeek usa uma API compatível com a OpenAI.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/connect-to-deepseek.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

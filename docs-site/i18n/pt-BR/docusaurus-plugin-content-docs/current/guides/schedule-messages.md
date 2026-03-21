@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Schedule WhatsApp Messages with Node.js",
-      "description": "Schedule WhatsApp messages to send at a specific time with Node.js — delayed sends, recurring reminders, and cron-based scheduling using whatsmeow-node.",
+      "name": "Como Agendar Mensagens no WhatsApp com Node.js",
+      "description": "Agende mensagens no WhatsApp para enviar em um horário específico com Node.js — envios com delay, lembretes recorrentes e agendamento com cron usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/schedule-messages.png",
       "step": [
-        {"@type": "HowToStep", "name": "Send a Delayed Message", "text": "Use setTimeout to send a message after a delay."},
-        {"@type": "HowToStep", "name": "Schedule at a Specific Time", "text": "Calculate the delay from now until the target time and use setTimeout."},
-        {"@type": "HowToStep", "name": "Set Up Recurring Messages", "text": "Use node-cron to send messages on a cron schedule — daily reminders, weekly reports."},
-        {"@type": "HowToStep", "name": "Build a User-Facing Scheduler", "text": "Let users schedule messages via WhatsApp commands like !remind 30m Take a break."}
+        {"@type": "HowToStep", "name": "Enviar uma Mensagem com Delay", "text": "Use setTimeout para enviar uma mensagem após um delay."},
+        {"@type": "HowToStep", "name": "Agendar para um Horário Específico", "text": "Calcule o delay entre agora e o horário desejado e use setTimeout."},
+        {"@type": "HowToStep", "name": "Configurar Mensagens Recorrentes", "text": "Use node-cron para enviar mensagens em um agendamento cron — lembretes diários, relatórios semanais."},
+        {"@type": "HowToStep", "name": "Criar um Agendador para o Usuário", "text": "Permita que os usuários agendem mensagens via comandos no WhatsApp como !remind 30m Faça uma pausa."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Schedule WhatsApp Messages with Node.js",
-      "description": "Schedule WhatsApp messages to send at a specific time with Node.js — delayed sends, recurring reminders, and cron-based scheduling using whatsmeow-node.",
+      "headline": "Como Agendar Mensagens no WhatsApp com Node.js",
+      "description": "Agende mensagens no WhatsApp para enviar em um horário específico com Node.js — envios com delay, lembretes recorrentes e agendamento com cron usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/schedule-messages.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

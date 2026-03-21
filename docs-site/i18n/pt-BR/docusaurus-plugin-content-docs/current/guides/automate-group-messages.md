@@ -16,15 +16,15 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Automate Group Messages in WhatsApp",
-      "description": "Automate WhatsApp group messaging with Node.js — send to groups, mention members, create groups, manage participants, and broadcast to multiple groups.",
+      "name": "Como Automatizar Mensagens em Grupos do WhatsApp",
+      "description": "Automatize mensagens em grupos do WhatsApp com Node.js — envie para grupos, mencione membros, crie grupos, gerencie participantes e faça broadcast para vários grupos.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/automate-group-messages.png",
       "step": [
-        {"@type": "HowToStep", "name": "List Your Groups", "text": "Use getJoinedGroups() to discover all groups you're a member of, with participant lists and settings."},
-        {"@type": "HowToStep", "name": "Send Messages to Groups", "text": "Use sendMessage() with a group JID (ending in @g.us) to send text messages to any group."},
-        {"@type": "HowToStep", "name": "Mention Group Members", "text": "Include mentionedJid in contextInfo with extendedTextMessage to @mention specific members or everyone."},
-        {"@type": "HowToStep", "name": "Listen for Group Events", "text": "Handle group:info events to react to joins, leaves, promotions, and setting changes."},
-        {"@type": "HowToStep", "name": "Broadcast to Multiple Groups", "text": "Iterate over groups with a delay between sends to avoid rate limiting."}
+        {"@type": "HowToStep", "name": "Listar Seus Grupos", "text": "Use getJoinedGroups() para descobrir todos os grupos dos quais você é membro, com listas de participantes e configurações."},
+        {"@type": "HowToStep", "name": "Enviar Mensagens para Grupos", "text": "Use sendMessage() com um JID de grupo (terminando em @g.us) para enviar mensagens de texto para qualquer grupo."},
+        {"@type": "HowToStep", "name": "Mencionar Membros do Grupo", "text": "Inclua mentionedJid em contextInfo com extendedTextMessage para @mencionar membros específicos ou todos."},
+        {"@type": "HowToStep", "name": "Ouvir Eventos de Grupo", "text": "Trate eventos group:info para reagir a entradas, saídas, promoções e mudanças de configuração."},
+        {"@type": "HowToStep", "name": "Broadcast para Vários Grupos", "text": "Itere sobre os grupos com um delay entre os envios para evitar rate limiting."}
       ]
     })}
   </script>
@@ -32,8 +32,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Automate Group Messages in WhatsApp",
-      "description": "Automate WhatsApp group messaging with Node.js — send to groups, mention members, create groups, manage participants, and broadcast to multiple groups.",
+      "headline": "Como Automatizar Mensagens em Grupos do WhatsApp",
+      "description": "Automatize mensagens em grupos do WhatsApp com Node.js — envie para grupos, mencione membros, crie grupos, gerencie participantes e faça broadcast para vários grupos.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/automate-group-messages.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/automate-group-messages.png"}}

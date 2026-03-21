@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Use whatsmeow-node with Typebot",
-      "description": "Connect whatsmeow-node to Typebot for WhatsApp chatbot flows — replace Evolution API with a lighter, more stable WhatsApp backend.",
+      "name": "Cómo Usar whatsmeow-node con Typebot",
+      "description": "Conecta whatsmeow-node a Typebot para flujos de chatbot en WhatsApp — reemplaza Evolution API con un backend de WhatsApp más ligero y estable.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/integrate-typebot.png",
       "step": [
-        {"@type": "HowToStep", "name": "Build a whatsmeow-node REST API", "text": "Create an Express server that bridges WhatsApp messages to Typebot via HTTP."},
-        {"@type": "HowToStep", "name": "Start a Typebot Flow", "text": "POST the first message to Typebot's API to start a conversation flow."},
-        {"@type": "HowToStep", "name": "Continue the Conversation", "text": "Send user replies to Typebot's continueChat endpoint and relay bot responses to WhatsApp."},
-        {"@type": "HowToStep", "name": "Handle Rich Messages", "text": "Parse Typebot's response blocks (text, image, input) and send appropriate WhatsApp messages."}
+        {"@type": "HowToStep", "name": "Construir una API REST de whatsmeow-node", "text": "Crea un servidor Express que haga de puente entre los mensajes de WhatsApp y Typebot vía HTTP."},
+        {"@type": "HowToStep", "name": "Iniciar un flujo de Typebot", "text": "Envía por POST el primer mensaje a la API de Typebot para iniciar un flujo de conversación."},
+        {"@type": "HowToStep", "name": "Continuar la conversación", "text": "Envía las respuestas del usuario al endpoint continueChat de Typebot y retransmite las respuestas del bot a WhatsApp."},
+        {"@type": "HowToStep", "name": "Manejar mensajes enriquecidos", "text": "Analiza los bloques de respuesta de Typebot (texto, imagen, input) y envía los mensajes de WhatsApp apropiados."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Use whatsmeow-node with Typebot",
-      "description": "Connect whatsmeow-node to Typebot for WhatsApp chatbot flows — replace Evolution API with a lighter, more stable WhatsApp backend.",
+      "headline": "Cómo Usar whatsmeow-node con Typebot",
+      "description": "Conecta whatsmeow-node a Typebot para flujos de chatbot en WhatsApp — reemplaza Evolution API con un backend de WhatsApp más ligero y estable.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/integrate-typebot.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

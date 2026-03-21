@@ -16,15 +16,15 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Replace Baileys with whatsmeow-node",
-      "description": "Migrate your WhatsApp bot from Baileys to whatsmeow-node — side-by-side code comparison, API mapping, and step-by-step migration guide.",
+      "name": "Cómo Reemplazar Baileys con whatsmeow-node",
+      "description": "Migra tu bot de WhatsApp de Baileys a whatsmeow-node — comparación de código lado a lado, mapeo de API y guía de migración paso a paso.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/migrate-from-baileys.png",
       "step": [
-        {"@type": "HowToStep", "name": "Install whatsmeow-node", "text": "Replace @whiskeysockets/baileys with @whatsmeow-node/whatsmeow-node in your dependencies."},
-        {"@type": "HowToStep", "name": "Update Client Initialization", "text": "Replace makeWASocket with createClient. Switch from useMultiFileAuthState to a store path."},
-        {"@type": "HowToStep", "name": "Update Event Listeners", "text": "Replace ev.on('messages.upsert') with client.on('message'). Update event shapes to match whatsmeow-node."},
-        {"@type": "HowToStep", "name": "Update Message Sending", "text": "Replace sendMessage with the whatsmeow-node equivalent. Content shape is similar but key names differ."},
-        {"@type": "HowToStep", "name": "Update Group Operations", "text": "Replace groupCreate, groupMetadata, etc. with the whatsmeow-node equivalents."}
+        {"@type": "HowToStep", "name": "Instalar whatsmeow-node", "text": "Reemplaza @whiskeysockets/baileys con @whatsmeow-node/whatsmeow-node en tus dependencias."},
+        {"@type": "HowToStep", "name": "Actualizar la inicialización del cliente", "text": "Reemplaza makeWASocket con createClient. Cambia de useMultiFileAuthState a una ruta de almacén."},
+        {"@type": "HowToStep", "name": "Actualizar los listeners de eventos", "text": "Reemplaza ev.on('messages.upsert') con client.on('message'). Actualiza las formas de eventos para que coincidan con whatsmeow-node."},
+        {"@type": "HowToStep", "name": "Actualizar el envío de mensajes", "text": "Reemplaza sendMessage con el equivalente de whatsmeow-node. La forma del contenido es similar pero los nombres de las claves difieren."},
+        {"@type": "HowToStep", "name": "Actualizar operaciones de grupo", "text": "Reemplaza groupCreate, groupMetadata, etc. con los equivalentes de whatsmeow-node."}
       ]
     })}
   </script>
@@ -32,8 +32,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Replace Baileys with whatsmeow-node",
-      "description": "Migrate your WhatsApp bot from Baileys to whatsmeow-node — side-by-side code comparison, API mapping, and step-by-step migration guide.",
+      "headline": "Cómo Reemplazar Baileys con whatsmeow-node",
+      "description": "Migra tu bot de WhatsApp de Baileys a whatsmeow-node — comparación de código lado a lado, mapeo de API y guía de migración paso a paso.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/migrate-from-baileys.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/migrate-from-baileys.png"}}

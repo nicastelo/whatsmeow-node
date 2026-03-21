@@ -19,10 +19,10 @@ import Head from '@docusaurus/Head';
       "description": "Crie um chatbot de WhatsApp com IA conectando whatsmeow-node ao Claude via Anthropic SDK. Inclui histórico de conversa e indicadores de digitação.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/connect-to-ai.png",
       "step": [
-        {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and Anthropic client with new Anthropic()."},
-        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
-        {"@type": "HowToStep", "name": "Send to Claude", "text": "Call anthropic.messages.create() with the user message and send the response back via sendMessage."},
-        {"@type": "HowToStep", "name": "Add Conversation History", "text": "Store message history per user JID in a Map and pass it to Claude for multi-turn conversations."}
+        {"@type": "HowToStep", "name": "Configurar os Dois Clients", "text": "Inicialize o WhatsmeowClient com createClient() e o client da Anthropic com new Anthropic()."},
+        {"@type": "HowToStep", "name": "Tratar Mensagens Recebidas", "text": "Escute o evento message, ignore mensagens próprias, mostre digitação e extraia o texto."},
+        {"@type": "HowToStep", "name": "Enviar para o Claude", "text": "Chame anthropic.messages.create() com a mensagem do usuário e envie a resposta de volta via sendMessage."},
+        {"@type": "HowToStep", "name": "Adicionar Histórico de Conversas", "text": "Armazene o histórico de mensagens por JID do usuário em um Map e passe para o Claude para conversas com múltiplas trocas."}
       ]
     })}
   </script>

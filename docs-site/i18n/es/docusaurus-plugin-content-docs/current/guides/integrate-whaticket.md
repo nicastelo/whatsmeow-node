@@ -16,15 +16,15 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Use whatsmeow-node with Whaticket",
-      "description": "Replace whatsapp-web.js with whatsmeow-node in Whaticket — drop Puppeteer, cut memory usage, and get a more stable WhatsApp connection for your helpdesk.",
+      "name": "Cómo Usar whatsmeow-node con Whaticket",
+      "description": "Reemplaza whatsapp-web.js con whatsmeow-node en Whaticket — elimina Puppeteer, reduce el consumo de memoria y obtén una conexión de WhatsApp más estable para tu helpdesk.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/integrate-whaticket.png",
       "step": [
-        {"@type": "HowToStep", "name": "Install whatsmeow-node", "text": "Add whatsmeow-node to the Whaticket backend and remove whatsapp-web.js and Puppeteer."},
-        {"@type": "HowToStep", "name": "Create the WhatsApp Service", "text": "Build a service module that wraps whatsmeow-node and exposes send/receive methods for Whaticket."},
-        {"@type": "HowToStep", "name": "Handle QR Pairing", "text": "Emit QR codes to the Whaticket frontend via the existing WebSocket connection."},
-        {"@type": "HowToStep", "name": "Route Messages to Tickets", "text": "Listen for incoming messages and create or update tickets in the database."},
-        {"@type": "HowToStep", "name": "Send Replies", "text": "When agents reply in the Whaticket UI, send the message via whatsmeow-node."}
+        {"@type": "HowToStep", "name": "Instalar whatsmeow-node", "text": "Agrega whatsmeow-node al backend de Whaticket y elimina whatsapp-web.js y Puppeteer."},
+        {"@type": "HowToStep", "name": "Crear el servicio de WhatsApp", "text": "Construye un módulo de servicio que envuelva whatsmeow-node y exponga métodos de envío/recepción para Whaticket."},
+        {"@type": "HowToStep", "name": "Manejar el emparejamiento QR", "text": "Emite los QR codes al frontend de Whaticket a través de la conexión WebSocket existente."},
+        {"@type": "HowToStep", "name": "Enrutar mensajes a tickets", "text": "Escucha los mensajes entrantes y crea o actualiza tickets en la base de datos."},
+        {"@type": "HowToStep", "name": "Enviar respuestas", "text": "Cuando los agentes responden en la UI de Whaticket, envía el mensaje vía whatsmeow-node."}
       ]
     })}
   </script>
@@ -32,8 +32,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Use whatsmeow-node with Whaticket",
-      "description": "Replace whatsapp-web.js with whatsmeow-node in Whaticket — drop Puppeteer, cut memory usage, and get a more stable WhatsApp connection for your helpdesk.",
+      "headline": "Cómo Usar whatsmeow-node con Whaticket",
+      "description": "Reemplaza whatsapp-web.js con whatsmeow-node en Whaticket — elimina Puppeteer, reduce el consumo de memoria y obtén una conexión de WhatsApp más estable para tu helpdesk.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/integrate-whaticket.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

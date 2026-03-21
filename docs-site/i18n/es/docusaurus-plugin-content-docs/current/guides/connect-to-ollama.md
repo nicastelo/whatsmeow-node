@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Connect WhatsApp to Ollama (Local AI)",
-      "description": "Build a WhatsApp chatbot powered by a local AI model using whatsmeow-node and Ollama. No API key needed — runs entirely on your machine.",
+      "name": "Cómo Conectar WhatsApp con Ollama (IA Local)",
+      "description": "Crea un chatbot de WhatsApp con un modelo de IA local usando whatsmeow-node y Ollama. Sin API key — corre completamente en tu máquina.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/connect-to-ollama.png",
       "step": [
-        {"@type": "HowToStep", "name": "Install Ollama and Pull a Model", "text": "Install Ollama from ollama.com and pull a model like llama3.2 or gemma3."},
-        {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and Ollama client with new Ollama()."},
-        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
-        {"@type": "HowToStep", "name": "Send to Ollama", "text": "Call ollama.chat() with the user message and send the response back via sendMessage."}
+        {"@type": "HowToStep", "name": "Instalar Ollama y descargar un modelo", "text": "Instala Ollama desde ollama.com y descarga un modelo como llama3.2 o gemma3."},
+        {"@type": "HowToStep", "name": "Configurar ambos clientes", "text": "Inicializa WhatsmeowClient con createClient() y el cliente de Ollama con new Ollama()."},
+        {"@type": "HowToStep", "name": "Manejar mensajes entrantes", "text": "Escucha el evento message, omite los mensajes propios, muestra el indicador de escritura y extrae el texto."},
+        {"@type": "HowToStep", "name": "Enviar a Ollama", "text": "Llama a ollama.chat() con el mensaje del usuario y envía la respuesta de vuelta con sendMessage."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Connect WhatsApp to Ollama (Local AI)",
-      "description": "Build a WhatsApp chatbot powered by a local AI model using whatsmeow-node and Ollama. No API key needed — runs entirely on your machine.",
+      "headline": "Cómo Conectar WhatsApp con Ollama (IA Local)",
+      "description": "Crea un chatbot de WhatsApp con un modelo de IA local usando whatsmeow-node y Ollama. Sin API key — corre completamente en tu máquina.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/connect-to-ollama.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

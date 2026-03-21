@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Use whatsmeow-node with n8n",
-      "description": "Connect whatsmeow-node to n8n for WhatsApp workflow automation — send messages, receive webhooks, and build automated flows without the official Cloud API.",
+      "name": "Como Usar o whatsmeow-node com n8n",
+      "description": "Conecte o whatsmeow-node ao n8n para automação de fluxos com WhatsApp — envie mensagens, receba webhooks e construa fluxos automatizados sem a Cloud API oficial.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/integrate-n8n.png",
       "step": [
-        {"@type": "HowToStep", "name": "Create a whatsmeow-node REST API", "text": "Wrap whatsmeow-node in an Express server with send and webhook endpoints."},
-        {"@type": "HowToStep", "name": "Forward Messages to n8n", "text": "POST incoming WhatsApp messages to an n8n webhook trigger URL."},
-        {"@type": "HowToStep", "name": "Send Messages from n8n", "text": "Use n8n's HTTP Request node to call the whatsmeow-node REST API."},
-        {"@type": "HowToStep", "name": "Build Automated Flows", "text": "Create n8n workflows that process messages, query databases, call APIs, and reply."}
+        {"@type": "HowToStep", "name": "Criar a REST API do whatsmeow-node", "text": "Encapsule o whatsmeow-node em um servidor Express com endpoints de envio e webhook."},
+        {"@type": "HowToStep", "name": "Encaminhar Mensagens para o n8n", "text": "Faça POST das mensagens recebidas do WhatsApp para uma URL de webhook trigger do n8n."},
+        {"@type": "HowToStep", "name": "Enviar Mensagens a partir do n8n", "text": "Use o nó HTTP Request do n8n para chamar a REST API do whatsmeow-node."},
+        {"@type": "HowToStep", "name": "Construir Fluxos Automatizados", "text": "Crie workflows no n8n que processam mensagens, consultam bancos de dados, chamam APIs e respondem."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Use whatsmeow-node with n8n",
-      "description": "Connect whatsmeow-node to n8n for WhatsApp workflow automation — send messages, receive webhooks, and build automated flows without the official Cloud API.",
+      "headline": "Como Usar o whatsmeow-node com n8n",
+      "description": "Conecte o whatsmeow-node ao n8n para automação de fluxos com WhatsApp — envie mensagens, receba webhooks e construa fluxos automatizados sem a Cloud API oficial.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/integrate-n8n.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

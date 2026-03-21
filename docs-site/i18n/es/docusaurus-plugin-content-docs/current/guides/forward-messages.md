@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Forward WhatsApp Messages Programmatically",
-      "description": "Forward WhatsApp messages between chats programmatically with Node.js — text, media, and group messages using whatsmeow-node.",
+      "name": "Cómo Reenviar Mensajes de WhatsApp Programáticamente",
+      "description": "Reenvía mensajes de WhatsApp entre chats programáticamente con Node.js — texto, multimedia y mensajes de grupo usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/forward-messages.png",
       "step": [
-        {"@type": "HowToStep", "name": "Listen for Messages", "text": "Subscribe to the message event and filter for messages you want to forward."},
-        {"@type": "HowToStep", "name": "Forward Text Messages", "text": "Use sendRawMessage with the original message content and isForwarded flag in contextInfo."},
-        {"@type": "HowToStep", "name": "Forward Media Messages", "text": "Pass the original media message directly — no need to re-upload."},
-        {"@type": "HowToStep", "name": "Build a Relay Bot", "text": "Forward messages between a group and a private chat, or between multiple groups."}
+        {"@type": "HowToStep", "name": "Escuchar mensajes", "text": "Suscríbete al evento message y filtra los mensajes que quieres reenviar."},
+        {"@type": "HowToStep", "name": "Reenviar mensajes de texto", "text": "Usa sendRawMessage con el contenido del mensaje original y el flag isForwarded en contextInfo."},
+        {"@type": "HowToStep", "name": "Reenviar mensajes multimedia", "text": "Pasa el mensaje multimedia original directamente — no es necesario volver a subirlo."},
+        {"@type": "HowToStep", "name": "Crear un bot relay", "text": "Reenvía mensajes entre un grupo y un chat privado, o entre múltiples grupos."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Forward WhatsApp Messages Programmatically",
-      "description": "Forward WhatsApp messages between chats programmatically with Node.js — text, media, and group messages using whatsmeow-node.",
+      "headline": "Cómo Reenviar Mensajes de WhatsApp Programáticamente",
+      "description": "Reenvía mensajes de WhatsApp entre chats programáticamente con Node.js — texto, multimedia y mensajes de grupo usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/forward-messages.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

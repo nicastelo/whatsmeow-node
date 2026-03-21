@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Use whatsmeow-node with Chatwoot",
-      "description": "Connect whatsmeow-node to Chatwoot as a WhatsApp channel — receive and reply to WhatsApp messages from the Chatwoot agent dashboard without the official Cloud API.",
+      "name": "Cómo Usar whatsmeow-node con Chatwoot",
+      "description": "Conecta whatsmeow-node a Chatwoot como canal de WhatsApp — recibe y responde mensajes de WhatsApp desde el dashboard de agentes de Chatwoot sin la Cloud API oficial.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/integrate-chatwoot.png",
       "step": [
-        {"@type": "HowToStep", "name": "Create a Chatwoot API Channel", "text": "Set up an API channel in Chatwoot to receive messages via webhook and send via API."},
-        {"@type": "HowToStep", "name": "Build the whatsmeow-node Bridge", "text": "Create a service that forwards WhatsApp messages to Chatwoot and Chatwoot replies to WhatsApp."},
-        {"@type": "HowToStep", "name": "Forward Messages to Chatwoot", "text": "POST incoming WhatsApp messages to Chatwoot's API as incoming messages on the channel."},
-        {"@type": "HowToStep", "name": "Handle Chatwoot Outgoing Webhooks", "text": "Listen for Chatwoot's message_created webhook and send agent replies via whatsmeow-node."}
+        {"@type": "HowToStep", "name": "Crear un canal API en Chatwoot", "text": "Configura un canal API en Chatwoot para recibir mensajes vía webhook y enviar vía API."},
+        {"@type": "HowToStep", "name": "Construir el puente de whatsmeow-node", "text": "Crea un servicio que reenvíe mensajes de WhatsApp a Chatwoot y las respuestas de Chatwoot a WhatsApp."},
+        {"@type": "HowToStep", "name": "Reenviar mensajes a Chatwoot", "text": "Envía por POST los mensajes entrantes de WhatsApp a la API de Chatwoot como mensajes entrantes en el canal."},
+        {"@type": "HowToStep", "name": "Manejar webhooks salientes de Chatwoot", "text": "Escucha el webhook message_created de Chatwoot y envía las respuestas de los agentes vía whatsmeow-node."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Use whatsmeow-node with Chatwoot",
-      "description": "Connect whatsmeow-node to Chatwoot as a WhatsApp channel — receive and reply to WhatsApp messages from the Chatwoot agent dashboard without the official Cloud API.",
+      "headline": "Cómo Usar whatsmeow-node con Chatwoot",
+      "description": "Conecta whatsmeow-node a Chatwoot como canal de WhatsApp — recibe y responde mensajes de WhatsApp desde el dashboard de agentes de Chatwoot sin la Cloud API oficial.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/integrate-chatwoot.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

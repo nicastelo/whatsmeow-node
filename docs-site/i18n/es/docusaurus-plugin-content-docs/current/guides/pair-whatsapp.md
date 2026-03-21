@@ -19,10 +19,10 @@ import Head from '@docusaurus/Head';
       "description": "Vincula una cuenta de WhatsApp a tu aplicación Node.js usando escaneo de QR code o ingreso de código por número telefónico. Incluye persistencia de sesión y reconexión.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/pair-whatsapp.png",
       "step": [
-        {"@type": "HowToStep", "name": "QR Code Pairing", "text": "Call getQRChannel() then connect(). Listen for the qr event and render the code with qrcode-terminal."},
-        {"@type": "HowToStep", "name": "Phone Number Pairing", "text": "Call connect() first, then pairCode(phoneNumber). The user enters the 8-digit code in WhatsApp."},
-        {"@type": "HowToStep", "name": "Session Persistence", "text": "The session is stored in the database. On next run, init() returns the stored JID and you skip pairing."},
-        {"@type": "HowToStep", "name": "Choose a Store", "text": "Use SQLite (session.db) for development or PostgreSQL for production."}
+        {"@type": "HowToStep", "name": "Vinculación por QR Code", "text": "Llama a getQRChannel() y luego connect(). Escucha el evento qr y muestra el código con qrcode-terminal."},
+        {"@type": "HowToStep", "name": "Vinculación por número telefónico", "text": "Llama primero a connect(), luego a pairCode(phoneNumber). El usuario ingresa el código de 8 dígitos en WhatsApp."},
+        {"@type": "HowToStep", "name": "Persistencia de sesión", "text": "La sesión se almacena en la base de datos. En la siguiente ejecución, init() devuelve el JID almacenado y omites la vinculación."},
+        {"@type": "HowToStep", "name": "Elegir un almacén", "text": "Usa SQLite (session.db) para desarrollo o PostgreSQL para producción."}
       ]
     })}
   </script>

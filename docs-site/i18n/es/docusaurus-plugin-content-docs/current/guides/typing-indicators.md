@@ -19,11 +19,11 @@ import Head from '@docusaurus/Head';
       "description": "Muestra indicadores de escritura y grabación en WhatsApp con Node.js — controla el estado de composición, presencia en línea y suscríbete a la escritura de otros.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/typing-indicators.png",
       "step": [
-        {"@type": "HowToStep", "name": "Show typing...", "text": "Call sendChatPresence(chatJid, 'composing') to show the typing indicator."},
-        {"@type": "HowToStep", "name": "Show recording audio...", "text": "Call sendChatPresence(chatJid, 'composing', 'audio') for the recording indicator."},
-        {"@type": "HowToStep", "name": "Clear the Indicator", "text": "Call sendChatPresence(chatJid, 'paused') to stop the indicator without sending a message."},
-        {"@type": "HowToStep", "name": "Set Online/Offline Status", "text": "Call sendPresence('available') before typing indicators work, and 'unavailable' when shutting down."},
-        {"@type": "HowToStep", "name": "Subscribe to Others' Typing", "text": "Call subscribePresence(jid) and listen for presence and chat_presence events."}
+        {"@type": "HowToStep", "name": "Mostrar escribiendo...", "text": "Llama a sendChatPresence(chatJid, 'composing') para mostrar el indicador de escritura."},
+        {"@type": "HowToStep", "name": "Mostrar grabando audio...", "text": "Llama a sendChatPresence(chatJid, 'composing', 'audio') para el indicador de grabación."},
+        {"@type": "HowToStep", "name": "Borrar el indicador", "text": "Llama a sendChatPresence(chatJid, 'paused') para detener el indicador sin enviar un mensaje."},
+        {"@type": "HowToStep", "name": "Establecer estado en línea/desconectado", "text": "Llama a sendPresence('available') antes de que los indicadores de escritura funcionen, y 'unavailable' al apagar."},
+        {"@type": "HowToStep", "name": "Suscribirse a la escritura de otros", "text": "Llama a subscribePresence(jid) y escucha los eventos presence y chat_presence."}
       ]
     })}
   </script>

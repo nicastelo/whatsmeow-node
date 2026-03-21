@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Connect WhatsApp to ChatGPT (OpenAI)",
-      "description": "Build a WhatsApp chatbot powered by ChatGPT using whatsmeow-node and the OpenAI SDK. Includes conversation history, typing indicators, and GPT-4.1.",
+      "name": "Como Conectar o WhatsApp ao ChatGPT (OpenAI)",
+      "description": "Crie um chatbot de WhatsApp com ChatGPT usando whatsmeow-node e o SDK da OpenAI. Inclui histórico de conversas, indicadores de digitação e GPT-4.1.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/connect-to-chatgpt.png",
       "step": [
-        {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and OpenAI client with new OpenAI()."},
-        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
-        {"@type": "HowToStep", "name": "Send to ChatGPT", "text": "Call openai.chat.completions.create() with the user message and send the response back via sendMessage."},
-        {"@type": "HowToStep", "name": "Add Conversation History", "text": "Store message history per user JID in a Map and pass it to ChatGPT for multi-turn conversations."}
+        {"@type": "HowToStep", "name": "Configurar os Dois Clients", "text": "Inicialize o WhatsmeowClient com createClient() e o client da OpenAI com new OpenAI()."},
+        {"@type": "HowToStep", "name": "Tratar Mensagens Recebidas", "text": "Escute o evento message, ignore mensagens próprias, mostre digitação e extraia o texto."},
+        {"@type": "HowToStep", "name": "Enviar para o ChatGPT", "text": "Chame openai.chat.completions.create() com a mensagem do usuário e envie a resposta de volta via sendMessage."},
+        {"@type": "HowToStep", "name": "Adicionar Histórico de Conversas", "text": "Armazene o histórico de mensagens por JID do usuário em um Map e passe para o ChatGPT para conversas com múltiplas trocas."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Connect WhatsApp to ChatGPT (OpenAI)",
-      "description": "Build a WhatsApp chatbot powered by ChatGPT using whatsmeow-node and the OpenAI SDK. Includes conversation history, typing indicators, and GPT-4.1.",
+      "headline": "Como Conectar o WhatsApp ao ChatGPT (OpenAI)",
+      "description": "Crie um chatbot de WhatsApp com ChatGPT usando whatsmeow-node e o SDK da OpenAI. Inclui histórico de conversas, indicadores de digitação e GPT-4.1.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/connect-to-chatgpt.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

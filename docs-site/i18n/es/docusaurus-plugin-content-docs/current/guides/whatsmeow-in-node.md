@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Use whatsmeow in Node.js",
-      "description": "Use whatsmeow from Node.js and TypeScript — install the npm package, connect to WhatsApp, send messages, and handle events without writing Go.",
+      "name": "Cómo Usar whatsmeow en Node.js",
+      "description": "Usa whatsmeow desde Node.js y TypeScript — instala el paquete npm, conéctate a WhatsApp, envía mensajes y maneja eventos sin escribir Go.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/whatsmeow-in-node.png",
       "step": [
-        {"@type": "HowToStep", "name": "Install whatsmeow-node", "text": "Run npm install @whatsmeow-node/whatsmeow-node to get the precompiled Go binary and TypeScript wrapper."},
-        {"@type": "HowToStep", "name": "Create a Client", "text": "Use createClient() with a store path. The Go binary is spawned and managed automatically."},
-        {"@type": "HowToStep", "name": "Connect to WhatsApp", "text": "Call init() to check for an existing session, then connect(). Pair via QR code on first run."},
-        {"@type": "HowToStep", "name": "Send Messages and Handle Events", "text": "Use typed async methods like sendMessage() and listen for events like message, connected, and group:info."}
+        {"@type": "HowToStep", "name": "Instalar whatsmeow-node", "text": "Ejecuta npm install @whatsmeow-node/whatsmeow-node para obtener el binario Go precompilado y el wrapper de TypeScript."},
+        {"@type": "HowToStep", "name": "Crear un cliente", "text": "Usa createClient() con una ruta de almacén. El binario Go se lanza y gestiona automáticamente."},
+        {"@type": "HowToStep", "name": "Conectar a WhatsApp", "text": "Llama a init() para verificar si hay una sesión existente, luego connect(). Vincula vía QR code en la primera ejecución."},
+        {"@type": "HowToStep", "name": "Enviar mensajes y manejar eventos", "text": "Usa métodos async tipados como sendMessage() y escucha eventos como message, connected y group:info."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Use whatsmeow in Node.js",
-      "description": "Use whatsmeow from Node.js and TypeScript — install the npm package, connect to WhatsApp, send messages, and handle events without writing Go.",
+      "headline": "Cómo Usar whatsmeow en Node.js",
+      "description": "Usa whatsmeow desde Node.js y TypeScript — instala el paquete npm, conéctate a WhatsApp, envía mensajes y maneja eventos sin escribir Go.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/whatsmeow-in-node.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/whatsmeow-in-node.png"}}

@@ -16,14 +16,14 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "How to Send WhatsApp Notifications from Node.js",
-      "description": "Send WhatsApp notifications, alerts, and reminders from Node.js — order updates, appointment reminders, system alerts, and more using whatsmeow-node.",
+      "name": "Cómo Enviar Notificaciones de WhatsApp desde Node.js",
+      "description": "Envía notificaciones, alertas y recordatorios de WhatsApp desde Node.js — actualizaciones de pedidos, recordatorios de citas, alertas del sistema y más usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/send-notifications.png",
       "step": [
-        {"@type": "HowToStep", "name": "Set Up the Client", "text": "Create a WhatsmeowClient, init, and connect. The client stays connected in the background."},
-        {"@type": "HowToStep", "name": "Send a Notification", "text": "Call sendMessage() with the recipient JID and a conversation message."},
-        {"@type": "HowToStep", "name": "Trigger from External Events", "text": "Call sendMessage from an HTTP endpoint, database trigger, or cron job."},
-        {"@type": "HowToStep", "name": "Send to Multiple Recipients", "text": "Iterate over a list of JIDs with a delay between sends to avoid rate limiting."}
+        {"@type": "HowToStep", "name": "Configurar el cliente", "text": "Crea un WhatsmeowClient, inicializa y conecta. El cliente se mantiene conectado en segundo plano."},
+        {"@type": "HowToStep", "name": "Enviar una notificación", "text": "Llama a sendMessage() con el JID del destinatario y un mensaje de conversación."},
+        {"@type": "HowToStep", "name": "Disparar desde eventos externos", "text": "Llama a sendMessage desde un endpoint HTTP, un trigger de base de datos o un cron job."},
+        {"@type": "HowToStep", "name": "Enviar a múltiples destinatarios", "text": "Itera sobre una lista de JIDs con un delay entre envíos para evitar límites de tasa."}
       ]
     })}
   </script>
@@ -31,8 +31,8 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "How to Send WhatsApp Notifications from Node.js",
-      "description": "Send WhatsApp notifications, alerts, and reminders from Node.js — order updates, appointment reminders, system alerts, and more using whatsmeow-node.",
+      "headline": "Cómo Enviar Notificaciones de WhatsApp desde Node.js",
+      "description": "Envía notificaciones, alertas y recordatorios de WhatsApp desde Node.js — actualizaciones de pedidos, recordatorios de citas, alertas del sistema y más usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/send-notifications.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}

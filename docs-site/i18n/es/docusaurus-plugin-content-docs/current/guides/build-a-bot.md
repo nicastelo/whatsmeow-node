@@ -19,12 +19,12 @@ import Head from '@docusaurus/Head';
       "description": "Crea un bot de WhatsApp con Node.js y TypeScript — recibe mensajes, maneja comandos, responde con citas y gestiona conexiones.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/build-a-bot.png",
       "step": [
-        {"@type": "HowToStep", "name": "Create the Client", "text": "Initialize a WhatsmeowClient with createClient() and a session store."},
-        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event and extract text from conversation or extendedTextMessage."},
-        {"@type": "HowToStep", "name": "Reply to Messages", "text": "Use sendMessage for text or sendRawMessage with contextInfo for quoted replies."},
-        {"@type": "HowToStep", "name": "Add Commands", "text": "Route messages starting with ! to command handlers like !ping and !help."},
-        {"@type": "HowToStep", "name": "Handle Errors and Reconnection", "text": "Listen for logged_out and disconnected events. Auto-reconnect is built-in."},
-        {"@type": "HowToStep", "name": "Graceful Shutdown", "text": "Handle SIGINT to set presence unavailable and disconnect cleanly."}
+        {"@type": "HowToStep", "name": "Crear el cliente", "text": "Inicializa un WhatsmeowClient con createClient() y un almacén de sesión."},
+        {"@type": "HowToStep", "name": "Manejar mensajes entrantes", "text": "Escucha el evento message y extrae el texto de conversation o extendedTextMessage."},
+        {"@type": "HowToStep", "name": "Responder mensajes", "text": "Usa sendMessage para texto o sendRawMessage con contextInfo para respuestas citadas."},
+        {"@type": "HowToStep", "name": "Agregar comandos", "text": "Enruta los mensajes que comienzan con ! a manejadores de comandos como !ping y !help."},
+        {"@type": "HowToStep", "name": "Manejar errores y reconexión", "text": "Escucha los eventos logged_out y disconnected. La reconexión automática está incluida."},
+        {"@type": "HowToStep", "name": "Cierre elegante", "text": "Maneja SIGINT para establecer la presencia como no disponible y desconectar limpiamente."}
       ]
     })}
   </script>
