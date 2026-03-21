@@ -7,6 +7,7 @@ keywords: [baileys alternative, replace baileys, baileys to whatsmeow, baileys m
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/migrate-from-baileys.png" />
@@ -277,9 +278,4 @@ Baileys uses `{ text: "..." }` for messages. whatsmeow-node uses `{ conversation
 Upload response fields use exact protobuf casing: `URL`, `fileSHA256`, `fileEncSHA256` — **not** camelCase. Using wrong casing silently fails.
 :::
 
-## Next Steps
-
-- [Getting Started](/docs/getting-started) — quick overview of the full API
-- [How to Build a Bot](build-a-bot) — build a command bot from scratch
-- [API Reference](/docs/api/overview) — all available methods
-- [Examples](/docs/examples/overview) — copy-pasteable code for every feature
+<RelatedGuides slugs={["whatsmeow-in-node", "build-a-bot", "migrate-from-whatsapp-web-js"]} />

@@ -71,6 +71,13 @@
   display: none;
 }
 
+/* Related guides section at bottom of guide pages */
+.related-guides {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
 /* Guide cards */
 .guide-section h2 {
   margin-bottom: 0.75rem;

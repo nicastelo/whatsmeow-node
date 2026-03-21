@@ -7,6 +7,7 @@ keywords: [whatsapp bot nodejs, build whatsapp bot typescript, whatsapp bot tuto
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/build-a-bot.png" />
@@ -284,10 +285,4 @@ In groups, `info.chat` is the group JID and `info.sender` is the individual who 
 WhatsApp rate-limits message sending. If your bot sends too many messages too quickly, you may get temporarily blocked. See [Rate Limiting](/docs/rate-limiting) for details.
 :::
 
-## Next Steps
-
-- [How to Connect WhatsApp to Claude AI](connect-to-ai) — add AI-powered responses
-- [How to Show Typing Indicators](typing-indicators) — make your bot feel human
-- [How to Send Stickers](send-stickers) — send and receive sticker media
-- [Echo Bot example](/docs/examples/bots-and-resilience#echo-bot) — full-featured reference bot
-- [API Reference](/docs/api/overview) — all available methods
+<RelatedGuides slugs={["send-messages-typescript", "connect-to-ai", "typing-indicators", "automate-group-messages"]} />

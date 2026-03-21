@@ -67,6 +67,54 @@ const FALLBACK_TRANSLATIONS = {
       title: 'Como Substituir o whatsapp-web.js pelo whatsmeow-node',
       description: 'Remova o Puppeteer, reduza a memória de 500 MB para 20 MB e ganhe uma API async tipada.',
     },
+    'connect-to-chatgpt': {
+      title: 'Como Conectar WhatsApp ao ChatGPT (OpenAI)',
+      description: 'Crie um chatbot de WhatsApp com GPT-4o usando o SDK da OpenAI.',
+    },
+    'connect-to-gemini': {
+      title: 'Como Conectar WhatsApp ao Google Gemini',
+      description: 'Crie um chatbot de WhatsApp com Gemini usando o SDK do Google GenAI.',
+    },
+    'connect-to-deepseek': {
+      title: 'Como Conectar WhatsApp ao DeepSeek',
+      description: 'Crie um chatbot de WhatsApp com DeepSeek usando a API compatível com OpenAI.',
+    },
+    'connect-to-ollama': {
+      title: 'Como Conectar WhatsApp ao Ollama (IA Local)',
+      description: 'Execute um modelo de IA local — sem API key, sem custos, privacidade total.',
+    },
+    'send-notifications': {
+      title: 'Como Enviar Notificações pelo WhatsApp com Node.js',
+      description: 'Envie alertas, lembretes e atualizações pelo WhatsApp a partir de qualquer app Node.js.',
+    },
+    'schedule-messages': {
+      title: 'Como Agendar Mensagens no WhatsApp com Node.js',
+      description: 'Envios atrasados, lembretes recorrentes e agendamento baseado em cron.',
+    },
+    'poll-bot': {
+      title: 'Como Criar um Bot de Enquetes no WhatsApp',
+      description: 'Crie enquetes, decifre votos, contabilize resultados e anuncie vencedores.',
+    },
+    'forward-messages': {
+      title: 'Como Encaminhar Mensagens no WhatsApp Programaticamente',
+      description: 'Encaminhe mensagens entre chats — texto, mídia e qualquer tipo de mensagem.',
+    },
+    'integrate-whaticket': {
+      title: 'Como Usar whatsmeow-node com Whaticket',
+      description: 'Substitua o whatsapp-web.js no Whaticket — sem Puppeteer, menos memória, mais estabilidade.',
+    },
+    'integrate-n8n': {
+      title: 'Como Usar whatsmeow-node com n8n',
+      description: 'Conecte whatsmeow-node ao n8n para automação de workflows no WhatsApp.',
+    },
+    'integrate-chatwoot': {
+      title: 'Como Usar whatsmeow-node com Chatwoot',
+      description: 'Use whatsmeow-node como canal WhatsApp no Chatwoot — sem Cloud API.',
+    },
+    'integrate-typebot': {
+      title: 'Como Usar whatsmeow-node com Typebot',
+      description: 'Conecte fluxos do Typebot ao WhatsApp via whatsmeow-node — substitua a Evolution API.',
+    },
   },
   es: {
     'whatsmeow-in-node': {
@@ -88,6 +136,54 @@ const FALLBACK_TRANSLATIONS = {
     'migrate-from-whatsapp-web-js': {
       title: 'Cómo Reemplazar whatsapp-web.js con whatsmeow-node',
       description: 'Elimina Puppeteer, reduce la memoria de 500 MB a 20 MB y obtén una API async tipada.',
+    },
+    'connect-to-chatgpt': {
+      title: 'Cómo Conectar WhatsApp a ChatGPT (OpenAI)',
+      description: 'Construye un chatbot de WhatsApp con GPT-4o usando el SDK de OpenAI.',
+    },
+    'connect-to-gemini': {
+      title: 'Cómo Conectar WhatsApp a Google Gemini',
+      description: 'Construye un chatbot de WhatsApp con Gemini usando el SDK de Google GenAI.',
+    },
+    'connect-to-deepseek': {
+      title: 'Cómo Conectar WhatsApp a DeepSeek',
+      description: 'Construye un chatbot de WhatsApp con DeepSeek usando la API compatible con OpenAI.',
+    },
+    'connect-to-ollama': {
+      title: 'Cómo Conectar WhatsApp a Ollama (IA Local)',
+      description: 'Ejecuta un modelo de IA local — sin API key, sin costos, total privacidad.',
+    },
+    'send-notifications': {
+      title: 'Cómo Enviar Notificaciones de WhatsApp desde Node.js',
+      description: 'Envía alertas, recordatorios y actualizaciones por WhatsApp desde cualquier app Node.js.',
+    },
+    'schedule-messages': {
+      title: 'Cómo Programar Mensajes de WhatsApp con Node.js',
+      description: 'Envíos retrasados, recordatorios recurrentes y programación basada en cron.',
+    },
+    'poll-bot': {
+      title: 'Cómo Crear un Bot de Encuestas en WhatsApp',
+      description: 'Crea encuestas, descifra votos, cuenta resultados y anuncia ganadores.',
+    },
+    'forward-messages': {
+      title: 'Cómo Reenviar Mensajes de WhatsApp Programáticamente',
+      description: 'Reenvía mensajes entre chats — texto, multimedia y cualquier tipo de mensaje.',
+    },
+    'integrate-whaticket': {
+      title: 'Cómo Usar whatsmeow-node con Whaticket',
+      description: 'Reemplaza whatsapp-web.js en Whaticket — sin Puppeteer, menos memoria, más estabilidad.',
+    },
+    'integrate-n8n': {
+      title: 'Cómo Usar whatsmeow-node con n8n',
+      description: 'Conecta whatsmeow-node a n8n para automatización de workflows en WhatsApp.',
+    },
+    'integrate-chatwoot': {
+      title: 'Cómo Usar whatsmeow-node con Chatwoot',
+      description: 'Usa whatsmeow-node como canal WhatsApp en Chatwoot — sin Cloud API.',
+    },
+    'integrate-typebot': {
+      title: 'Cómo Usar whatsmeow-node con Typebot',
+      description: 'Conecta flujos de Typebot a WhatsApp vía whatsmeow-node — reemplaza Evolution API.',
     },
   },
 };

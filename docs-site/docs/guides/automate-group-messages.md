@@ -7,6 +7,7 @@ keywords: [automate whatsapp group messages, whatsapp group bot nodejs, send gro
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/automate-group-messages.png" />
@@ -351,9 +352,4 @@ Sending the same message to many groups too quickly will trigger WhatsApp's rate
 `updateGroupParticipants` with `"promote"`, `"demote"`, or `"remove"` requires your bot to be a group admin. `"add"` may also require admin permissions depending on the group's settings.
 :::
 
-## Next Steps
-
-- [How to Build a Bot](build-a-bot) — full bot with command handling
-- [How to Send WhatsApp Messages from TypeScript](send-messages-typescript) — all message types
-- [Groups & Communities Examples](/docs/examples/groups-and-communities) — more group code samples
-- [Rate Limiting](/docs/rate-limiting) — avoid getting throttled
+<RelatedGuides slugs={["build-a-bot", "send-messages-typescript", "send-notifications", "poll-bot"]} />

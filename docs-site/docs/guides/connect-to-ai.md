@@ -7,6 +7,7 @@ keywords: [connect whatsapp to claude, whatsapp ai bot, claude whatsapp integrat
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/connect-to-ai.png" />
@@ -255,9 +256,4 @@ Never hardcode your API key in the source. Use environment variables (`ANTHROPIC
 Both the Anthropic API and WhatsApp have rate limits. For the Anthropic API, handle `429` errors with exponential backoff. For WhatsApp, avoid sending too many messages too quickly — see [Rate Limiting](/docs/rate-limiting).
 :::
 
-## Next Steps
-
-- [How to Build a Bot](build-a-bot) — fundamentals of message handling and commands
-- [How to Show Typing Indicators](typing-indicators) — make the AI feel more natural
-- [Echo Bot Example](/docs/examples/bots-and-resilience#echo-bot) — full-featured reference bot
-- [Rate Limiting](/docs/rate-limiting) — understand WhatsApp's sending limits
+<RelatedGuides slugs={["connect-to-chatgpt", "connect-to-gemini", "connect-to-ollama", "build-a-bot"]} />

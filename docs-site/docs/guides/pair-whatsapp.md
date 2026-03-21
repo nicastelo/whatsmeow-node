@@ -7,6 +7,7 @@ keywords: [pair whatsapp nodejs, whatsapp qr code api, link whatsapp device prog
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pair-whatsapp.png" />
@@ -216,9 +217,4 @@ Phone numbers must not include the `+` prefix. Pass `"5512345678"`, not `"+55123
 If the user unlinks the device from WhatsApp (Settings → Linked Devices → remove), the `"logged_out"` event fires. The only recovery is to delete the session database and pair again.
 :::
 
-## Next Steps
-
-- [How to Build a Bot](build-a-bot) — pair and then build a bot
-- [Getting Started](/docs/getting-started) — quick overview of the full API
-- [Connection Lifecycle](/docs/connection-lifecycle) — deep dive into connection states
-- [Pairing Examples](/docs/examples/pairing) — more pairing code samples
+<RelatedGuides slugs={["build-a-bot", "whatsmeow-in-node", "send-messages-typescript"]} />
