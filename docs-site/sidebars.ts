@@ -10,17 +10,9 @@ const sidebars: SidebarsConfig = {
     'rate-limiting',
     'faq',
     {
-      type: 'category',
+      type: 'doc',
+      id: 'guides/overview',
       label: 'Guides',
-      link: {type: 'doc', id: 'guides/overview'},
-      items: [
-        'guides/build-a-bot',
-        'guides/send-stickers',
-        'guides/download-media',
-        'guides/typing-indicators',
-        'guides/pair-whatsapp',
-        'guides/connect-to-ai',
-      ],
     },
     {
       type: 'category',

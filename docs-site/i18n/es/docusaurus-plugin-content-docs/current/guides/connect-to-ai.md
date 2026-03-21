@@ -6,6 +6,42 @@ description: "Construye un chatbot de WhatsApp con IA conectando whatsmeow-node 
 keywords: [conectar whatsapp con claude, bot ia whatsapp, integración claude whatsapp, chatbot ia whatsapp nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/es/connect-to-ai.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/es/connect-to-ai.png" />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Cómo Conectar WhatsApp con Claude AI",
+      "description": "Construye un chatbot de WhatsApp con IA conectando whatsmeow-node con Claude a través del SDK de Anthropic. Incluye historial de conversación e indicadores de escritura.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/connect-to-ai.png",
+      "step": [
+        {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and Anthropic client with new Anthropic()."},
+        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
+        {"@type": "HowToStep", "name": "Send to Claude", "text": "Call anthropic.messages.create() with the user message and send the response back via sendMessage."},
+        {"@type": "HowToStep", "name": "Add Conversation History", "text": "Store message history per user JID in a Map and pass it to Claude for multi-turn conversations."}
+      ]
+    })}
+  </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Cómo Conectar WhatsApp con Claude AI",
+      "description": "Construye un chatbot de WhatsApp con IA conectando whatsmeow-node con Claude a través del SDK de Anthropic. Incluye historial de conversación e indicadores de escritura.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/connect-to-ai.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
+</Head>
+
+![Cómo Conectar WhatsApp con Claude AI](/img/guides/es/connect-to-ai.png)
+![Cómo Conectar WhatsApp con Claude AI](/img/guides/es/connect-to-ai-light.png)
+
 # Cómo Conectar WhatsApp con Claude AI
 
 Combina whatsmeow-node con el SDK de Anthropic para construir un chatbot de WhatsApp potenciado por Claude. Los mensajes llegan vía WhatsApp, se envían a Claude para obtener una respuesta, y la respuesta regresa al usuario — con indicadores de escritura mientras Claude piensa.

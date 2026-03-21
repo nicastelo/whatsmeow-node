@@ -9,12 +9,15 @@ keywords: [whatsapp typing indicator bot, show typing whatsapp api, whatsapp com
 import Head from '@docusaurus/Head';
 
 <Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/typing-indicators.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/typing-indicators.png" />
   <script type="application/ld+json">
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
       "name": "How to Show Typing Indicators on WhatsApp",
       "description": "Show typing and recording indicators on WhatsApp with Node.js — control composing state, online presence, and subscribe to others' typing.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/typing-indicators.png",
       "step": [
         {"@type": "HowToStep", "name": "Show typing...", "text": "Call sendChatPresence(chatJid, 'composing') to show the typing indicator."},
         {"@type": "HowToStep", "name": "Show recording audio...", "text": "Call sendChatPresence(chatJid, 'composing', 'audio') for the recording indicator."},
@@ -24,7 +27,21 @@ import Head from '@docusaurus/Head';
       ]
     })}
   </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Show Typing Indicators on WhatsApp",
+      "description": "Show typing and recording indicators on WhatsApp with Node.js — control composing state, online presence, and subscribe to others' typing.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/typing-indicators.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
 </Head>
+
+![How to Show Typing Indicators on WhatsApp](/img/guides/typing-indicators.png)
+![How to Show Typing Indicators on WhatsApp](/img/guides/typing-indicators-light.png)
 
 # How to Show Typing Indicators on WhatsApp
 

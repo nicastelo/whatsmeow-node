@@ -9,12 +9,15 @@ keywords: [send stickers whatsapp bot, whatsapp sticker api nodejs, send webp st
 import Head from '@docusaurus/Head';
 
 <Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/send-stickers.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/send-stickers.png" />
   <script type="application/ld+json">
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
       "name": "How to Send Stickers on WhatsApp with Node.js",
       "description": "Send and receive WhatsApp stickers programmatically with Node.js — upload WebP files, set dimensions, and download incoming stickers.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/send-stickers.png",
       "step": [
         {"@type": "HowToStep", "name": "Upload the Sticker File", "text": "Use uploadMedia() with the WebP file path and 'image' media type."},
         {"@type": "HowToStep", "name": "Send the Sticker Message", "text": "Use sendRawMessage with stickerMessage including width, height (512x512), and mimetype image/webp."},
@@ -22,7 +25,21 @@ import Head from '@docusaurus/Head';
       ]
     })}
   </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Send Stickers on WhatsApp with Node.js",
+      "description": "Send and receive WhatsApp stickers programmatically with Node.js — upload WebP files, set dimensions, and download incoming stickers.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/send-stickers.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
 </Head>
+
+![How to Send Stickers on WhatsApp with Node.js](/img/guides/send-stickers.png)
+![How to Send Stickers on WhatsApp with Node.js](/img/guides/send-stickers-light.png)
 
 # How to Send Stickers on WhatsApp with Node.js
 

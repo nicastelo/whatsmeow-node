@@ -6,6 +6,42 @@ description: "Vincula una cuenta de WhatsApp a tu aplicación Node.js usando esc
 keywords: [vincular whatsapp nodejs, api qr code whatsapp, vincular dispositivo whatsapp programáticamente, dispositivos vinculados whatsapp nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/es/pair-whatsapp.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/es/pair-whatsapp.png" />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Cómo Vincular WhatsApp con Node.js",
+      "description": "Vincula una cuenta de WhatsApp a tu aplicación Node.js usando escaneo de QR code o ingreso de código por número telefónico. Incluye persistencia de sesión y reconexión.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/pair-whatsapp.png",
+      "step": [
+        {"@type": "HowToStep", "name": "QR Code Pairing", "text": "Call getQRChannel() then connect(). Listen for the qr event and render the code with qrcode-terminal."},
+        {"@type": "HowToStep", "name": "Phone Number Pairing", "text": "Call connect() first, then pairCode(phoneNumber). The user enters the 8-digit code in WhatsApp."},
+        {"@type": "HowToStep", "name": "Session Persistence", "text": "The session is stored in the database. On next run, init() returns the stored JID and you skip pairing."},
+        {"@type": "HowToStep", "name": "Choose a Store", "text": "Use SQLite (session.db) for development or PostgreSQL for production."}
+      ]
+    })}
+  </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Cómo Vincular WhatsApp con Node.js",
+      "description": "Vincula una cuenta de WhatsApp a tu aplicación Node.js usando escaneo de QR code o ingreso de código por número telefónico. Incluye persistencia de sesión y reconexión.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/pair-whatsapp.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
+</Head>
+
+![Cómo Vincular WhatsApp con Node.js](/img/guides/es/pair-whatsapp.png)
+![Cómo Vincular WhatsApp con Node.js](/img/guides/es/pair-whatsapp-light.png)
+
 # Cómo Vincular WhatsApp con Node.js
 
 whatsmeow-node se conecta a WhatsApp como un dispositivo vinculado — igual que WhatsApp Web o Desktop. Puedes vincular usando un QR code o un código de número telefónico. Una vez vinculado, la sesión se persiste y tu aplicación se reconecta automáticamente.

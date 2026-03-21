@@ -6,6 +6,44 @@ description: "Crea un bot de WhatsApp con Node.js y TypeScript — recibe mensaj
 keywords: [bot whatsapp nodejs, crear bot whatsapp typescript, tutorial bot whatsapp, automatización whatsapp nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/es/build-a-bot.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/es/build-a-bot.png" />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Cómo Crear un Bot de WhatsApp con Node.js",
+      "description": "Crea un bot de WhatsApp con Node.js y TypeScript — recibe mensajes, maneja comandos, responde con citas y gestiona conexiones.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/build-a-bot.png",
+      "step": [
+        {"@type": "HowToStep", "name": "Create the Client", "text": "Initialize a WhatsmeowClient with createClient() and a session store."},
+        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event and extract text from conversation or extendedTextMessage."},
+        {"@type": "HowToStep", "name": "Reply to Messages", "text": "Use sendMessage for text or sendRawMessage with contextInfo for quoted replies."},
+        {"@type": "HowToStep", "name": "Add Commands", "text": "Route messages starting with ! to command handlers like !ping and !help."},
+        {"@type": "HowToStep", "name": "Handle Errors and Reconnection", "text": "Listen for logged_out and disconnected events. Auto-reconnect is built-in."},
+        {"@type": "HowToStep", "name": "Graceful Shutdown", "text": "Handle SIGINT to set presence unavailable and disconnect cleanly."}
+      ]
+    })}
+  </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Cómo Crear un Bot de WhatsApp con Node.js",
+      "description": "Crea un bot de WhatsApp con Node.js y TypeScript — recibe mensajes, maneja comandos, responde con citas y gestiona conexiones.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/build-a-bot.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
+</Head>
+
+![Cómo Crear un Bot de WhatsApp con Node.js](/img/guides/es/build-a-bot.png)
+![Cómo Crear un Bot de WhatsApp con Node.js](/img/guides/es/build-a-bot-light.png)
+
 # Cómo Crear un Bot de WhatsApp con Node.js
 
 whatsmeow-node te permite construir un bot de WhatsApp completamente funcional en menos de 60 líneas de TypeScript. El bot se conecta como un dispositivo vinculado (como WhatsApp Web), recibe mensajes en tiempo real y puede responder con texto, multimedia o mensajes estructurados.

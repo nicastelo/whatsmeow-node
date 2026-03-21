@@ -9,12 +9,15 @@ keywords: [connect whatsapp to claude, whatsapp ai bot, claude whatsapp integrat
 import Head from '@docusaurus/Head';
 
 <Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/connect-to-ai.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/connect-to-ai.png" />
   <script type="application/ld+json">
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "HowTo",
       "name": "How to Connect WhatsApp to Claude AI",
       "description": "Build an AI-powered WhatsApp chatbot by connecting whatsmeow-node to Claude via the Anthropic SDK. Includes conversation history and typing indicators.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/connect-to-ai.png",
       "step": [
         {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and Anthropic client with new Anthropic()."},
         {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
@@ -23,7 +26,21 @@ import Head from '@docusaurus/Head';
       ]
     })}
   </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Connect WhatsApp to Claude AI",
+      "description": "Build an AI-powered WhatsApp chatbot by connecting whatsmeow-node to Claude via the Anthropic SDK. Includes conversation history and typing indicators.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/connect-to-ai.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
 </Head>
+
+![How to Connect WhatsApp to Claude AI](/img/guides/connect-to-ai.png)
+![How to Connect WhatsApp to Claude AI](/img/guides/connect-to-ai-light.png)
 
 # How to Connect WhatsApp to Claude AI
 

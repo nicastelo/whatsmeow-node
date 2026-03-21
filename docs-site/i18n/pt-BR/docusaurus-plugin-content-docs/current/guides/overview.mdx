@@ -1,0 +1,98 @@
+---
+title: Guias
+sidebar_label: Guias
+sidebar_position: 1
+description: "Tutoriais passo a passo para bots de WhatsApp com Node.js e TypeScript — crie bots, envie stickers, baixe mídias e integre com IA."
+keywords: [guias whatsapp nodejs, tutoriais bot whatsapp, tutoriais api whatsapp typescript, como criar bot whatsapp]
+---
+
+import {GuideCard, GuideSection} from '@site/src/components/GuideCard';
+
+# Guias
+
+Tutoriais práticos que mostram como realizar tarefas comuns de automação no WhatsApp com whatsmeow-node.
+
+<GuideSection title="Primeiros Passos">
+  <GuideCard
+    title="Usar whatsmeow no Node.js"
+    description="Instale o pacote npm, conecte ao WhatsApp e comece a usar whatsmeow no TypeScript — sem configurar Go."
+    to="whatsmeow-in-node"
+    image="/img/guides/pt-BR/whatsmeow-in-node.png"
+  />
+  <GuideCard
+    title="Criar um Bot"
+    description="Crie um bot de WhatsApp do zero — receba mensagens, trate comandos, envie respostas."
+    to="build-a-bot"
+    image="/img/guides/pt-BR/build-a-bot.png"
+  />
+  <GuideCard
+    title="Parear WhatsApp"
+    description="Vincule uma conta WhatsApp via QR code ou código por número de telefone."
+    to="pair-whatsapp"
+    image="/img/guides/pt-BR/pair-whatsapp.png"
+  />
+</GuideSection>
+
+<GuideSection title="Mensagens">
+  <GuideCard
+    title="Enviar Mensagens pelo TypeScript"
+    description="Texto, respostas, menções, mídia, enquetes e reações — tudo com tipagem segura."
+    to="send-messages-typescript"
+    image="/img/guides/pt-BR/send-messages-typescript.png"
+  />
+  <GuideCard
+    title="Automatizar Mensagens em Grupos"
+    description="Envie para grupos, mencione membros, transmita para vários grupos e gerencie participantes."
+    to="automate-group-messages"
+    image="/img/guides/pt-BR/automate-group-messages.png"
+  />
+  <GuideCard
+    title="Enviar Stickers"
+    description="Faça upload e envie stickers WebP, baixe stickers recebidos."
+    to="send-stickers"
+    image="/img/guides/pt-BR/send-stickers.png"
+  />
+  <GuideCard
+    title="Indicadores de Digitação"
+    description="Mostre indicadores 'digitando...' e 'gravando áudio...', inscreva-se na presença de outros."
+    to="typing-indicators"
+    image="/img/guides/pt-BR/typing-indicators.png"
+  />
+</GuideSection>
+
+<GuideSection title="Mídia">
+  <GuideCard
+    title="Baixar Mídias"
+    description="Salve imagens, vídeos, áudios e documentos recebidos no disco."
+    to="download-media"
+    image="/img/guides/pt-BR/download-media.png"
+  />
+</GuideSection>
+
+<GuideSection title="Migração">
+  <GuideCard
+    title="Migrar do Baileys"
+    description="Comparação lado a lado de APIs e guia passo a passo para migrar do Baileys para whatsmeow-node."
+    to="migrate-from-baileys"
+    image="/img/guides/pt-BR/migrate-from-baileys.png"
+  />
+  <GuideCard
+    title="Migrar do whatsapp-web.js"
+    description="Remova o Puppeteer, reduza a memória de 500 MB para 20 MB e ganhe uma API async tipada."
+    to="migrate-from-whatsapp-web-js"
+    image="/img/guides/pt-BR/migrate-from-whatsapp-web-js.png"
+  />
+</GuideSection>
+
+<GuideSection title="Integrações">
+  <GuideCard
+    title="Conectar à IA"
+    description="Crie um chatbot de WhatsApp com IA usando Claude."
+    to="connect-to-ai"
+    image="/img/guides/pt-BR/connect-to-ai.png"
+  />
+</GuideSection>
+
+## Procurando trechos de código?
+
+A seção de [Exemplos](/docs/examples/overview) tem código focado e pronto para copiar para funcionalidades específicas — mídia, grupos, enquetes, reações e mais.

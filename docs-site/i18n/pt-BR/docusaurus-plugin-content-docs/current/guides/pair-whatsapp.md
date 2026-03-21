@@ -6,6 +6,42 @@ description: "Vincule uma conta WhatsApp ao seu app Node.js usando QR code ou c�
 keywords: [parear whatsapp nodejs, api qr code whatsapp, vincular dispositivo whatsapp programaticamente, dispositivos vinculados whatsapp nodejs]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/pair-whatsapp.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/pair-whatsapp.png" />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Como Parear o WhatsApp com Node.js",
+      "description": "Vincule uma conta WhatsApp ao seu app Node.js usando QR code ou código por número de telefone. Inclui persistência de sessão e reconexão.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/pair-whatsapp.png",
+      "step": [
+        {"@type": "HowToStep", "name": "QR Code Pairing", "text": "Call getQRChannel() then connect(). Listen for the qr event and render the code with qrcode-terminal."},
+        {"@type": "HowToStep", "name": "Phone Number Pairing", "text": "Call connect() first, then pairCode(phoneNumber). The user enters the 8-digit code in WhatsApp."},
+        {"@type": "HowToStep", "name": "Session Persistence", "text": "The session is stored in the database. On next run, init() returns the stored JID and you skip pairing."},
+        {"@type": "HowToStep", "name": "Choose a Store", "text": "Use SQLite (session.db) for development or PostgreSQL for production."}
+      ]
+    })}
+  </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Como Parear o WhatsApp com Node.js",
+      "description": "Vincule uma conta WhatsApp ao seu app Node.js usando QR code ou código por número de telefone. Inclui persistência de sessão e reconexão.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/pair-whatsapp.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
+</Head>
+
+![Como Parear o WhatsApp com Node.js](/img/guides/pt-BR/pair-whatsapp.png)
+![Como Parear o WhatsApp com Node.js](/img/guides/pt-BR/pair-whatsapp-light.png)
+
 # Como Parear o WhatsApp com Node.js
 
 whatsmeow-node se conecta ao WhatsApp como um dispositivo vinculado — assim como o WhatsApp Web ou Desktop. Você pode parear usando QR code ou código por número de telefone. Uma vez pareado, a sessão é persistida e seu app reconecta automaticamente.

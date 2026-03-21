@@ -6,6 +6,43 @@ description: "Muestra indicadores de escritura y grabación en WhatsApp con Node
 keywords: [indicador escritura bot whatsapp, mostrar escribiendo whatsapp api, estado composición whatsapp nodejs, api presencia whatsapp typescript]
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/es/typing-indicators.png" />
+  <meta name="twitter:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/es/typing-indicators.png" />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Cómo Mostrar Indicadores de Escritura en WhatsApp",
+      "description": "Muestra indicadores de escritura y grabación en WhatsApp con Node.js — controla el estado de composición, presencia en línea y suscríbete a la escritura de otros.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/typing-indicators.png",
+      "step": [
+        {"@type": "HowToStep", "name": "Show typing...", "text": "Call sendChatPresence(chatJid, 'composing') to show the typing indicator."},
+        {"@type": "HowToStep", "name": "Show recording audio...", "text": "Call sendChatPresence(chatJid, 'composing', 'audio') for the recording indicator."},
+        {"@type": "HowToStep", "name": "Clear the Indicator", "text": "Call sendChatPresence(chatJid, 'paused') to stop the indicator without sending a message."},
+        {"@type": "HowToStep", "name": "Set Online/Offline Status", "text": "Call sendPresence('available') before typing indicators work, and 'unavailable' when shutting down."},
+        {"@type": "HowToStep", "name": "Subscribe to Others' Typing", "text": "Call subscribePresence(jid) and listen for presence and chat_presence events."}
+      ]
+    })}
+  </script>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Cómo Mostrar Indicadores de Escritura en WhatsApp",
+      "description": "Muestra indicadores de escritura y grabación en WhatsApp con Node.js — controla el estado de composición, presencia en línea y suscríbete a la escritura de otros.",
+      "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/typing-indicators.png",
+      "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
+      "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
+    })}
+  </script>
+</Head>
+
+![Cómo Mostrar Indicadores de Escritura en WhatsApp](/img/guides/es/typing-indicators.png)
+![Cómo Mostrar Indicadores de Escritura en WhatsApp](/img/guides/es/typing-indicators-light.png)
+
 # Cómo Mostrar Indicadores de Escritura en WhatsApp
 
 Los indicadores de escritura de WhatsApp ("escribiendo..." y "grabando audio...") hacen que los bots se sientan más naturales. whatsmeow-node te da control total sobre estos indicadores con `sendChatPresence()`.
