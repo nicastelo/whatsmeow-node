@@ -7,6 +7,7 @@ keywords: [send stickers whatsapp bot, whatsapp sticker api nodejs, send webp st
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/send-stickers.png" />
@@ -176,8 +177,4 @@ Always use `"image/webp"` for stickers. Sending a PNG or JPEG as a sticker will 
 Use `"image"` as the media type when calling `uploadMedia()`, even though it's a sticker. The encryption is handled the same way.
 :::
 
-## Next Steps
-
-- [How to Download Media](download-media) — download any media type
-- [How to Build a Bot](build-a-bot) — add sticker support to a full bot
-- [Media Examples](/docs/examples/media) — send images, videos, audio, and documents
+<RelatedGuides slugs={["download-media", "build-a-bot", "send-messages-typescript"]} />

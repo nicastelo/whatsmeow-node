@@ -17,7 +17,7 @@ import {GuideCard, GuideSection} from '@site/src/components/GuideCard';
       "@type": "ItemList",
       "name": "whatsmeow-node Guides",
       "description": "Step-by-step WhatsApp bot tutorials for Node.js and TypeScript — build bots, send stickers, download media, and integrate with AI.",
-      "numberOfItems": 11,
+      "numberOfItems": 23,
       "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "How to Use whatsmeow in Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/whatsmeow-in-node"},
         {"@type": "ListItem", "position": 2, "name": "How to Build a WhatsApp Bot with Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/build-a-bot"},
@@ -29,7 +29,19 @@ import {GuideCard, GuideSection} from '@site/src/components/GuideCard';
         {"@type": "ListItem", "position": 8, "name": "How to Download WhatsApp Media with Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/download-media"},
         {"@type": "ListItem", "position": 9, "name": "How to Replace Baileys with whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/migrate-from-baileys"},
         {"@type": "ListItem", "position": 10, "name": "How to Replace whatsapp-web.js with whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/migrate-from-whatsapp-web-js"},
-        {"@type": "ListItem", "position": 11, "name": "How to Connect WhatsApp to Claude AI", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/connect-to-ai"}
+        {"@type": "ListItem", "position": 11, "name": "How to Connect WhatsApp to Claude AI", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/connect-to-ai"},
+        {"@type": "ListItem", "position": 12, "name": "How to Connect WhatsApp to ChatGPT (OpenAI)", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/connect-to-chatgpt"},
+        {"@type": "ListItem", "position": 13, "name": "How to Connect WhatsApp to Google Gemini", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/connect-to-gemini"},
+        {"@type": "ListItem", "position": 14, "name": "How to Connect WhatsApp to DeepSeek", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/connect-to-deepseek"},
+        {"@type": "ListItem", "position": 15, "name": "How to Connect WhatsApp to Ollama (Local AI)", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/connect-to-ollama"},
+        {"@type": "ListItem", "position": 16, "name": "How to Send WhatsApp Notifications from Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/send-notifications"},
+        {"@type": "ListItem", "position": 17, "name": "How to Schedule WhatsApp Messages with Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/schedule-messages"},
+        {"@type": "ListItem", "position": 18, "name": "How to Create a WhatsApp Poll Bot", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/poll-bot"},
+        {"@type": "ListItem", "position": 19, "name": "How to Forward WhatsApp Messages Programmatically", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/forward-messages"},
+        {"@type": "ListItem", "position": 20, "name": "How to Use whatsmeow-node with Whaticket", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-whaticket"},
+        {"@type": "ListItem", "position": 21, "name": "How to Use whatsmeow-node with n8n", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-n8n"},
+        {"@type": "ListItem", "position": 22, "name": "How to Use whatsmeow-node with Chatwoot", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-chatwoot"},
+        {"@type": "ListItem", "position": 23, "name": "How to Use whatsmeow-node with Typebot", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-typebot"}
       ]
     })}
   </script>
@@ -111,12 +123,90 @@ Hands-on tutorials that walk you through common WhatsApp automation tasks with w
   />
 </GuideSection>
 
-<GuideSection title="Integrations">
+<GuideSection title="AI Integrations">
   <GuideCard
-    title="Connect to AI"
-    description="Build an AI-powered WhatsApp chatbot with Claude."
+    title="Connect to Claude AI"
+    description="Build an AI-powered WhatsApp chatbot with Claude and the Anthropic SDK."
     to="connect-to-ai"
     image="/img/guides/connect-to-ai.png"
+  />
+  <GuideCard
+    title="Connect to ChatGPT (OpenAI)"
+    description="Build a WhatsApp chatbot powered by GPT-4.1 with the OpenAI SDK."
+    to="connect-to-chatgpt"
+    image="/img/guides/connect-to-chatgpt.png"
+  />
+  <GuideCard
+    title="Connect to Google Gemini"
+    description="Build a WhatsApp chatbot powered by Gemini with the Google GenAI SDK."
+    to="connect-to-gemini"
+    image="/img/guides/connect-to-gemini.png"
+  />
+  <GuideCard
+    title="Connect to DeepSeek"
+    description="Build a WhatsApp chatbot with DeepSeek using the OpenAI-compatible API."
+    to="connect-to-deepseek"
+    image="/img/guides/connect-to-deepseek.png"
+  />
+  <GuideCard
+    title="Connect to Ollama (Local AI)"
+    description="Run a local AI model — no API key, no cloud costs, full privacy."
+    to="connect-to-ollama"
+    image="/img/guides/connect-to-ollama.png"
+  />
+</GuideSection>
+
+<GuideSection title="Automation">
+  <GuideCard
+    title="Send Notifications"
+    description="Send alerts, reminders, and updates to WhatsApp from any Node.js app or HTTP endpoint."
+    to="send-notifications"
+    image="/img/guides/send-notifications.png"
+  />
+  <GuideCard
+    title="Schedule Messages"
+    description="Delayed sends, recurring reminders, and cron-based scheduling."
+    to="schedule-messages"
+    image="/img/guides/schedule-messages.png"
+  />
+  <GuideCard
+    title="Create a Poll Bot"
+    description="Create polls, decrypt votes, tally results, and announce winners."
+    to="poll-bot"
+    image="/img/guides/poll-bot.png"
+  />
+  <GuideCard
+    title="Forward Messages"
+    description="Relay messages between chats — text, media, and any message type."
+    to="forward-messages"
+    image="/img/guides/forward-messages.png"
+  />
+</GuideSection>
+
+<GuideSection title="Tool Integrations">
+  <GuideCard
+    title="Whaticket Integration"
+    description="Replace whatsapp-web.js in Whaticket — drop Puppeteer, cut memory, get stability."
+    to="integrate-whaticket"
+    image="/img/guides/integrate-whaticket.png"
+  />
+  <GuideCard
+    title="n8n Integration"
+    description="Connect whatsmeow-node to n8n for WhatsApp workflow automation."
+    to="integrate-n8n"
+    image="/img/guides/integrate-n8n.png"
+  />
+  <GuideCard
+    title="Chatwoot Integration"
+    description="Use whatsmeow-node as a WhatsApp channel in Chatwoot — no Cloud API needed."
+    to="integrate-chatwoot"
+    image="/img/guides/integrate-chatwoot.png"
+  />
+  <GuideCard
+    title="Typebot Integration"
+    description="Connect Typebot flows to WhatsApp via whatsmeow-node — replace Evolution API."
+    to="integrate-typebot"
+    image="/img/guides/integrate-typebot.png"
   />
 </GuideSection>
 

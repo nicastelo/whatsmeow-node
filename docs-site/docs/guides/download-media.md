@@ -7,6 +7,7 @@ keywords: [download whatsapp media nodejs, save whatsapp images api, download wh
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/download-media.png" />
@@ -203,8 +204,4 @@ When **receiving** messages, fields use proto casing: `fileSHA256`, `fileEncSHA2
 WhatsApp media URLs expire after some time. Download media promptly when you receive it — you can't download it later once the link expires.
 :::
 
-## Next Steps
-
-- [How to Send Stickers](send-stickers) — upload and send sticker media
-- [How to Build a Bot](build-a-bot) — add media handling to a full bot
-- [Media Examples](/docs/examples/media) — upload and send images, videos, audio, and documents
+<RelatedGuides slugs={["send-stickers", "build-a-bot", "forward-messages"]} />

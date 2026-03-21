@@ -7,6 +7,7 @@ keywords: [whatsapp typing indicator bot, show typing whatsapp api, whatsapp com
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/typing-indicators.png" />
@@ -196,8 +197,4 @@ Typing indicators may not appear if you haven't called `sendPresence("available"
 Showing "typing..." and then replying instantly (in under 100ms) looks unnatural. Add a short delay proportional to the response length to simulate real typing.
 :::
 
-## Next Steps
-
-- [How to Build a Bot](build-a-bot) — add typing to a full bot
-- [How to Connect to Claude AI](connect-to-ai) — typing indicators while waiting for AI responses
-- [Presence & Status Examples](/docs/examples/presence-and-status) — privacy settings, disappearing messages, and more
+<RelatedGuides slugs={["build-a-bot", "connect-to-ai", "send-messages-typescript"]} />

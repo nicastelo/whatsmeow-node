@@ -7,6 +7,7 @@ keywords: [whatsapp-web.js alternative, replace whatsapp-web.js, whatsapp-web.js
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/migrate-from-whatsapp-web-js.png" />
@@ -318,9 +319,4 @@ whatsapp-web.js gives you `msg.body` as a convenience. whatsmeow-node gives you 
 whatsapp-web.js uses `@c.us` for contacts. whatsmeow-node uses `@s.whatsapp.net`. If you have stored JIDs, update them.
 :::
 
-## Next Steps
-
-- [Getting Started](/docs/getting-started) — quick overview of the full API
-- [How to Build a Bot](build-a-bot) — build a command bot from scratch
-- [How to Send WhatsApp Messages from TypeScript](send-messages-typescript) — all message types
-- [API Reference](/docs/api/overview) — all available methods
+<RelatedGuides slugs={["whatsmeow-in-node", "build-a-bot", "migrate-from-baileys"]} />

@@ -7,6 +7,7 @@ keywords: [send whatsapp message typescript, whatsapp api typescript, whatsapp b
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/send-messages-typescript.png" />
@@ -291,10 +292,4 @@ In groups, always send to `info.chat` (the group JID), not `info.sender` (the in
 WhatsApp rate-limits sending. Space out messages, especially in groups. See [Rate Limiting](/docs/rate-limiting) for details.
 :::
 
-## Next Steps
-
-- [How to Build a Bot](build-a-bot) — full command-handling bot
-- [How to Automate Group Messages](automate-group-messages) — bulk group messaging
-- [How to Send Stickers](send-stickers) — media stickers
-- [Messaging Examples](/docs/examples/messaging) — more code samples
-- [API Reference](/docs/api/overview) — all available methods
+<RelatedGuides slugs={["build-a-bot", "automate-group-messages", "send-stickers", "send-notifications"]} />

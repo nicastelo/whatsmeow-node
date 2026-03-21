@@ -7,6 +7,7 @@ keywords: [whatsmeow nodejs, whatsmeow node, whatsmeow typescript, whatsmeow npm
 ---
 
 import Head from '@docusaurus/Head';
+import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 <Head>
   <meta property="og:image" content="https://nicastelo.github.io/whatsmeow-node/img/guides/whatsmeow-in-node.png" />
@@ -217,9 +218,4 @@ WhatsApp JIDs look like `5512345678@s.whatsapp.net` (individual) or `120363XXXXX
 The session database contains encryption keys. If you delete it, you'll need to re-pair. In production, back it up or use PostgreSQL.
 :::
 
-## Next Steps
-
-- [How to Pair WhatsApp](pair-whatsapp) — QR and phone number pairing details
-- [How to Build a Bot](build-a-bot) — full echo bot with commands
-- [How to Send WhatsApp Messages from TypeScript](send-messages-typescript) — type-safe messaging
-- [Comparison with Alternatives](/docs/comparison) — vs. Baileys, whatsapp-web.js, and the official API
+<RelatedGuides slugs={["pair-whatsapp", "build-a-bot", "send-messages-typescript", "migrate-from-baileys"]} />
