@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 > **0.x** — We stay on 0.x because the upstream whatsmeow library is pre-1.0. Breaking changes are signaled by minor version bumps (`0.5 → 0.6`). Pin your version if stability matters.
 
+## [0.5.2] - 2026-03-22
+
+### Added
+
+- 15 example scripts bundled in the npm package (`examples/` directory) — echo bot, media send, groups, polls, stickers, presence, newsletters, and more
+
+### Changed
+
+- Test files (`src/__tests__/`) excluded from the published npm package to reduce install size
+
 ## [0.5.1] - 2026-03-08
 
 ### Added
@@ -120,6 +130,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.5.2]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.3.0...v0.4.0

@@ -1,6 +1,6 @@
 {
   "name": "@whatsmeow-node/linux-arm64",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "whatsmeow-node binary for Linux ARM64",
   "license": "MIT",
   "repository": {
