@@ -19,9 +19,9 @@ import Head from '@docusaurus/Head';
       "description": "Envía y recibe stickers de WhatsApp programáticamente con Node.js — sube archivos WebP, configura dimensiones y descarga stickers entrantes.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/send-stickers.png",
       "step": [
-        {"@type": "HowToStep", "name": "Upload the Sticker File", "text": "Use uploadMedia() with the WebP file path and 'image' media type."},
-        {"@type": "HowToStep", "name": "Send the Sticker Message", "text": "Use sendRawMessage with stickerMessage including width, height (512x512), and mimetype image/webp."},
-        {"@type": "HowToStep", "name": "Download Incoming Stickers", "text": "Listen for messages with stickerMessage and call downloadAny() to save to disk."}
+        {"@type": "HowToStep", "name": "Subir el archivo del sticker", "text": "Usa uploadMedia() con la ruta del archivo WebP y el tipo de multimedia 'image'."},
+        {"@type": "HowToStep", "name": "Enviar el mensaje de sticker", "text": "Usa sendRawMessage con stickerMessage incluyendo width, height (512x512) y mimetype image/webp."},
+        {"@type": "HowToStep", "name": "Descargar stickers entrantes", "text": "Escucha los mensajes con stickerMessage y llama a downloadAny() para guardarlos en disco."}
       ]
     })}
   </script>

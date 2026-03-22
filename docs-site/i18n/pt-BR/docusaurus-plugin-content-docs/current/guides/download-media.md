@@ -19,10 +19,10 @@ import Head from '@docusaurus/Head';
       "description": "Baixe e salve imagens, vídeos, áudios, documentos e stickers do WhatsApp no disco com Node.js usando whatsmeow-node.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/download-media.png",
       "step": [
-        {"@type": "HowToStep", "name": "Listen for Incoming Messages", "text": "Subscribe to the message event and filter for media messages."},
-        {"@type": "HowToStep", "name": "Detect the Media Type", "text": "Check for imageMessage, videoMessage, audioMessage, documentMessage, or stickerMessage fields."},
-        {"@type": "HowToStep", "name": "Download with downloadAny()", "text": "Call downloadAny(message) to decrypt and save media to a temporary file."},
-        {"@type": "HowToStep", "name": "Save to a Permanent Location", "text": "Copy the temp file to a permanent directory using fs.copyFile()."}
+        {"@type": "HowToStep", "name": "Escutar Mensagens Recebidas", "text": "Inscreva-se no evento message e filtre por mensagens de mídia."},
+        {"@type": "HowToStep", "name": "Detectar o Tipo de Mídia", "text": "Verifique os campos imageMessage, videoMessage, audioMessage, documentMessage ou stickerMessage."},
+        {"@type": "HowToStep", "name": "Baixar com downloadAny()", "text": "Chame downloadAny(message) para descriptografar e salvar a mídia em um arquivo temporário."},
+        {"@type": "HowToStep", "name": "Salvar em um Local Permanente", "text": "Copie o arquivo temporário para um diretório permanente usando fs.copyFile()."}
       ]
     })}
   </script>

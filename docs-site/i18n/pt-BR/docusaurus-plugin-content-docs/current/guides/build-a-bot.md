@@ -19,12 +19,12 @@ import Head from '@docusaurus/Head';
       "description": "Crie um bot de WhatsApp com Node.js e TypeScript — receba mensagens, trate comandos, responda com citações e gerencie conexões.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/build-a-bot.png",
       "step": [
-        {"@type": "HowToStep", "name": "Create the Client", "text": "Initialize a WhatsmeowClient with createClient() and a session store."},
-        {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event and extract text from conversation or extendedTextMessage."},
-        {"@type": "HowToStep", "name": "Reply to Messages", "text": "Use sendMessage for text or sendRawMessage with contextInfo for quoted replies."},
-        {"@type": "HowToStep", "name": "Add Commands", "text": "Route messages starting with ! to command handlers like !ping and !help."},
-        {"@type": "HowToStep", "name": "Handle Errors and Reconnection", "text": "Listen for logged_out and disconnected events. Auto-reconnect is built-in."},
-        {"@type": "HowToStep", "name": "Graceful Shutdown", "text": "Handle SIGINT to set presence unavailable and disconnect cleanly."}
+        {"@type": "HowToStep", "name": "Criar o Client", "text": "Inicialize um WhatsmeowClient com createClient() e um store de sessão."},
+        {"@type": "HowToStep", "name": "Tratar Mensagens Recebidas", "text": "Escute o evento message e extraia o texto de conversation ou extendedTextMessage."},
+        {"@type": "HowToStep", "name": "Responder Mensagens", "text": "Use sendMessage para texto ou sendRawMessage com contextInfo para respostas com citação."},
+        {"@type": "HowToStep", "name": "Adicionar Comandos", "text": "Roteie mensagens que começam com ! para handlers de comandos como !ping e !help."},
+        {"@type": "HowToStep", "name": "Tratar Erros e Reconexão", "text": "Escute os eventos logged_out e disconnected. A reconexão automática é embutida."},
+        {"@type": "HowToStep", "name": "Encerramento Gracioso", "text": "Trate o SIGINT para definir a presença como indisponível e desconectar de forma limpa."}
       ]
     })}
   </script>
