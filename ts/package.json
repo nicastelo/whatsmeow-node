@@ -40,7 +40,7 @@
     "url": "git+https://github.com/nicastelo/whatsmeow-node.git",
     "directory": "ts"
   },
-  "homepage": "https://github.com/nicastelo/whatsmeow-node#readme",
+  "homepage": "https://nicastelo.github.io/whatsmeow-node/",
   "bugs": {
     "url": "https://github.com/nicastelo/whatsmeow-node/issues"
   },
