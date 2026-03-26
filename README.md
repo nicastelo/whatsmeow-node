@@ -25,7 +25,7 @@ Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CG
 >
 > Do not use this for spamming, stalkerware, bulk messaging, or any purpose that violates WhatsApp's Terms of Service. The maintainers do not condone such use and bear no liability for misuse.
 
-**Current upstream**: whatsmeow [`0.0.0-20260305`](https://pkg.go.dev/go.mau.fi/whatsmeow)
+**Current upstream**: whatsmeow [`0.0.0-20260322`](https://pkg.go.dev/go.mau.fi/whatsmeow)
 
 ## Documentation
 

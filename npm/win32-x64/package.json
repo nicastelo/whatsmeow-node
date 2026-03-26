@@ -1,6 +1,6 @@
 {
   "name": "@whatsmeow-node/win32-x64",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "whatsmeow-node binary for Windows x64",
   "license": "MIT",
   "repository": {
