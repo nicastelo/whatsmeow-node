@@ -1344,6 +1344,47 @@ func (a *App) cmdUploadMedia(cmd Command) {
 	})
 }
 
+// cmdDeleteMedia deletes media from WhatsApp servers.
+// Maps to: client.DeleteMedia()
+func (a *App) cmdDeleteMedia(cmd Command) {
+	args, ok := parseArgs[struct {
+		MediaType   string `json:"mediaType"` // "image", "video", "audio", "document"
+		DirectPath  string `json:"directPath"`
+		EncFileHash []byte `json:"encFileHash"`
+		EncHandle   string `json:"encHandle"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	var mediaType whatsmeow.MediaType
+	switch args.MediaType {
+	case "image":
+		mediaType = whatsmeow.MediaImage
+	case "video":
+		mediaType = whatsmeow.MediaVideo
+	case "audio":
+		mediaType = whatsmeow.MediaAudio
+	case "document":
+		mediaType = whatsmeow.MediaDocument
+	default:
+		sendError(cmd.ID, "invalid media type: "+args.MediaType, "ERR_INVALID_ARGS")
+		return
+	}
+
+	err := client.DeleteMedia(a.ctx, mediaType, args.DirectPath, args.EncFileHash, args.EncHandle)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_DELETE_MEDIA")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
 // ── Configuration ─────────────────────────────────────
 
 // cmdSetPassive sets passive mode.
