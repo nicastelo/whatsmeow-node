@@ -15,6 +15,7 @@
     "DecryptPollVote": "decryptPollVote",
     "DecryptReaction": "decryptReaction",
     "DecryptSecretEncryptedMessage": "decryptSecretEncryptedMessage",
+    "DeleteMedia": "deleteMedia",
     "Disconnect": "disconnect",
     "Download": "downloadMedia",
     "DownloadAny": "downloadAny",

@@ -537,6 +537,16 @@ export class WhatsmeowClient extends EventEmitter {
     return (await this.proc.send("uploadMedia", { path, mediaType })) as UploadResponse;
   }
 
+  // Maps to: client.DeleteMedia()
+  async deleteMedia(
+    mediaType: MediaType,
+    directPath: string,
+    encFileHash: number[],
+    encHandle = "",
+  ): Promise<void> {
+    await this.proc.send("deleteMedia", { mediaType, directPath, encFileHash, encHandle });
+  }
+
   // ── Configuration ───────────────────────────────
 
   async setPassive(passive: boolean): Promise<void> {

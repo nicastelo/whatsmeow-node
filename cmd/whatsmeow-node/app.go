@@ -213,6 +213,8 @@ func (a *App) handleCommand(cmd Command) {
 	// ── Extra: Media Upload ────────────────────────
 	case "uploadMedia":
 		a.cmdUploadMedia(cmd)
+	case "deleteMedia":
+		a.cmdDeleteMedia(cmd)
 
 	// ── Extra: Configuration ───────────────────────
 	case "setPassive":
