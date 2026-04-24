@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 > **0.x** — We stay on 0.x because the upstream whatsmeow library is pre-1.0. Breaking changes are signaled by minor version bumps (`0.5 → 0.6`). Pin your version if stability matters.
 
+## [0.6.0] - 2026-04-23
+
+### Added
+
+- `deleteMedia` method wrapping whatsmeow's `DeleteMedia`
+
+### Changed
+
+- Bump whatsmeow to `v0.0.0-20260416104156-3ff20cd3462a`
+
+### Fixed
+
+- Release watch workflow: clone upstream for diff and add AI analysis
+
 ## [0.5.3] - 2026-03-26
 
 ### Changed
@@ -137,6 +151,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.6.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.3...v0.6.0
 [0.5.3]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.0...v0.5.1
