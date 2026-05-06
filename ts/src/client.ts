@@ -672,6 +672,18 @@ export class WhatsmeowClient extends EventEmitter {
     await this.proc.send("sendMediaRetryReceipt", { info, mediaKey });
   }
 
+  async sendHistorySyncServerErrorReceipt(msgID: string, mediaKey: number[]): Promise<void> {
+    await this.proc.send("sendHistorySyncServerErrorReceipt", { msgID, mediaKey });
+  }
+
+  async sendProtocolMessageReceipt(id: string, msgType: string): Promise<void> {
+    await this.proc.send("sendProtocolMessageReceipt", { id, msgType });
+  }
+
+  async setMaxParallelRetryReceiptHandling(maxParallel: number): Promise<void> {
+    await this.proc.send("setMaxParallelRetryReceiptHandling", { maxParallel });
+  }
+
   // ── Download Variants ─────────────────────────
 
   async downloadMediaWithPath(opts: {
