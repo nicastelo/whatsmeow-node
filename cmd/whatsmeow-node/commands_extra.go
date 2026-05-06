@@ -1913,6 +1913,73 @@ func (a *App) cmdSendMediaRetryReceipt(cmd Command) {
 	sendResponse(cmd.ID, nil)
 }
 
+// cmdSendHistorySyncServerErrorReceipt sends a history sync server-error receipt.
+// Maps to: client.SendHistorySyncServerErrorReceipt()
+func (a *App) cmdSendHistorySyncServerErrorReceipt(cmd Command) {
+	args, ok := parseArgs[struct {
+		MsgID    string `json:"msgID"`
+		MediaKey []byte `json:"mediaKey"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	err := client.SendHistorySyncServerErrorReceipt(a.ctx, types.MessageID(args.MsgID), args.MediaKey)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_SEND")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
+// cmdSendProtocolMessageReceipt sends a receipt for a protocol message back to the phone.
+// Maps to: client.SendProtocolMessageReceipt()
+func (a *App) cmdSendProtocolMessageReceipt(cmd Command) {
+	args, ok := parseArgs[struct {
+		ID      string `json:"id"`
+		MsgType string `json:"msgType"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	err := client.SendProtocolMessageReceipt(a.ctx, types.MessageID(args.ID), types.ReceiptType(args.MsgType))
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_SEND")
+		return
+	}
+	sendResponse(cmd.ID, nil)
+}
+
+// cmdSetMaxParallelRetryReceiptHandling sets how many retry receipts can be handled in parallel.
+// Maps to: client.SetMaxParallelRetryReceiptHandling()
+func (a *App) cmdSetMaxParallelRetryReceiptHandling(cmd Command) {
+	args, ok := parseArgs[struct {
+		MaxParallel int64 `json:"maxParallel"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	client.SetMaxParallelRetryReceiptHandling(args.MaxParallel)
+	sendResponse(cmd.ID, nil)
+}
+
 // ── Download Variants ─────────────────────────────────
 
 // cmdDownloadMediaWithPath downloads media using direct path and keys.

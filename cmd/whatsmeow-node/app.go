@@ -261,6 +261,12 @@ func (a *App) handleCommand(cmd Command) {
 		a.cmdSendPeerMessage(cmd)
 	case "sendMediaRetryReceipt":
 		a.cmdSendMediaRetryReceipt(cmd)
+	case "sendHistorySyncServerErrorReceipt":
+		a.cmdSendHistorySyncServerErrorReceipt(cmd)
+	case "sendProtocolMessageReceipt":
+		a.cmdSendProtocolMessageReceipt(cmd)
+	case "setMaxParallelRetryReceiptHandling":
+		a.cmdSetMaxParallelRetryReceiptHandling(cmd)
 
 	// ── Extra: Download Variants ─────────────────
 	case "downloadMediaWithPath":
