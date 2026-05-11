@@ -214,7 +214,7 @@ func (a *App) cmdPairCode(cmd Command) {
 		return
 	}
 
-	code, err := client.PairPhone(a.ctx, args.Phone, true, whatsmeow.PairClientChrome, "Chrome")
+	code, err := client.PairPhone(a.ctx, args.Phone, true, whatsmeow.PairClientChrome, "Chrome (Linux)")
 	if err != nil {
 		sendError(cmd.ID, err.Error(), "ERR_PAIR")
 		return
