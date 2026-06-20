@@ -1990,7 +1990,6 @@ func (a *App) cmdDownloadMediaWithPath(cmd Command) {
 		EncFileHash []byte `json:"encFileHash"`
 		FileHash    []byte `json:"fileHash"`
 		MediaKey    []byte `json:"mediaKey"`
-		FileLength  int    `json:"fileLength"`
 		MediaType   string `json:"mediaType"`
 		MmsType     string `json:"mmsType"`
 	}](cmd)
@@ -2018,7 +2017,7 @@ func (a *App) cmdDownloadMediaWithPath(cmd Command) {
 		return
 	}
 
-	data, err := client.DownloadMediaWithPath(a.ctx, args.DirectPath, args.EncFileHash, args.FileHash, args.MediaKey, args.FileLength, mediaType, args.MmsType)
+	data, err := client.DownloadMediaWithPath(a.ctx, args.DirectPath, args.EncFileHash, args.FileHash, args.MediaKey, mediaType, args.MmsType, false)
 	if err != nil {
 		sendError(cmd.ID, err.Error(), "ERR_DOWNLOAD")
 		return
@@ -2038,6 +2037,67 @@ func (a *App) cmdDownloadMediaWithPath(cmd Command) {
 	tmpFile.Close()
 
 	sendResponse(cmd.ID, map[string]interface{}{"path": tmpFile.Name()})
+}
+
+// cmdDownloadMediaWithOnlyPath downloads media from a direct path without requiring encryption keys.
+// Maps to: client.DownloadMediaWithOnlyPath()
+func (a *App) cmdDownloadMediaWithOnlyPath(cmd Command) {
+	args, ok := parseArgs[struct {
+		DirectPath string `json:"directPath"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	data, err := client.DownloadMediaWithOnlyPath(a.ctx, args.DirectPath)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_DOWNLOAD")
+		return
+	}
+
+	tmpFile, err := os.CreateTemp("", "whatsmeow-*")
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_TEMPFILE")
+		return
+	}
+	if _, err := tmpFile.Write(data); err != nil {
+		tmpFile.Close()
+		os.Remove(tmpFile.Name())
+		sendError(cmd.ID, err.Error(), "ERR_WRITE")
+		return
+	}
+	tmpFile.Close()
+
+	sendResponse(cmd.ID, map[string]interface{}{"path": tmpFile.Name()})
+}
+
+// cmdFetchStickerPack fetches sticker pack metadata by pack ID.
+// Maps to: client.FetchStickerPack()
+func (a *App) cmdFetchStickerPack(cmd Command) {
+	args, ok := parseArgs[struct {
+		PackID string `json:"packID"`
+	}](cmd)
+	if !ok {
+		return
+	}
+
+	client := a.requireClient(cmd)
+	if client == nil {
+		return
+	}
+
+	pack, err := client.FetchStickerPack(a.ctx, args.PackID)
+	if err != nil {
+		sendError(cmd.ID, err.Error(), "ERR_FETCH_STICKER_PACK")
+		return
+	}
+
+	sendResponse(cmd.ID, pack)
 }
 
 // ── Bot APIs ──────────────────────────────────────────

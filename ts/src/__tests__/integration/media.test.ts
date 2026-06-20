@@ -41,7 +41,6 @@ describe.skipIf(skip || !TEST_PHONE)("media", () => {
       encFileHash: decodeBase64(media.fileEncSHA256),
       fileHash: decodeBase64(media.fileSHA256),
       mediaKey: decodeBase64(media.mediaKey),
-      fileLength: media.fileLength,
       mediaType: "image",
     });
     expect(path).toBeTruthy();

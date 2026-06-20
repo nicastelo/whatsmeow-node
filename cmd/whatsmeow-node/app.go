@@ -271,6 +271,10 @@ func (a *App) handleCommand(cmd Command) {
 	// ── Extra: Download Variants ─────────────────
 	case "downloadMediaWithPath":
 		a.cmdDownloadMediaWithPath(cmd)
+	case "downloadMediaWithOnlyPath":
+		a.cmdDownloadMediaWithOnlyPath(cmd)
+	case "fetchStickerPack":
+		a.cmdFetchStickerPack(cmd)
 
 	// ── Extra: Bot APIs ──────────────────────────
 	case "getBotListV2":

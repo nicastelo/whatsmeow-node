@@ -1099,7 +1099,6 @@ describe("WhatsmeowClient", () => {
         encFileHash: [1, 2],
         fileHash: [3, 4],
         mediaKey: [5, 6],
-        fileLength: 1024,
         mediaType: "image",
       });
       expect(send).toHaveBeenCalledWith("downloadMediaWithPath", {
@@ -1107,11 +1106,41 @@ describe("WhatsmeowClient", () => {
         encFileHash: [1, 2],
         fileHash: [3, 4],
         mediaKey: [5, 6],
-        fileLength: 1024,
         mediaType: "image",
         mmsType: "",
       });
       expect(result).toBe("/tmp/media-123");
+    });
+
+    it("downloadMediaWithOnlyPath sends directPath and returns path", async () => {
+      mockResolve(send, { path: "/tmp/media-onlypath-123" });
+      const result = await client.downloadMediaWithOnlyPath("/media/only-path-file");
+      expect(send).toHaveBeenCalledWith("downloadMediaWithOnlyPath", {
+        directPath: "/media/only-path-file",
+      });
+      expect(result).toBe("/tmp/media-onlypath-123");
+    });
+
+    it("fetchStickerPack sends packID and returns pack", async () => {
+      const mockPack = {
+        "sticker-pack-id": "pack123",
+        name: "My Pack",
+        publisher: "Publisher",
+        description: "A test sticker pack",
+        "file-size": "1024",
+        "image-data-hash": "abc123",
+        stickers: [],
+        animated: 0,
+        lottie: 0,
+        "preview-image-ids": [],
+        "tray-image-id": "tray1",
+        "tray-image-preview": "preview1",
+      };
+      mockResolve(send, mockPack);
+      const result = await client.fetchStickerPack("pack123");
+      expect(send).toHaveBeenCalledWith("fetchStickerPack", { packID: "pack123" });
+      expect(result["sticker-pack-id"]).toBe("pack123");
+      expect(result.name).toBe("My Pack");
     });
   });
 

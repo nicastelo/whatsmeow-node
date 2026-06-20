@@ -43,6 +43,8 @@ export type {
   InitResult,
   WhatsmeowEvents,
   ClientOptions,
+  StickerPack,
+  StickerPackItem,
 } from "./types.js";
 
 import { WhatsmeowClient } from "./client.js";

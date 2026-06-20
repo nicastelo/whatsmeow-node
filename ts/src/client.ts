@@ -40,6 +40,7 @@ import type {
   BotProfileInfo,
   AppStatePatchName,
   NewsletterUploadResponse,
+  StickerPack,
 } from "./types.js";
 
 export class WhatsmeowClient extends EventEmitter {
@@ -691,7 +692,6 @@ export class WhatsmeowClient extends EventEmitter {
     encFileHash: number[];
     fileHash: number[];
     mediaKey: number[];
-    fileLength: number;
     mediaType: MediaType;
     mmsType?: string;
   }): Promise<string> {
@@ -700,6 +700,17 @@ export class WhatsmeowClient extends EventEmitter {
       mmsType: opts.mmsType ?? "",
     })) as { path: string };
     return result.path;
+  }
+
+  async downloadMediaWithOnlyPath(directPath: string): Promise<string> {
+    const result = (await this.proc.send("downloadMediaWithOnlyPath", { directPath })) as {
+      path: string;
+    };
+    return result.path;
+  }
+
+  async fetchStickerPack(packID: string): Promise<StickerPack> {
+    return (await this.proc.send("fetchStickerPack", { packID })) as StickerPack;
   }
 
   // ── Bot APIs ──────────────────────────────────

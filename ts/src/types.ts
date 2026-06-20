@@ -217,6 +217,39 @@ export interface NewsletterUploadResponse {
   fileLength: number;
 }
 
+// ── Stickers ───────────────────────────────────────
+export interface StickerPackItem {
+  "media-key": number[];
+  "enc-file-hash": number[];
+  "file-hash": number[];
+  "direct-path": string;
+  url: string;
+  "file-size": number;
+  mimetype: string;
+  height: number;
+  width: number;
+  emojis: string[];
+  "accessibility-text": string;
+  handle: string;
+  "sticker-hash-without-meta": number[];
+  "preview-webp-id": string;
+}
+
+export interface StickerPack {
+  "sticker-pack-id": string;
+  name: string;
+  publisher: string;
+  description: string;
+  "file-size": string;
+  "image-data-hash": string;
+  stickers: StickerPackItem[];
+  animated: number;
+  lottie: number;
+  "preview-image-ids": string[];
+  "tray-image-id": string;
+  "tray-image-preview": string;
+}
+
 // ── Groups (extra) ─────────────────────────────────
 export interface GroupRequestParticipant {
   jid: JID;
