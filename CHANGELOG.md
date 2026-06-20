@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 > **0.x** — We stay on 0.x because the upstream whatsmeow library is pre-1.0. Breaking changes are signaled by minor version bumps (`0.5 → 0.6`). Pin your version if stability matters.
 
+## [0.7.0] - 2026-06-20
+
+### Added
+
+- `downloadMediaWithOnlyPath` method wrapping whatsmeow's `DownloadMediaWithOnlyPath`
+- `fetchStickerPack` method wrapping whatsmeow's `FetchStickerPack`
+- Three new receipt/retry method wrappers
+
+### Changed
+
+- Bump whatsmeow to `v0.0.0-20260611094716-089932318bc2`
+
 ## [0.6.0] - 2026-04-23
 
 ### Added
@@ -151,6 +163,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.7.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.3...v0.6.0
 [0.5.3]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.1...v0.5.2
