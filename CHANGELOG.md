@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 > **0.x** — We stay on 0.x because the upstream whatsmeow library is pre-1.0. Breaking changes are signaled by minor version bumps (`0.5 → 0.6`). Pin your version if stability matters.
 
+## [0.7.1] - 2026-09-25
+
+### Changed
+
+- Bump whatsmeow to `v0.0.0-20260919103545-0057a822e79a`
+- `setStatusMessage` adapted to whatsmeow's new `SetStatusInput` signature (behavior unchanged: text-only status)
+- Go toolchain bumped to 1.26.0
+
 ## [0.7.0] - 2026-06-20
 
 ### Added
@@ -163,6 +171,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.7.1]: https://github.com/nicastelo/whatsmeow-node/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.3...v0.6.0
 [0.5.3]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.2...v0.5.3
