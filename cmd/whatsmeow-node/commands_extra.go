@@ -979,7 +979,9 @@ func (a *App) cmdSetStatusMessage(cmd Command) {
 		return
 	}
 
-	err := client.SetStatusMessage(a.ctx, args.Message)
+	err := client.SetStatusMessage(a.ctx, types.SetStatusInput{
+		Text: &args.Message,
+	})
 	if err != nil {
 		sendError(cmd.ID, err.Error(), "ERR_SET_STATUS")
 		return
@@ -1335,12 +1337,12 @@ func (a *App) cmdUploadMedia(cmd Command) {
 	}
 
 	sendResponse(cmd.ID, map[string]interface{}{
-		"URL":            resp.URL,
-		"directPath":     resp.DirectPath,
-		"mediaKey":       resp.MediaKey,
-		"fileEncSHA256":  resp.FileEncSHA256,
-		"fileSHA256":     resp.FileSHA256,
-		"fileLength":     resp.FileLength,
+		"URL":           resp.URL,
+		"directPath":    resp.DirectPath,
+		"mediaKey":      resp.MediaKey,
+		"fileEncSHA256": resp.FileEncSHA256,
+		"fileSHA256":    resp.FileSHA256,
+		"fileLength":    resp.FileLength,
 	})
 }
 
@@ -2194,9 +2196,9 @@ func (a *App) cmdGetBotProfiles(cmd Command) {
 // Maps to: client.FetchAppState()
 func (a *App) cmdFetchAppState(cmd Command) {
 	args, ok := parseArgs[struct {
-		Name             string `json:"name"`
-		FullSync         bool   `json:"fullSync"`
-		OnlyIfNotSynced  bool   `json:"onlyIfNotSynced"`
+		Name            string `json:"name"`
+		FullSync        bool   `json:"fullSync"`
+		OnlyIfNotSynced bool   `json:"onlyIfNotSynced"`
 	}](cmd)
 	if !ok {
 		return
