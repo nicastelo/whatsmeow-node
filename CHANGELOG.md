@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 > **0.x** — We stay on 0.x because the upstream whatsmeow library is pre-1.0. Breaking changes are signaled by minor version bumps (`0.5 → 0.6`). Pin your version if stability matters.
 
+## [0.7.2] - 2026-09-26
+
+### Fixed
+
+- `pairCode()` no longer fails with `info query returned status 400: bad-request`. The Go bridge now passes the display name `Chrome (Linux)` to `PairPhone`; WhatsApp requires the `Browser (OS)` format and rejected the previous value `Chrome`. Fixes #42. (#31, first contribution by @AgusXzz)
+
 ## [0.7.1] - 2026-09-25
 
 ### Changed
@@ -171,6 +177,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.7.2]: https://github.com/nicastelo/whatsmeow-node/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/nicastelo/whatsmeow-node/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.5.3...v0.6.0
