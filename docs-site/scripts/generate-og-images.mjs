@@ -69,7 +69,7 @@ const FALLBACK_TRANSLATIONS = {
     },
     'connect-to-chatgpt': {
       title: 'Como Conectar WhatsApp ao ChatGPT (OpenAI)',
-      description: 'Crie um chatbot de WhatsApp com GPT-4o usando o SDK da OpenAI.',
+      description: 'Crie um chatbot de WhatsApp com GPT-6 Astra usando o SDK da OpenAI.',
     },
     'connect-to-gemini': {
       title: 'Como Conectar WhatsApp ao Google Gemini',
@@ -139,7 +139,7 @@ const FALLBACK_TRANSLATIONS = {
     },
     'connect-to-chatgpt': {
       title: 'Cómo Conectar WhatsApp a ChatGPT (OpenAI)',
-      description: 'Construye un chatbot de WhatsApp con GPT-4o usando el SDK de OpenAI.',
+      description: 'Construye un chatbot de WhatsApp con GPT-6 Astra usando el SDK de OpenAI.',
     },
     'connect-to-gemini': {
       title: 'Cómo Conectar WhatsApp a Google Gemini',

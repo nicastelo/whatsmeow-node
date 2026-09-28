@@ -89,7 +89,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-Install `qrcode-terminal` with `npm install qrcode-terminal`. No `@types` package is needed — ambient types are provided.
+Install `qrcode-terminal` with `npm install qrcode-terminal` (and `npm install -D @types/qrcode-terminal` if you use TypeScript).
 
 :::info
 QR codes expire and refresh automatically. If the user doesn't scan in time, a new QR code is emitted via the `"qr"` event.

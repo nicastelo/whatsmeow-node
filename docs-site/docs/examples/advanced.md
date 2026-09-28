@@ -172,7 +172,7 @@ Check WhatsApp registration, get user info, profile pictures, and linked devices
 ### Check WhatsApp registration
 
 ```typescript
-const results = await client.isOnWhatsApp(["59897756343", "14155551234"]);
+const results = await client.isOnWhatsApp(["+59897756343", "+14155551234"]);
 for (const r of results) {
   console.log(`${r.query}: ${r.isIn ? `registered → ${r.jid}` : "NOT on WhatsApp"}`);
 }

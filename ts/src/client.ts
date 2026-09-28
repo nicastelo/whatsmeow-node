@@ -655,7 +655,14 @@ export class WhatsmeowClient extends EventEmitter {
   }
 
   async buildHistorySyncRequest(
-    info: { chat: JID; sender: JID; id: string; timestamp?: number },
+    info: {
+      chat: JID;
+      sender: JID;
+      id: string;
+      timestamp?: number;
+      isFromMe?: boolean;
+      isGroup?: boolean;
+    },
     count: number,
   ): Promise<Record<string, unknown>> {
     return (await this.proc.send("buildHistorySyncRequest", {
@@ -671,7 +678,14 @@ export class WhatsmeowClient extends EventEmitter {
   }
 
   async sendMediaRetryReceipt(
-    info: { chat: JID; sender: JID; id: string; timestamp?: number },
+    info: {
+      chat: JID;
+      sender: JID;
+      id: string;
+      timestamp?: number;
+      isFromMe?: boolean;
+      isGroup?: boolean;
+    },
     mediaKey: Bytes,
   ): Promise<void> {
     await this.proc.send("sendMediaRetryReceipt", { info, mediaKey });

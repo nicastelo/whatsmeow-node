@@ -2,7 +2,7 @@
 title: "How to Connect WhatsApp to ChatGPT (OpenAI)"
 sidebar_label: Connect to ChatGPT
 sidebar_position: 13
-description: "Build a WhatsApp chatbot powered by ChatGPT using whatsmeow-node and the OpenAI SDK. Includes conversation history, typing indicators, and GPT-4.1."
+description: "Build a WhatsApp chatbot powered by ChatGPT using whatsmeow-node and the OpenAI SDK. Includes conversation history, typing indicators, and GPT-6 Astra."
 keywords: [connect whatsapp to chatgpt, whatsapp chatgpt bot, whatsapp openai bot nodejs, whatsapp gpt bot typescript, chatgpt whatsapp integration]
 ---
 
@@ -17,7 +17,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "@context": "https://schema.org",
       "@type": "HowTo",
       "name": "How to Connect WhatsApp to ChatGPT (OpenAI)",
-      "description": "Build a WhatsApp chatbot powered by ChatGPT using whatsmeow-node and the OpenAI SDK. Includes conversation history, typing indicators, and GPT-4.1.",
+      "description": "Build a WhatsApp chatbot powered by ChatGPT using whatsmeow-node and the OpenAI SDK. Includes conversation history, typing indicators, and GPT-6 Astra.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/connect-to-chatgpt.png",
       "step": [
         {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and OpenAI client with new OpenAI()."},
@@ -32,7 +32,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "How to Connect WhatsApp to ChatGPT (OpenAI)",
-      "description": "Build a WhatsApp chatbot powered by ChatGPT using whatsmeow-node and the OpenAI SDK. Includes conversation history, typing indicators, and GPT-4.1.",
+      "description": "Build a WhatsApp chatbot powered by ChatGPT using whatsmeow-node and the OpenAI SDK. Includes conversation history, typing indicators, and GPT-6 Astra.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/connect-to-chatgpt.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
@@ -45,7 +45,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 # How to Connect WhatsApp to ChatGPT (OpenAI)
 
-Combine whatsmeow-node with the OpenAI SDK to build a WhatsApp chatbot powered by GPT-4.1. Messages come in via WhatsApp, get sent to OpenAI for a response, and the reply goes back to the user — with typing indicators while the model thinks.
+Combine whatsmeow-node with the OpenAI SDK to build a WhatsApp chatbot powered by GPT-6 Astra. Messages come in via WhatsApp, get sent to OpenAI for a response, and the reply goes back to the user — with typing indicators while the model thinks.
 
 ## Prerequisites
 
@@ -88,7 +88,7 @@ client.on("message", async ({ info, message }) => {
 ```typescript
 async function askChatGPT(userJid: string, userMessage: string): Promise<string> {
   const response = await openai.chat.completions.create({
-    model: "gpt-4.1",
+    model: "gpt-6-astra",
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: userMessage },
@@ -118,7 +118,7 @@ async function askChatGPT(userJid: string, userMessage: string): Promise<string>
   }
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4.1",
+    model: "gpt-6-astra",
     messages: [{ role: "system", content: SYSTEM_PROMPT }, ...history],
   });
 
@@ -156,7 +156,7 @@ async function askChatGPT(userJid: string, userMessage: string): Promise<string>
   }
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4.1",
+    model: "gpt-6-astra",
     messages: [{ role: "system", content: SYSTEM_PROMPT }, ...history],
   });
 

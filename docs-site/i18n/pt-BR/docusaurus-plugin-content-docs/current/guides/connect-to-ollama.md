@@ -20,7 +20,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "description": "Crie um chatbot de WhatsApp com IA local usando whatsmeow-node e Ollama. Sem chave de API — roda inteiramente na sua máquina.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/connect-to-ollama.png",
       "step": [
-        {"@type": "HowToStep", "name": "Instalar o Ollama e Baixar um Modelo", "text": "Instale o Ollama a partir de ollama.com e baixe um modelo como llama3.2 ou gemma3."},
+        {"@type": "HowToStep", "name": "Instalar o Ollama e Baixar um Modelo", "text": "Instale o Ollama a partir de ollama.com e baixe um modelo como llama3.2 ou gemma4."},
         {"@type": "HowToStep", "name": "Configurar os Dois Clients", "text": "Inicialize o WhatsmeowClient com createClient() e o client do Ollama com new Ollama()."},
         {"@type": "HowToStep", "name": "Tratar Mensagens Recebidas", "text": "Escute o evento message, ignore mensagens próprias, mostre digitação e extraia o texto."},
         {"@type": "HowToStep", "name": "Enviar para o Ollama", "text": "Chame ollama.chat() com a mensagem do usuário e envie a resposta de volta via sendMessage."}
@@ -45,7 +45,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 # Como Conectar o WhatsApp ao Ollama (IA Local)
 
-Rode seu chatbot de WhatsApp inteiramente na sua própria máquina — sem chaves de API, sem custos de nuvem, sem dados saindo da sua rede. O Ollama facilita rodar modelos open-source como Llama, Gemma e Mistral localmente.
+Rode seu chatbot de WhatsApp inteiramente na sua própria máquina — sem chaves de API, sem custos de nuvem, sem dados saindo da sua rede. O Ollama facilita rodar modelos open-source como Llama, Gemma e Qwen localmente.
 
 ## Pré-requisitos
 
@@ -62,8 +62,8 @@ ollama pull llama3.2
 ```
 
 Outras boas opções para chat:
-- `gemma3` — modelo aberto do Google, rápido e capaz
-- `mistral` — forte para o seu tamanho
+- `gemma4` — modelo aberto mais recente do Google, multimodal e capaz
+- `qwen3` — modelo aberto da Alibaba, bom suporte multilingue (`qwen3:4b` para um download menor)
 - `llama3.2:1b` — menor Llama, respostas mais rápidas
 
 ## Passo 2: Configurar os Dois Clients

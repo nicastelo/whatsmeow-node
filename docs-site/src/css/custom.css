@@ -65,6 +65,8 @@
   display: inline;
 }
 
+/* Hide the dark hero when its -light twin follows; alt-text rules are a fallback without :has() */
+[data-theme='light'] .markdown img:not([src*="-light-"]):has(+ img[src*="-light-"]),
 [data-theme='light'] .markdown img[alt*="How to"]:not([src*="-light-"]),
 [data-theme='light'] .markdown img[alt*="Como"]:not([src*="-light-"]),
 [data-theme='light'] .markdown img[alt*="Cómo"]:not([src*="-light-"]) {

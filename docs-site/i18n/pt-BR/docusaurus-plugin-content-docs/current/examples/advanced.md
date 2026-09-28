@@ -172,7 +172,7 @@ Verifique registro no WhatsApp, obtenha informacoes de usuarios, fotos de perfil
 ### Verificar registro no WhatsApp
 
 ```typescript
-const results = await client.isOnWhatsApp(["59897756343", "14155551234"]);
+const results = await client.isOnWhatsApp(["+59897756343", "+14155551234"]);
 for (const r of results) {
   console.log(`${r.query}: ${r.isIn ? `registered → ${r.jid}` : "NOT on WhatsApp"}`);
 }

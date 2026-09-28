@@ -20,7 +20,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "description": "Build a WhatsApp chatbot powered by a local AI model using whatsmeow-node and Ollama. No API key needed — runs entirely on your machine.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/connect-to-ollama.png",
       "step": [
-        {"@type": "HowToStep", "name": "Install Ollama and Pull a Model", "text": "Install Ollama from ollama.com and pull a model like llama3.2 or gemma3."},
+        {"@type": "HowToStep", "name": "Install Ollama and Pull a Model", "text": "Install Ollama from ollama.com and pull a model like llama3.2 or gemma4."},
         {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and Ollama client with new Ollama()."},
         {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
         {"@type": "HowToStep", "name": "Send to Ollama", "text": "Call ollama.chat() with the user message and send the response back via sendMessage."}
@@ -45,7 +45,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 # How to Connect WhatsApp to Ollama (Local AI)
 
-Run your WhatsApp chatbot entirely on your own machine — no API keys, no cloud costs, no data leaving your network. Ollama makes it easy to run open-source models like Llama, Gemma, and Mistral locally.
+Run your WhatsApp chatbot entirely on your own machine — no API keys, no cloud costs, no data leaving your network. Ollama makes it easy to run open-source models like Llama, Gemma, and Qwen locally.
 
 ## Prerequisites
 
@@ -62,8 +62,8 @@ ollama pull llama3.2
 ```
 
 Other good choices for chat:
-- `gemma3` — Google's open model, fast and capable
-- `mistral` — Strong for its size
+- `gemma4` — Google's latest open model, multimodal and capable
+- `qwen3` — Alibaba's open model, strong multilingual support (`qwen3:4b` for a smaller download)
 - `llama3.2:1b` — Smallest Llama, fastest responses
 
 ## Step 2: Set Up Both Clients

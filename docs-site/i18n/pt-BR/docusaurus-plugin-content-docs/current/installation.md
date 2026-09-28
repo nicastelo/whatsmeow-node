@@ -33,7 +33,7 @@ O binario Go correto para sua plataforma e instalado automaticamente via `option
 A opcao `store` aceita:
 
 - **SQLite**: `session.db` ou `./data/wa.db` — Cria um arquivo de banco de dados local. Caminhos simples recebem o prefixo `file:` automaticamente.
-- **PostgreSQL**: `postgresql://myuser:mypassword@localhost:5432/whatsmeow` — Para deploys com multiplas instancias ou serverless.
+- **PostgreSQL**: `postgresql://myuser:mypassword@localhost:5432/whatsmeow` — Quando voce quer a sessao em um banco gerenciado (ex.: containers sem disco persistente). Ainda e um processo por conta; plataformas serverless nao sao suportadas.
 
 O SQLite e configurado automaticamente com modo WAL, foreign keys e busy timeout.
 
