@@ -271,9 +271,13 @@ jobs:
             echo "E2E skipped: session not configured"
             exit 0
           fi
-          openssl enc -aes-256-cbc -d -pbkdf2 \
+          if ! openssl enc -aes-256-cbc -d -pbkdf2 \
             -in .e2e-session.db.enc -out ts/e2e-session.db \
-            -pass "pass:$E2E_SESSION_KEY"
+            -pass "pass:$E2E_SESSION_KEY"; then
+            echo "e2e_status=fail" >> "$GITHUB_OUTPUT"
+            echo "E2E failed: could not decrypt session" | tee e2e-output.txt
+            exit 0
+          fi
           cd ts
           set +e -o pipefail
           E2E_BINARY_PATH="$GITHUB_WORKSPACE/whatsmeow-node" \

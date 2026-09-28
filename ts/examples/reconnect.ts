@@ -7,7 +7,7 @@
  *
  * Press Ctrl+C to exit.
  */
-import { createClient, WhatsmeowError } from "../src/index.js";
+import { createClient } from "../src/index.js";
 import path from "node:path";
 
 const binaryPath = path.resolve(import.meta.dirname, "../../whatsmeow-node");
