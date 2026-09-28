@@ -564,6 +564,7 @@ async function sendWithBackoff(client: WhatsmeowClient, messages: Array<{ jid: s
 - Space out messages (1-3 seconds between sends)
 - Avoid bulk operations on new/freshly paired numbers
 - Handle `temporary_ban` events — they include an expiry time
+- Handle `stream_replaced`, `client_outdated` and `connect_failure` — whatsmeow does not reconnect after these
 - Monitor `stream_error` and `keep_alive_timeout` events as early warning signs
 - Use `sendPresence("available")` before sending to simulate normal client behavior
 

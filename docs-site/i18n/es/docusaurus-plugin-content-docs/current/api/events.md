@@ -11,7 +11,7 @@ keywords: [eventos whatsmeow, evento mensaje whatsapp, webhook whatsapp nodejs, 
 `WhatsmeowClient` extiende `EventEmitter` y emite eventos tipados. Los [eventos de whatsmeow](https://pkg.go.dev/go.mau.fi/whatsmeow#section-readme) listados abajo son reenviados.
 
 :::note
-Muchos eventos upstream de whatsmeow aún no se reenvían — por ejemplo, eventos de sincronización de app state (silenciar, fijar, archivar), actualizaciones en vivo de newsletters, cambios de lista de bloqueo/privacidad, `PairSuccess`, `UndecryptableMessage` y `ConnectFailure`.
+Muchos eventos upstream de whatsmeow aún no se reenvían — por ejemplo, eventos de sincronización de app state (silenciar, fijar, archivar), actualizaciones en vivo de newsletters, cambios de lista de bloqueo/privacidad, `PairSuccess` y `UndecryptableMessage`.
 :::
 
 ## Uso
@@ -30,6 +30,9 @@ client.on("connected", ({ jid }) => { /* ... */ });
 | `logged_out` | `{ reason: string }` | Sesión revocada. Debes volver a emparejar. |
 | `stream_error` | `{ code: string }` | Error de protocolo. Generalmente seguido por reconexión automática. |
 | `temporary_ban` | `{ code: string, expire: string }` | Suspensión temporal de WhatsApp. |
+| `stream_replaced` | `{}` | Otro cliente se conectó con la misma sesión. whatsmeow se detiene y no se reconecta; ejecuta un proceso por store. |
+| `client_outdated` | `{}` | WhatsApp rechazó la versión del cliente (405). whatsmeow no se reconecta; actualiza whatsmeow-node. |
+| `connect_failure` | `{ code: number, reason: string, message: string }` | Conexión rechazada por un motivo que whatsmeow no maneja. No se reconecta. |
 | `keep_alive_timeout` | `{ errorCount: number }` | Los pings de keep-alive están fallando. La conexión puede estar degradada. |
 | `keep_alive_restored` | `{}` | Keep-alive recuperado. La conexión está saludable. |
 

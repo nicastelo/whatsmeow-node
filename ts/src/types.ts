@@ -336,6 +336,12 @@ export interface WhatsmeowEvents {
   logged_out: { reason: string };
   stream_error: { code: string };
   temporary_ban: { code: string; expire: string };
+  /** Another client connected with the same session; whatsmeow does not reconnect. */
+  stream_replaced: Record<string, never>;
+  /** WhatsApp rejected the client version (405); whatsmeow does not reconnect. */
+  client_outdated: Record<string, never>;
+  /** Unhandled connect failure; whatsmeow does not reconnect. */
+  connect_failure: { code: number; reason: string; message: string };
   keep_alive_timeout: { errorCount: number };
   keep_alive_restored: Record<string, never>;
   message: { info: MessageInfo; message: Record<string, unknown> };

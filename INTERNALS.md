@@ -254,6 +254,9 @@ Complete list of events emitted by the Go binary (see `events.go:eventHandler`).
 | `logged_out` | `{ reason }` | Logged out (session cleared) |
 | `stream_error` | `{ code }` | WebSocket stream error |
 | `temporary_ban` | `{ code, expire }` | Temporarily banned |
+| `stream_replaced` | `{}` | Another client took over the session; no reconnect |
+| `client_outdated` | `{}` | Server rejected client version (405); no reconnect |
+| `connect_failure` | `{ code, reason, message }` | Unhandled connect failure; no reconnect |
 | `keep_alive_timeout` | `{ errorCount }` | Server keep-alive timeout |
 | `keep_alive_restored` | `{}` | Keep-alive restored |
 
