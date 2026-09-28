@@ -59,6 +59,9 @@ export class WhatsmeowClient extends EventEmitter {
     this.proc.on("logged_out", (d) => this.emit("logged_out", d));
     this.proc.on("stream_error", (d) => this.emit("stream_error", d));
     this.proc.on("temporary_ban", (d) => this.emit("temporary_ban", d));
+    this.proc.on("stream_replaced", (d) => this.emit("stream_replaced", d));
+    this.proc.on("client_outdated", (d) => this.emit("client_outdated", d));
+    this.proc.on("connect_failure", (d) => this.emit("connect_failure", d));
     this.proc.on("keep_alive_timeout", (d) => this.emit("keep_alive_timeout", d));
     this.proc.on("keep_alive_restored", (d) => this.emit("keep_alive_restored", d));
     this.proc.on("message", (d) => this.emit("message", d));

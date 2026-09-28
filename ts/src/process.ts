@@ -95,17 +95,21 @@ export class GoProcess extends EventEmitter {
       this.cleanupHandler = null;
     }
 
+    // Keep a local reference: this.proc is cleared below, before the timer fires.
+    const proc = this.proc;
     try {
-      this.proc.kill("SIGTERM");
-      // Force kill after 5 seconds
+      proc.kill("SIGTERM");
+      // Force kill after 5 seconds if the process hasn't exited
       const forceTimer = setTimeout(() => {
+        if (proc.exitCode !== null || proc.signalCode !== null) return;
         try {
-          this.proc?.kill("SIGKILL");
+          proc.kill("SIGKILL");
         } catch (_) {
           /* process already dead */
         }
       }, 5000);
       forceTimer.unref();
+      proc.once("exit", () => clearTimeout(forceTimer));
     } catch (_) {
       /* process already dead */
     }

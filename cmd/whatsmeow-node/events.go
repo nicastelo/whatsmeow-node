@@ -32,6 +32,19 @@ func (a *App) eventHandler(evt interface{}) {
 			"code": v.Code,
 		})
 
+	case *events.StreamReplaced:
+		sendEvent("stream_replaced", map[string]interface{}{})
+
+	case *events.ClientOutdated:
+		sendEvent("client_outdated", map[string]interface{}{})
+
+	case *events.ConnectFailure:
+		sendEvent("connect_failure", map[string]interface{}{
+			"code":    int(v.Reason),
+			"reason":  v.Reason.String(),
+			"message": v.Message,
+		})
+
 	case *events.TemporaryBan:
 		sendEvent("temporary_ban", map[string]interface{}{
 			"code":   v.Code.String(),

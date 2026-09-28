@@ -125,6 +125,20 @@ describe("WhatsmeowClient", () => {
 
   // ── Pairing ────────────────────────────────────
 
+  describe("connection events", () => {
+    it.each([
+      ["stream_replaced", {}],
+      ["client_outdated", {}],
+      ["connect_failure", { code: 503, reason: "service unavailable", message: "" }],
+    ] as const)("re-emits %s from the Go process", (event, payload) => {
+      const proc = (client as unknown as { proc: { emit: (e: string, d: unknown) => void } }).proc;
+      const listener = vi.fn();
+      client.on(event, listener);
+      proc.emit(event, payload);
+      expect(listener).toHaveBeenCalledWith(payload);
+    });
+  });
+
   describe("pairing", () => {
     it("getQRChannel sends getQRChannel", async () => {
       mockResolve(send);

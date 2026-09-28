@@ -11,7 +11,7 @@ keywords: [whatsmeow events, whatsapp message event, whatsapp webhook nodejs, wh
 `WhatsmeowClient` extends `EventEmitter` and emits typed events. The [whatsmeow events](https://pkg.go.dev/go.mau.fi/whatsmeow#section-readme) listed below are forwarded.
 
 :::note
-Many upstream whatsmeow events are not forwarded yet — for example app-state sync events (mute, pin, archive), newsletter live updates, blocklist/privacy setting changes, `PairSuccess`, `UndecryptableMessage`, and `ConnectFailure`.
+Many upstream whatsmeow events are not forwarded yet — for example app-state sync events (mute, pin, archive), newsletter live updates, blocklist/privacy setting changes, `PairSuccess` and `UndecryptableMessage`.
 :::
 
 ## Usage
@@ -30,6 +30,9 @@ client.on("connected", ({ jid }) => { /* ... */ });
 | `logged_out` | `{ reason: string }` | Session revoked. Must re-pair. |
 | `stream_error` | `{ code: string }` | Protocol error. Usually followed by auto-reconnect. |
 | `temporary_ban` | `{ code: string, expire: string }` | Temporary ban from WhatsApp. |
+| `stream_replaced` | `{}` | Another client connected with the same session. whatsmeow stops and does not reconnect; run one process per store. |
+| `client_outdated` | `{}` | WhatsApp rejected the client version (405). whatsmeow does not reconnect; update whatsmeow-node. |
+| `connect_failure` | `{ code: number, reason: string, message: string }` | Connection refused for a reason whatsmeow doesn't handle. It does not reconnect. |
 | `keep_alive_timeout` | `{ errorCount: number }` | Keep-alive pings failing. Connection may be degraded. |
 | `keep_alive_restored` | `{}` | Keep-alive recovered. Connection is healthy. |
 
