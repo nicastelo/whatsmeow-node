@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 > **0.x** — We stay on 0.x because the upstream whatsmeow library is pre-1.0. Breaking changes are signaled by minor version bumps (`0.5 → 0.6`). Pin your version if stability matters.
 
+## [0.8.0] - 2026-09-28
+
+### Breaking
+
+- `ContextInfo.stanzaId` renamed to `stanzaID`. The Go bridge parses message JSON with protojson, which rejects `stanzaId` with `unknown field`, so quoted replies typed against the old field never worked at runtime. `ContextInfo` also gains `mentionedJID`. (#56)
+- `StickerPackItem` hash fields (`media-key`, `enc-file-hash`, `file-hash`, `sticker-hash-without-meta`) are now typed as base64 `string`, matching what `fetchStickerPack` actually returns. (#56)
+
+### Added
+
+- `history_sync` event now includes the synced conversations: `{ type, chunkOrder, progress, conversations }`, with each message in the same `{ info, message }` shape as live `message` events. New `HistorySyncConversation` type. (#56)
+- `stream_replaced`, `client_outdated` and `connect_failure` events. whatsmeow does not reconnect after any of these; previously the client went silent with no event. (#57)
+- `Bytes` type (`string | number[]`): binary params of `downloadMedia`, `downloadMediaWithPath`, `deleteMedia` and the retry receipts accept base64 strings straight from received messages. (#56)
+- `info` params of `buildHistorySyncRequest` and `sendMediaRetryReceipt` accept `isFromMe` / `isGroup`. (#58)
+
+### Changed
+
+- Bump whatsmeow to `v0.0.0-20260927171547-45cfce066cd2` (no Client API changes). (#56)
+
+### Fixed
+
+- Alpine/musl: the binary resolver now finds `@whatsmeow-node/linux-x64-musl`. (#56)
+- `close()` now actually force-kills the Go process with SIGKILL if it hasn't exited 5 seconds after SIGTERM. (#57)
+
 ## [0.7.2] - 2026-09-26
 
 ### Fixed
@@ -177,6 +200,7 @@ First public release. TypeScript/Node.js bindings for whatsmeow via subprocess I
 - Precompiled Go binaries for 7 platforms
 - Generic `call()` fallback for any whatsmeow method not yet wrapped
 
+[0.8.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/nicastelo/whatsmeow-node/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/nicastelo/whatsmeow-node/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/nicastelo/whatsmeow-node/compare/v0.6.0...v0.7.0
