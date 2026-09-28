@@ -14,7 +14,7 @@ import Head from '@docusaurus/Head';
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        {"@type": "Question", "name": "What is whatsmeow-node?", "acceptedAnswer": {"@type": "Answer", "text": "whatsmeow-node is a TypeScript/Node.js client for WhatsApp Web. It wraps whatsmeow, a Go library that implements the WhatsApp Web multi-device protocol. You get whatsmeow's reliability with TypeScript's developer experience — 100 typed async methods, typed events, and typed errors."}},
+        {"@type": "Question", "name": "What is whatsmeow-node?", "acceptedAnswer": {"@type": "Answer", "text": "whatsmeow-node is a TypeScript/Node.js client for WhatsApp Web. It wraps whatsmeow, a Go library that implements the WhatsApp Web multi-device protocol. You get whatsmeow's reliability with TypeScript's developer experience — 100+ typed async methods, typed events, and typed errors."}},
         {"@type": "Question", "name": "Is this the official WhatsApp API?", "acceptedAnswer": {"@type": "Answer", "text": "No. whatsmeow-node is an unofficial client that connects as a linked device (like WhatsApp Web). The only official API is the WhatsApp Business Cloud API from Meta, which requires business verification and has per-conversation pricing."}},
         {"@type": "Question", "name": "Can my account get banned?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Using unofficial clients violates WhatsApp's Terms of Service, and your account may be banned. This risk applies to all unofficial libraries (Baileys, whatsapp-web.js, etc.), not just whatsmeow-node."}},
         {"@type": "Question", "name": "Is whatsmeow-node free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. whatsmeow-node is MIT-licensed and free to use. The upstream whatsmeow library is MPL-2.0 licensed."}},
@@ -39,7 +39,7 @@ import Head from '@docusaurus/Head';
 
 ### What is whatsmeow-node?
 
-whatsmeow-node is a TypeScript/Node.js client for WhatsApp Web. It wraps [whatsmeow](https://github.com/tulir/whatsmeow), a Go library that implements the WhatsApp Web multi-device protocol. You get whatsmeow's reliability with TypeScript's developer experience — 100 typed async methods, typed events, and typed errors.
+whatsmeow-node is a TypeScript/Node.js client for WhatsApp Web. It wraps [whatsmeow](https://github.com/tulir/whatsmeow), a Go library that implements the WhatsApp Web multi-device protocol. You get whatsmeow's reliability with TypeScript's developer experience — 100+ typed async methods, typed events, and typed errors.
 
 ### How does it work under the hood?
 
@@ -108,7 +108,7 @@ The `logged_out` event fires with the reason. The session is permanently revoked
 
 ### What can whatsmeow-node do?
 
-100 of 126 upstream whatsmeow methods are wrapped. Key capabilities include:
+106 of 136 upstream whatsmeow methods are wrapped. Key capabilities include:
 
 - Send and receive text, images, video, audio, documents, stickers, contacts, and locations
 - Create, manage, and interact with groups and communities
@@ -117,7 +117,7 @@ The `logged_out` event fires with the reason. The session is permanently revoked
 - Handle presence (online/offline, typing indicators)
 - Download and upload media
 - Manage privacy settings and blocklist
-- Receive and process history sync data
+- Receive synced message history and request older history on demand
 - Handle calls (receive offers, reject calls)
 - Manage disappearing messages
 
@@ -139,7 +139,7 @@ WhatsApp has restricted interactive messages (buttons, lists, product catalogs) 
 
 ### Can it read message history?
 
-whatsmeow-node receives history sync data when a device first pairs. Listen for `history_sync` events to capture past messages. You cannot request history on demand — it's pushed by WhatsApp during the initial sync.
+WhatsApp pushes history sync data when a device first pairs, and you can request older messages on demand with `buildHistorySyncRequest()` + `sendPeerMessage()`. Synced conversations arrive in the `history_sync` event, with each message in the same `{ info, message }` shape as live `message` events.
 
 ## Deployment
 

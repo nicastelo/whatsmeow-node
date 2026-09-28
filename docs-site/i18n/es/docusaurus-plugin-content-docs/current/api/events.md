@@ -2,13 +2,17 @@
 title: Referencia de Eventos
 sidebar_label: Eventos
 sidebar_position: 2
-description: "Todos los eventos de whatsmeow-node — conexión, mensaje, grupo, presencia, llamada, newsletter y eventos QR con payloads completamente tipados."
+description: "Todos los eventos de whatsmeow-node — conexión, mensaje, grupo, presencia, llamada y eventos QR con payloads completamente tipados."
 keywords: [eventos whatsmeow, evento mensaje whatsapp, webhook whatsapp nodejs, listener eventos whatsapp typescript]
 ---
 
 # Eventos
 
-`WhatsmeowClient` extiende `EventEmitter` y emite eventos tipados. Todos los [eventos de whatsmeow](https://pkg.go.dev/go.mau.fi/whatsmeow#section-readme) son reenviados.
+`WhatsmeowClient` extiende `EventEmitter` y emite eventos tipados. Los [eventos de whatsmeow](https://pkg.go.dev/go.mau.fi/whatsmeow#section-readme) listados abajo son reenviados.
+
+:::note
+Muchos eventos upstream de whatsmeow aún no se reenvían — por ejemplo, eventos de sincronización de app state (silenciar, fijar, archivar), actualizaciones en vivo de newsletters, cambios de lista de bloqueo/privacidad, `PairSuccess`, `UndecryptableMessage` y `ConnectFailure`.
+:::
 
 ## Uso
 
@@ -100,7 +104,7 @@ interface GroupInfoEvent {
 | Evento | Payload | Descripción |
 |--------|---------|-------------|
 | `identity_change` | `{ jid: string, timestamp: number }` | La clave de identidad del contacto cambió (se registró nuevamente). |
-| `history_sync` | `{ type: string }` | Progreso de sincronización de historial. |
+| `history_sync` | `{ type, chunkOrder, progress, conversations: { id, name, unreadCount, messages }[] }` | Fragmento de sincronización de historial. `conversations[].messages` usan la misma forma `{ info, message }` que los eventos `message`. Las sincronizaciones iniciales pueden ser grandes. |
 | `qr` | `{ code: string }` | Código QR para emparejar. |
 | `qr:timeout` | `null` | El emparejamiento por QR expiró. |
 | `qr:error` | `{ event: string }` | Error en el canal QR. |

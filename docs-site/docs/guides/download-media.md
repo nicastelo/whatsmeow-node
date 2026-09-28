@@ -105,8 +105,8 @@ async function saveMedia(
   const dir = path.join(MEDIA_DIR, mediaType);
   await mkdir(dir, { recursive: true });
 
-  // Get the file extension from the temp path
-  const ext = path.extname(tempPath) || getDefaultExtension(mediaType);
+  // The temp file has no extension, so derive one from the media type
+  const ext = getDefaultExtension(mediaType);
   const dest = path.join(dir, `${messageId}${ext}`);
 
   await copyFile(tempPath, dest);
@@ -145,6 +145,16 @@ function getMediaType(message: Record<string, unknown>): string | null {
   return null;
 }
 
+function getDefaultExtension(mediaType: string): string {
+  switch (mediaType) {
+    case "image": return ".jpg";
+    case "video": return ".mp4";
+    case "audio": return ".ogg";
+    case "sticker": return ".webp";
+    default: return ".bin";
+  }
+}
+
 client.on("message", async ({ info, message }) => {
   if (info.isFromMe) return;
 
@@ -158,7 +168,7 @@ client.on("message", async ({ info, message }) => {
   // Save permanently, organized by type
   const dir = path.join(MEDIA_DIR, mediaType);
   await mkdir(dir, { recursive: true });
-  const ext = path.extname(tempPath) || ".bin";
+  const ext = getDefaultExtension(mediaType);
   const dest = path.join(dir, `${info.id}${ext}`);
   await copyFile(tempPath, dest);
 

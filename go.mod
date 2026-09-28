@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/jackc/pgx/v5 v5.8.0
-	go.mau.fi/whatsmeow v0.0.0-20260919103545-0057a822e79a
+	go.mau.fi/whatsmeow v0.0.0-20260927171547-45cfce066cd2
 	google.golang.org/protobuf v1.36.12
 	modernc.org/sqlite v1.46.1
 )

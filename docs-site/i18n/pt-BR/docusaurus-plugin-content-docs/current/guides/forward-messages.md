@@ -102,7 +102,7 @@ client.on("message", async ({ info, message }) => {
   if (message.imageMessage) {
     await client.sendRawMessage(targetJid, {
       imageMessage: {
-        ...message.imageMessage,
+        ...(message.imageMessage as Record<string, unknown>),
         contextInfo: {
           isForwarded: true,
           forwardingScore: 1,
@@ -116,7 +116,7 @@ client.on("message", async ({ info, message }) => {
   if (message.videoMessage) {
     await client.sendRawMessage(targetJid, {
       videoMessage: {
-        ...message.videoMessage,
+        ...(message.videoMessage as Record<string, unknown>),
         contextInfo: {
           isForwarded: true,
           forwardingScore: 1,
@@ -130,7 +130,7 @@ client.on("message", async ({ info, message }) => {
   if (message.documentMessage) {
     await client.sendRawMessage(targetJid, {
       documentMessage: {
-        ...message.documentMessage,
+        ...(message.documentMessage as Record<string, unknown>),
         contextInfo: {
           isForwarded: true,
           forwardingScore: 1,

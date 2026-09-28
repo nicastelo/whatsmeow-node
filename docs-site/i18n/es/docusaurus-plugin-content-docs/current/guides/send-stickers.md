@@ -165,7 +165,7 @@ main().catch(console.error);
 ## Errores Comunes
 
 :::warning Mayúsculas/minúsculas en campos proto
-Los campos de respuesta de subida usan las mayúsculas/minúsculas exactas de protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **no** `url`, `fileSha256`. Usar las mayúsculas incorrectas hará que falle silenciosamente y el sticker no se entregará.
+Los campos de respuesta de subida usan las mayúsculas/minúsculas exactas de protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **no** `url`, `fileSha256`. Usar las mayúsculas incorrectas se rechaza con un error `unknown field` y el sticker no se envía.
 :::
 
 :::warning Mimetype incorrecto

@@ -12,7 +12,7 @@ keywords: [whatsmeow-node faq, perguntas bot whatsapp, faq whatsapp nodejs, requ
 
 ### O que e o whatsmeow-node?
 
-whatsmeow-node e um cliente TypeScript/Node.js para WhatsApp Web. Ele encapsula o [whatsmeow](https://github.com/tulir/whatsmeow), uma biblioteca Go que implementa o protocolo multi-device do WhatsApp Web. Voce obtem a confiabilidade do whatsmeow com a experiencia de desenvolvimento do TypeScript — 100 metodos async tipados, eventos tipados e erros tipados.
+whatsmeow-node e um cliente TypeScript/Node.js para WhatsApp Web. Ele encapsula o [whatsmeow](https://github.com/tulir/whatsmeow), uma biblioteca Go que implementa o protocolo multi-device do WhatsApp Web. Voce obtem a confiabilidade do whatsmeow com a experiencia de desenvolvimento do TypeScript — 100+ metodos async tipados, eventos tipados e erros tipados.
 
 ### Como funciona por baixo dos panos?
 
@@ -81,7 +81,7 @@ O evento `logged_out` e disparado com o motivo. A sessao e permanentemente revog
 
 ### O que o whatsmeow-node pode fazer?
 
-100 de 126 metodos upstream do whatsmeow estao encapsulados. As principais funcionalidades incluem:
+106 de 136 metodos upstream do whatsmeow estao encapsulados. As principais funcionalidades incluem:
 
 - Enviar e receber texto, imagens, video, audio, documentos, stickers, contatos e localizacoes
 - Criar, gerenciar e interagir com grupos e comunidades
@@ -90,7 +90,7 @@ O evento `logged_out` e disparado com o motivo. A sessao e permanentemente revog
 - Gerenciar presenca (online/offline, indicadores de digitacao)
 - Baixar e enviar midia
 - Gerenciar configuracoes de privacidade e lista de bloqueio
-- Receber e processar dados de sincronizacao de historico
+- Receber notificacoes de sincronizacao de historico e solicitar historico sob demanda
 - Gerenciar chamadas (receber ofertas, rejeitar chamadas)
 - Gerenciar mensagens temporarias
 
@@ -112,7 +112,7 @@ O WhatsApp restringiu mensagens interativas (botoes, listas, catalogos de produt
 
 ### Posso ler o historico de mensagens?
 
-O whatsmeow-node recebe dados de sincronizacao de historico quando um dispositivo e pareado pela primeira vez. Escute eventos `history_sync` para capturar mensagens anteriores. Voce nao pode solicitar historico sob demanda — ele e enviado pelo WhatsApp durante a sincronizacao inicial.
+O WhatsApp envia dados de sincronizacao de historico quando um dispositivo e pareado pela primeira vez, e voce pode solicitar mensagens anteriores sob demanda com `buildHistorySyncRequest()` + `sendPeerMessage()`. As conversas sincronizadas chegam no evento `history_sync`, com cada mensagem no mesmo formato `{ info, message }` dos eventos `message` ao vivo.
 
 ## Deploy
 

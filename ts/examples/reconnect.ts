@@ -60,12 +60,10 @@ client.on("message", ({ info, message }) => {
 
 // ── Error handling ───────────────────────────────────
 
+// Fires when the Go process fails (e.g. binary can't be spawned).
+// Command failures reject their promise with a WhatsmeowError instead.
 client.on("error", (err) => {
-  if (err instanceof WhatsmeowError) {
-    console.error(`[error] [${err.code}] ${err.message}`);
-  } else {
-    console.error("[error]", err);
-  }
+  console.error("[error]", err);
 });
 
 // ── Startup ──────────────────────────────────────────

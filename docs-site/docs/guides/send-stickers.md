@@ -166,7 +166,7 @@ main().catch(console.error);
 ## Common Pitfalls
 
 :::warning Proto field casing
-Upload response fields use exact protobuf casing: `URL`, `fileSHA256`, `fileEncSHA256` — **not** `url`, `fileSha256`. Using wrong casing will silently fail and the sticker won't be delivered.
+Upload response fields use exact protobuf casing: `URL`, `fileSHA256`, `fileEncSHA256` — **not** `url`, `fileSha256`. Using wrong casing is rejected with an `unknown field` error and the sticker isn't sent.
 :::
 
 :::warning Wrong mimetype

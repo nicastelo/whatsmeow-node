@@ -22,7 +22,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "step": [
         {"@type": "HowToStep", "name": "List Your Groups", "text": "Use getJoinedGroups() to discover all groups you're a member of, with participant lists and settings."},
         {"@type": "HowToStep", "name": "Send Messages to Groups", "text": "Use sendMessage() with a group JID (ending in @g.us) to send text messages to any group."},
-        {"@type": "HowToStep", "name": "Mention Group Members", "text": "Include mentionedJid in contextInfo with extendedTextMessage to @mention specific members or everyone."},
+        {"@type": "HowToStep", "name": "Mention Group Members", "text": "Include mentionedJID in contextInfo with extendedTextMessage to @mention specific members or everyone."},
         {"@type": "HowToStep", "name": "Listen for Group Events", "text": "Handle group:info events to react to joins, leaves, promotions, and setting changes."},
         {"@type": "HowToStep", "name": "Broadcast to Multiple Groups", "text": "Iterate over groups with a delay between sends to avoid rate limiting."}
       ]
@@ -80,7 +80,7 @@ await client.sendMessage(groupJid, { conversation: "Hello group!" });
 
 ### Mention specific members
 
-Include the JIDs in `mentionedJid` and use `@<number>` in the text body:
+Include the JIDs in `mentionedJID` and use `@<number>` in the text body:
 
 ```typescript
 const memberJid = "5512345678@s.whatsapp.net";
@@ -89,7 +89,7 @@ await client.sendRawMessage(groupJid, {
   extendedTextMessage: {
     text: `Hey @${memberJid.split("@")[0]}, check this out!`,
     contextInfo: {
-      mentionedJid: [memberJid],
+      mentionedJID: [memberJid],
     },
   },
 });
@@ -107,7 +107,7 @@ const mentions = jids.map((j) => `@${j.split("@")[0]}`).join(" ");
 await client.sendRawMessage(groupJid, {
   extendedTextMessage: {
     text: `Attention everyone: ${mentions}`,
-    contextInfo: { mentionedJid: jids },
+    contextInfo: { mentionedJID: jids },
   },
 });
 ```
@@ -126,7 +126,7 @@ client.on("group:info", (event) => {
       client.sendRawMessage(event.jid, {
         extendedTextMessage: {
           text: `Welcome @${newMember.split("@")[0]}!`,
-          contextInfo: { mentionedJid: [newMember] },
+          contextInfo: { mentionedJID: [newMember] },
         },
       });
     }
@@ -263,7 +263,7 @@ client.on("group:info", async (event) => {
     await client.sendRawMessage(event.jid, {
       extendedTextMessage: {
         text: `Welcome @${jid.split("@")[0]}! Type !help for available commands.`,
-        contextInfo: { mentionedJid: [jid] },
+        contextInfo: { mentionedJID: [jid] },
       },
     });
   }
@@ -300,7 +300,7 @@ client.on("message", async ({ info, message }) => {
       extendedTextMessage: {
         text: `Members (${group.participants.length}):\n${list}`,
         contextInfo: {
-          mentionedJid: group.participants.map((p) => p.jid),
+          mentionedJID: group.participants.map((p) => p.jid),
         },
       },
     });

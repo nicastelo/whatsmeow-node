@@ -7,7 +7,7 @@ keywords: [whatsapp group api nodejs, create whatsapp group programmatically, wh
 
 # Groups & Communities
 
-Creating, configuring, and managing WhatsApp groups.
+Creating, configuring, and managing WhatsApp groups and communities.
 
 ## List Joined Groups
 
@@ -85,6 +85,45 @@ const link = await client.getGroupInviteLink(groupJid);
 
 // Reset invite link (invalidates the old one)
 const newLink = await client.getGroupInviteLink(groupJid, true);
+```
+
+## Join via Invite Link
+
+```typescript
+// Accepts a full https://chat.whatsapp.com/... link or just the code
+const preview = await client.getGroupInfoFromLink(inviteLink);
+console.log(`${preview.name} — ${preview.participants.length} members`);
+
+const joinedJid = await client.joinGroupWithLink(inviteLink);
+```
+
+## Join Requests (Approval Mode)
+
+```typescript
+// Require admin approval for new members
+await client.setGroupJoinApprovalMode(groupJid, true);
+
+// List and approve pending requests
+const requests = await client.getGroupRequestParticipants(groupJid);
+await client.updateGroupRequestParticipants(
+  groupJid,
+  requests.map((r) => r.jid),
+  "approve", // or "reject"
+);
+```
+
+## Communities
+
+```typescript
+// Link an existing group into a community (and unlink it again)
+await client.linkGroup(communityJid, groupJid);
+await client.unlinkGroup(communityJid, groupJid);
+
+// List the community's sub-groups
+const subGroups = await client.getSubGroups(communityJid);
+for (const g of subGroups) {
+  console.log(`${g.name}${g.isDefaultSub ? " (default)" : ""}`);
+}
 ```
 
 ## Leave a Group

@@ -109,7 +109,7 @@ client.on("message", async ({ info, message }) => {
     extendedTextMessage: {
       text: `You said: "${text}"`,
       contextInfo: {
-        stanzaId: info.id,
+        stanzaID: info.id,
         participant: info.sender,
         quotedMessage: { conversation: text },
       },
@@ -120,14 +120,14 @@ client.on("message", async ({ info, message }) => {
 
 ## @Mention Users
 
-Include JIDs in `mentionedJid` and use `@<number>` in the text:
+Include JIDs in `mentionedJID` and use `@<number>` in the text:
 
 ```typescript
 await client.sendRawMessage(groupJid, {
   extendedTextMessage: {
     text: `Hey @${memberJid.split("@")[0]}, check this out!`,
     contextInfo: {
-      mentionedJid: [memberJid],
+      mentionedJID: [memberJid],
     },
   },
 });
@@ -143,7 +143,7 @@ const mentions = jids.map((j) => `@${j.split("@")[0]}`).join(" ");
 await client.sendRawMessage(groupJid, {
   extendedTextMessage: {
     text: `Attention: ${mentions}`,
-    contextInfo: { mentionedJid: jids },
+    contextInfo: { mentionedJID: jids },
   },
 });
 ```
@@ -173,7 +173,7 @@ await client.sendRawMessage(recipient, {
 Other media types follow the same pattern — `videoMessage`, `audioMessage`, `documentMessage`, `stickerMessage`.
 
 :::warning Proto field casing
-Upload response fields use exact protobuf casing: `URL`, `fileSHA256`, `fileEncSHA256` — **not** `url`, `fileSha256`. Wrong casing silently fails.
+Upload response fields use exact protobuf casing: `URL`, `fileSHA256`, `fileEncSHA256` — **not** `url`, `fileSha256`. The same applies to `contextInfo` fields (`stanzaID`, `mentionedJID`). Wrong casing is rejected with an `unknown field` error.
 :::
 
 ## Send a Poll
@@ -250,7 +250,7 @@ client.on("message", async ({ info, message }) => {
     extendedTextMessage: {
       text: `Echo: ${text}`,
       contextInfo: {
-        stanzaId: info.id,
+        stanzaID: info.id,
         participant: info.sender,
         quotedMessage: { conversation: text },
       },

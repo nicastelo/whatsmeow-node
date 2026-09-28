@@ -297,7 +297,7 @@ Complete list of events emitted by the Go binary (see `events.go:eventHandler`).
 | Event | Data | Description |
 |---|---|---|
 | `identity_change` | `{ jid, timestamp }` | Contact identity key changed |
-| `history_sync` | `{ type }` | Initial history sync |
+| `history_sync` | `{ type, chunkOrder, progress, conversations }` | History sync chunk; messages parsed via `ParseWebMessage` |
 
 ## Session Storage
 
@@ -399,32 +399,32 @@ At runtime, `client.ts` checks:
 | QR pairing | Call `GetQRChannel()` before `Connect()` | Same flow -- call `getQRChannel()` before `connect()`. QR codes arrive as events. |
 | Error types | Go `error` values | JSON error responses with `code` strings. Some Go error context may be lost. |
 | Reconnection | Handle `Disconnected` events yourself, or set `EnableAutoReconnect` | Auto-reconnect always enabled. TypeScript sees events. |
-| Logging | Pass a `waLog.Logger` to `NewClient` | Logs go to stderr as JSON. TypeScript receives them as `log` events. |
-| Network config | `SetProxy()`, `SetMediaHTTPClient()`, etc. | Not yet exposed. Go binary uses default networking. |
+| Logging | Pass a `waLog.Logger` to `NewClient` | whatsmeow's internal logger is `waLog.Noop`. The bridge's own stderr lines (JSON or raw) reach TypeScript as `log` events. |
+| Network config | `SetProxy()`, `SetMediaHTTPClient()`, etc. | Intentionally not exposed. Go binary uses default networking. |
 
-### Not Yet Implemented
+### Not Wrapped
 
-The goal is full API parity. The following whatsmeow `Client` methods are not yet wrapped:
+`go run ./scripts/check-client-parity` tracks parity against the whatsmeow `Client` method set (currently 106 of 136 methods wrapped). The 30 intentional exclusions, with reasons, live in `scripts/client-parity.json`:
 
-**Messaging:** `BuildReaction`, `BuildEdit`, `BuildPollCreation`, `BuildPollVote`, `EncryptPollVote`, `DecryptReaction`, `DecryptPollVote`, `DecryptComment`, `DecryptSecretEncryptedMessage`, `EncryptComment`, `EncryptReaction`, `GenerateMessageID`, `BuildUnavailableMessageRequest`, `BuildHistorySyncRequest`, `SendPeerMessage`, `ParseWebMessage`
+**Event plumbing (replaced by IPC events):** `AddEventHandler`, `AddEventHandlerWithSuccessStatus`, `RemoveEventHandler`, `RemoveEventHandlers`
 
-**Media:** `UploadReader`, `UploadNewsletter`, `UploadNewsletterReader`, `DownloadAny`, `DownloadThumbnail`, `DownloadToFile`, `DownloadFB`, `DownloadFBToFile`, `DownloadMediaWithPath`, `DownloadMediaWithPathToFile`
+**Context variants:** `ConnectContext`, `GetUserDevicesContext`
 
-**Users/Contacts:** `GetBotListV2`, `GetBotProfiles`
+**Internals:** `DangerousInternals`, `StoreLIDPNMapping`
 
-**Groups:** `GetGroupInfoFromInvite`, `JoinGroupWithInvite`
+**Media variants:** `Upload`, `UploadNewsletter` (covered by the streaming reader commands), `DownloadToFile`, `DownloadMediaWithPathToFile`, `DownloadMediaWithOnlyPathToFile` (write the file from TypeScript instead), `DownloadThumbnail`
 
-**Newsletters:** `GetNewsletterMessageUpdates`, `AcceptTOSNotice`
+**Require a custom HTTP client:** `DownloadFB`, `DownloadFBToFile`, `SendFBMessage`, `DownloadHistorySync`
 
-**Privacy:** None
+**App state writes:** `SendAppState`
 
-**Store queries:** `GetAllContacts`, `GetContact`, `GetChatSettings`
+**Business / push:** `GetOrderDetails`, `GetServerPushNotificationConfig`, `RegisterForPushNotifications`
 
-**App State:** `FetchAppState`, `SendAppState`, `MarkNotDirty`
+**Passkey pairing:** `SendPasskeyConfirmation`, `SendPasskeyResponse`
 
-**Connection/Config:** `SendMediaRetryReceipt`, `DownloadHistorySync`, `GetServerPushNotificationConfig`, `RegisterForPushNotifications`
+**Network:** `SetProxy`, `SetProxyAddress`, `SetSOCKSProxy`, `SetMediaHTTPClient`, `SetWebsocketHTTPClient`, `SetPreLoginHTTPClient`
 
-**Network:** `SetProxyAddress`, `SetProxy`, `SetSOCKSProxy`, `SetMediaHTTPClient`, `SetWebsocketHTTPClient`, `SetPreLoginHTTPClient`
+Client config fields (e.g. `AutoTrustIdentity`, `SendReportingTokens`, `ManualHistorySyncDownload`) are left at upstream defaults, and only a subset of upstream events is forwarded (see `cmd/whatsmeow-node/events.go`).
 
 ### What's the Same
 

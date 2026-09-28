@@ -2,7 +2,7 @@
 title: API Reference Overview
 sidebar_label: API Overview
 sidebar_position: 1
-description: "Complete API reference for whatsmeow-node — 100 typed methods for messaging, groups, media, newsletters, presence, and more."
+description: "Complete API reference for whatsmeow-node — 100+ typed methods for messaging, groups, media, newsletters, presence, and more."
 keywords: [whatsmeow-node api, whatsapp api reference, whatsapp client methods, whatsmeow typescript api]
 ---
 
@@ -51,7 +51,10 @@ Returns a `WhatsmeowClient` instance.
 - `downloadMedia(msg)` — Download media from a received message
 - `downloadAny(message)` — Download media from any message type (auto-detects)
 - `downloadMediaWithPath(opts)` — Download media using direct path and keys
+- `downloadMediaWithOnlyPath(directPath)` — Download media from a direct path without encryption keys
 - `uploadMedia(path, mediaType)` — Upload media for sending (`"image"` | `"video"` | `"audio"` | `"document"`)
+- `deleteMedia(mediaType, directPath, encFileHash, encHandle?)` — Delete previously uploaded media from WhatsApp servers
+- `fetchStickerPack(packID)` — Fetch sticker pack metadata and its sticker list
 
 Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. Upload returns `{ URL, directPath, mediaKey, fileEncSHA256, fileSHA256, fileLength }`.
 
@@ -154,6 +157,9 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. Upl
 - `buildHistorySyncRequest(info, count)` — Build a history sync request message
 - `sendPeerMessage(message)` — Send a message to your own devices
 - `sendMediaRetryReceipt(info, mediaKey)` — Request re-upload of media from the sender
+- `sendHistorySyncServerErrorReceipt(msgID, mediaKey)` — Send a history sync server-error receipt
+- `sendProtocolMessageReceipt(id, msgType)` — Send a receipt for a protocol message back to the phone
+- `setMaxParallelRetryReceiptHandling(maxParallel)` — Set how many retry receipts can be handled in parallel
 
 ## Bots
 

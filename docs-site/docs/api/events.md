@@ -2,13 +2,17 @@
 title: Events Reference
 sidebar_label: Events
 sidebar_position: 2
-description: "All whatsmeow-node events — connection, message, group, presence, call, newsletter, and QR events with fully typed payloads."
+description: "All whatsmeow-node events — connection, message, group, presence, call, and QR events with fully typed payloads."
 keywords: [whatsmeow events, whatsapp message event, whatsapp webhook nodejs, whatsapp event listener typescript]
 ---
 
 # Events
 
-`WhatsmeowClient` extends `EventEmitter` and emits typed events. All [whatsmeow events](https://pkg.go.dev/go.mau.fi/whatsmeow#section-readme) are forwarded.
+`WhatsmeowClient` extends `EventEmitter` and emits typed events. The [whatsmeow events](https://pkg.go.dev/go.mau.fi/whatsmeow#section-readme) listed below are forwarded.
+
+:::note
+Many upstream whatsmeow events are not forwarded yet — for example app-state sync events (mute, pin, archive), newsletter live updates, blocklist/privacy setting changes, `PairSuccess`, `UndecryptableMessage`, and `ConnectFailure`.
+:::
 
 ## Usage
 
@@ -100,7 +104,7 @@ interface GroupInfoEvent {
 | Event | Payload | Description |
 |-------|---------|-------------|
 | `identity_change` | `{ jid: string, timestamp: number }` | Contact's identity key changed (re-registered). |
-| `history_sync` | `{ type: string }` | History sync progress. |
+| `history_sync` | `{ type, chunkOrder, progress, conversations: { id, name, unreadCount, messages }[] }` | History sync chunk. `conversations[].messages` use the same `{ info, message }` shape as `message` events. Initial syncs can be large. |
 | `qr` | `{ code: string }` | QR code for pairing. |
 | `qr:timeout` | `null` | QR pairing timed out. |
 | `qr:error` | `{ event: string }` | QR channel error. |

@@ -175,7 +175,7 @@ await client.sendRawMessage(jid, {
   extendedTextMessage: {
     text: "Reply!",
     contextInfo: {
-      stanzaId: info.id,
+      stanzaID: info.id,
       participant: info.sender,
       quotedMessage: { conversation: originalText },
     },
@@ -275,7 +275,7 @@ Baileys usa `{ text: "..." }` para mensajes. whatsmeow-node usa `{ conversation:
 :::
 
 :::warning Casing de campos proto
-Los campos de respuesta de upload usan el casing exacto de protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **no** camelCase. Usar el casing incorrecto falla silenciosamente.
+Los campos de respuesta de upload usan el casing exacto de protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **no** `url`, `fileSha256`. Lo mismo aplica a los campos de `contextInfo` (`stanzaID`, `mentionedJID`). Un casing incorrecto se rechaza con un error `unknown field`.
 :::
 
 <RelatedGuides slugs={["whatsmeow-in-node", "build-a-bot", "migrate-from-whatsapp-web-js"]} />

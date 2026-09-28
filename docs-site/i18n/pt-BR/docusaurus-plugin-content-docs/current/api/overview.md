@@ -2,7 +2,7 @@
 title: Referencia da API
 sidebar_label: Visao Geral
 sidebar_position: 1
-description: "Referencia completa da API whatsmeow-node — 100 metodos tipados para mensagens, grupos, midia, newsletters, presenca e mais."
+description: "Referencia completa da API whatsmeow-node — 100+ metodos tipados para mensagens, grupos, midia, newsletters, presenca e mais."
 keywords: [api whatsmeow-node, referencia api whatsapp, metodos cliente whatsapp, api typescript whatsmeow]
 ---
 
@@ -51,7 +51,10 @@ Retorna uma instancia de `WhatsmeowClient`.
 - `downloadMedia(msg)` — Baixar midia de uma mensagem recebida
 - `downloadAny(message)` — Baixar midia de qualquer tipo de mensagem (detecta automaticamente)
 - `downloadMediaWithPath(opts)` — Baixar midia usando caminho direto e chaves
+- `downloadMediaWithOnlyPath(directPath)` — Baixar midia a partir de um caminho direto sem chaves de criptografia
 - `uploadMedia(path, mediaType)` — Fazer upload de midia para envio (`"image"` | `"video"` | `"audio"` | `"document"`)
+- `deleteMedia(mediaType, directPath, encFileHash, encHandle?)` — Excluir midia enviada anteriormente dos servidores do WhatsApp
+- `fetchStickerPack(packID)` — Buscar metadados de um pacote de stickers e sua lista de stickers
 
 Midia usa caminhos de arquivos temporarios em vez de base64 para evitar sobrecarga no pipe IPC. O upload retorna `{ URL, directPath, mediaKey, fileEncSHA256, fileSHA256, fileLength }`.
 
@@ -154,6 +157,9 @@ Midia usa caminhos de arquivos temporarios em vez de base64 para evitar sobrecar
 - `buildHistorySyncRequest(info, count)` — Construir uma mensagem de requisicao de sincronizacao de historico
 - `sendPeerMessage(message)` — Enviar uma mensagem para seus proprios dispositivos
 - `sendMediaRetryReceipt(info, mediaKey)` — Solicitar re-upload de midia ao remetente
+- `sendHistorySyncServerErrorReceipt(msgID, mediaKey)` — Enviar um recibo de erro de servidor da sincronizacao de historico
+- `sendProtocolMessageReceipt(id, msgType)` — Enviar um recibo de mensagem de protocolo de volta ao telefone
+- `setMaxParallelRetryReceiptHandling(maxParallel)` — Definir quantos recibos de nova tentativa sao processados em paralelo
 
 ## Bots
 

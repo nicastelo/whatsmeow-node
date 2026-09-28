@@ -36,8 +36,8 @@ We bridge it to Node.js through a thin IPC layer: a precompiled Go binary that c
 
 - **`npm install` and go** — precompiled binaries for macOS, Linux, and Windows. No Go toolchain needed.
 - **~10-20 MB memory** — a single Go binary, not a browser or a heavy Node.js process.
-- **Typed everything** — 100 methods, typed events, typed errors. Your editor knows the API.
-- **Broad API coverage** — 100 of 126 upstream methods wrapped: messages, groups, newsletters, media, polls, presence, privacy, encryption, bots, and more.
+- **Typed everything** — 100+ methods, typed events, typed errors. Your editor knows the API.
+- **Broad API coverage** — 106 of 136 upstream methods wrapped: messages, groups, newsletters, media, polls, presence, privacy, encryption, bots, and more.
 - **Reliable** — when WhatsApp changes something, whatsmeow adapts. You inherit that stability.
 
 ## How it works

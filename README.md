@@ -25,7 +25,7 @@ Communicates with a precompiled Go binary over stdin/stdout JSON-line IPC. No CG
 >
 > Do not use this for spamming, stalkerware, bulk messaging, or any purpose that violates WhatsApp's Terms of Service. The maintainers do not condone such use and bear no liability for misuse.
 
-**Current upstream**: whatsmeow [`0.0.0-20260919`](https://pkg.go.dev/go.mau.fi/whatsmeow)
+**Current upstream**: whatsmeow [`0.0.0-20260927`](https://pkg.go.dev/go.mau.fi/whatsmeow)
 
 ## Documentation
 
@@ -254,7 +254,7 @@ await client.sendMessage(jid, {
   extendedTextMessage: {
     text: "This is a reply",
     contextInfo: {
-      stanzaId: originalMessageId,
+      stanzaID: originalMessageId,
       participant: originalSenderJid,
       quotedMessage: { conversation: "the original text" },
     },
@@ -298,7 +298,7 @@ await client.sendRawMessage(jid, {
 });
 ```
 
-`sendRawMessage` accepts any `Record<string, unknown>` matching the [whatsmeow `waE2E.Message` proto schema](https://pkg.go.dev/go.mau.fi/whatsmeow/proto/waE2E#Message). The JSON shape uses protojson field names (camelCase).
+`sendRawMessage` accepts any `Record<string, unknown>` matching the [whatsmeow `waE2E.Message` proto schema](https://pkg.go.dev/go.mau.fi/whatsmeow/proto/waE2E#Message). The JSON shape uses protojson field names with the proto's exact casing (e.g. `stanzaID`, `mentionedJID`, `PTT`, `URL`) -- wrong casing is rejected with an `unknown field` error.
 
 ## API
 
@@ -344,7 +344,10 @@ Returns a `WhatsmeowClient` instance.
 - `downloadMedia(msg)` -- Download media from a received message
 - `downloadAny(message)` -- Download media from any message type (auto-detects the media field)
 - `downloadMediaWithPath(opts)` -- Download media using direct path and keys (lower-level)
+- `downloadMediaWithOnlyPath(directPath)` -- Download media from a direct path without encryption keys
 - `uploadMedia(path, mediaType)` -- Upload media for sending (`"image"` | `"video"` | `"audio"` | `"document"`)
+- `deleteMedia(mediaType, directPath, encFileHash, encHandle?)` -- Delete previously uploaded media from WhatsApp servers
+- `fetchStickerPack(packID)` -- Fetch sticker pack metadata and its sticker list
 
 Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The Go binary writes downloaded media to a temp file and returns the path. Upload returns `{ URL, directPath, mediaKey, fileEncSHA256, fileSHA256, fileLength }` for use in message protos.
 
@@ -448,6 +451,9 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 - `buildHistorySyncRequest(info, count)` -- Build a history sync request message
 - `sendPeerMessage(message)` -- Send a message to your own devices
 - `sendMediaRetryReceipt(info, mediaKey)` -- Request re-upload of media from the sender
+- `sendHistorySyncServerErrorReceipt(msgID, mediaKey)` -- Send a history sync server-error receipt
+- `sendProtocolMessageReceipt(id, msgType)` -- Send a receipt for a protocol message back to the phone
+- `setMaxParallelRetryReceiptHandling(maxParallel)` -- Set how many retry receipts can be handled in parallel
 
 ### Bots
 
@@ -479,7 +485,7 @@ Media uses temp file paths instead of base64 to avoid bloating the IPC pipe. The
 
 ### Events
 
-All [whatsmeow events](https://pkg.go.dev/go.mau.fi/whatsmeow#section-readme) are forwarded as typed events:
+The most commonly used [whatsmeow events](https://pkg.go.dev/go.mau.fi/whatsmeow#section-readme) are forwarded as typed events:
 
 ```typescript
 client.on("message", ({ info, message }) => { /* ... */ });
@@ -569,7 +575,7 @@ The API maps closely to whatsmeow's Go API. Most methods have a 1:1 TypeScript e
 - **Messages are JSON, not protobuf** -- You send/receive JSON objects that map to `waE2E.Message` protobuf fields via [protojson](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson). The JSON shape matches the proto schema directly.
 - **Auto-reconnect is enabled** -- whatsmeow's built-in reconnection is always on. You see `disconnected` + `connected` events but don't manage reconnect logic.
 - **One client per process** -- Each `createClient()` spawns one Go binary. For multiple accounts, create multiple clients.
-- **Network configuration not yet exposed** -- `SetProxy`, `SetMediaHTTPClient`, etc. are not available. The Go binary uses default networking.
+- **Network configuration is intentionally not exposed** -- `SetProxy`, `SetMediaHTTPClient`, etc. are not available. The Go binary uses default networking.
 
 For the full comparison including what's not yet implemented, see [INTERNALS.md](./INTERNALS.md#differences-from-using-whatsmeow-directly-in-go).
 
@@ -590,7 +596,7 @@ The exact whatsmeow commit is tracked in `package.json` as `whatsmeowVersion`.
 
 ## Building from Source
 
-Requirements: Go 1.25+, Node.js 18+
+Requirements: Go 1.26+, Node.js 18+
 
 ```bash
 # Build the Go binary

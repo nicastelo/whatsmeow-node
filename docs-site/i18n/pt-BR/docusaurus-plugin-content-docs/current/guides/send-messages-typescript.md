@@ -109,7 +109,7 @@ client.on("message", async ({ info, message }) => {
     extendedTextMessage: {
       text: `You said: "${text}"`,
       contextInfo: {
-        stanzaId: info.id,
+        stanzaID: info.id,
         participant: info.sender,
         quotedMessage: { conversation: text },
       },
@@ -120,14 +120,14 @@ client.on("message", async ({ info, message }) => {
 
 ## Mencionar Usuários com @
 
-Inclua os JIDs em `mentionedJid` e use `@<número>` no texto:
+Inclua os JIDs em `mentionedJID` e use `@<número>` no texto:
 
 ```typescript
 await client.sendRawMessage(groupJid, {
   extendedTextMessage: {
     text: `Hey @${memberJid.split("@")[0]}, check this out!`,
     contextInfo: {
-      mentionedJid: [memberJid],
+      mentionedJID: [memberJid],
     },
   },
 });
@@ -143,7 +143,7 @@ const mentions = jids.map((j) => `@${j.split("@")[0]}`).join(" ");
 await client.sendRawMessage(groupJid, {
   extendedTextMessage: {
     text: `Attention: ${mentions}`,
-    contextInfo: { mentionedJid: jids },
+    contextInfo: { mentionedJID: jids },
   },
 });
 ```
@@ -173,7 +173,7 @@ await client.sendRawMessage(recipient, {
 Outros tipos de mídia seguem o mesmo padrão — `videoMessage`, `audioMessage`, `documentMessage`, `stickerMessage`.
 
 :::warning Casing dos campos proto
-Os campos da resposta do upload usam o casing exato do protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **não** `url`, `fileSha256`. O casing errado falha silenciosamente.
+Os campos da resposta do upload usam o casing exato do protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **não** `url`, `fileSha256`. O mesmo vale para os campos de `contextInfo` (`stanzaID`, `mentionedJID`). O casing errado é rejeitado com um erro `unknown field`.
 :::
 
 ## Enviar uma Enquete
@@ -250,7 +250,7 @@ client.on("message", async ({ info, message }) => {
     extendedTextMessage: {
       text: `Echo: ${text}`,
       contextInfo: {
-        stanzaId: info.id,
+        stanzaID: info.id,
         participant: info.sender,
         quotedMessage: { conversation: text },
       },

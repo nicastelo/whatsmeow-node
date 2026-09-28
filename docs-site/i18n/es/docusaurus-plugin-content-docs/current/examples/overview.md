@@ -16,10 +16,10 @@ Ejemplos completos y ejecutables que cubren toda la API de whatsmeow-node. Todos
 |-----------|-----------------|
 | [Emparejamiento](pairing.md) | Flujos de emparejamiento por código QR y número de teléfono |
 | [Mensajería](messaging.md) | Envío, respuestas, @menciones, reacciones, ediciones, revocaciones |
-| [Medios](media.md) | Imágenes, video, audio, documentos, stickers |
-| [Grupos](groups-and-communities.md) | Creación de grupos, configuración, participantes, enlaces de invitación |
+| [Medios](media.md) | Imágenes, video, audio, documentos, stickers, paquetes de stickers |
+| [Grupos](groups-and-communities.md) | Creación de grupos, configuración, participantes, enlaces de invitación, solicitudes de unión, comunidades |
 | [Presencia y Estado](presence-and-status.md) | Estado en línea, indicadores de escritura, privacidad, mensajes efímeros |
-| [Avanzado](advanced.md) | Encuestas, canales, compartir ubicación, vCards, búsqueda de contactos |
+| [Avanzado](advanced.md) | Encuestas, canales, compartir ubicación, vCards, búsqueda de contactos, perfiles de empresa, bots |
 | [Bots y Resiliencia](bots-and-resilience.md) | Plantilla completa de bot, reconexión automática, manejo de errores |
 
 ## Requisitos Previos

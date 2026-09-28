@@ -16,10 +16,10 @@ Complete, runnable examples covering the full whatsmeow-node API. All examples l
 |----------|-------------------|
 | [Pairing](pairing.md) | QR code and phone-number pairing flows |
 | [Messaging](messaging.md) | Sending, replying, @mentions, reactions, edits, revokes |
-| [Media](media.md) | Images, video, audio, documents, stickers |
-| [Groups](groups-and-communities.md) | Group creation, settings, participants, invite links |
+| [Media](media.md) | Images, video, audio, documents, stickers, sticker packs |
+| [Groups](groups-and-communities.md) | Group creation, settings, participants, invite links, join requests, communities |
 | [Presence & Status](presence-and-status.md) | Online status, typing indicators, privacy, ephemeral messages |
-| [Advanced](advanced.md) | Polls, channels, location sharing, vCards, contact lookup |
+| [Advanced](advanced.md) | Polls, channels, location sharing, vCards, contact lookup, business profiles, bots |
 | [Bots & Resilience](bots-and-resilience.md) | Full bot template, auto-reconnect, error handling |
 
 ## Prerequisites

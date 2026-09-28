@@ -8,7 +8,7 @@ keywords: [whatsapp poll api nodejs, whatsapp newsletter channel api, whatsapp l
 
 # Advanced
 
-Polls, newsletters (channels), location sharing, contact cards, and contact lookup.
+Polls, newsletters (channels), location sharing, contact cards, contact lookup, business profiles, and bots.
 
 ## Polls
 
@@ -37,9 +37,20 @@ client.on("message", async ({ info, message }) => {
   const pollUpdate = message.pollUpdateMessage;
   if (!pollUpdate) return;
 
-  const decrypted = await client.decryptPollVote(info, message);
+  // info is typed as MessageInfo; the decrypt helpers take a plain record
+  const decrypted = await client.decryptPollVote(
+    info as unknown as Record<string, unknown>,
+    message,
+  );
   console.log("Vote:", JSON.stringify(decrypted, null, 2));
 });
+```
+
+### Vote on a poll
+
+```typescript
+// pollInfo is the `info` of the received poll message; options are matched by name
+await client.sendPollVote(pollInfo.chat, pollInfo.sender, pollInfo.id, pollInfo.timestamp, ["Go"]);
 ```
 
 [Full source: `polls.ts`](https://github.com/nicastelo/whatsmeow-node/blob/main/ts/examples/polls.ts)
@@ -110,7 +121,7 @@ await client.sendRawMessage(jid, {
     name: "New York City",
     address: "Manhattan, NY, USA",
     comment: "Sent from whatsmeow-node",
-    // url: "https://maps.google.com/...",  // optional link
+    // URL: "https://maps.google.com/...",  // optional link (note the uppercase field name)
   },
 });
 ```
@@ -188,4 +199,25 @@ console.log(`URL: ${pic.url}, ID: ${pic.id}`);
 const devices = await client.getUserDevices(registeredJids);
 ```
 
+### Business profile
+
+```typescript
+const biz = await client.getBusinessProfile(businessJid);
+console.log(biz.email, biz.address, biz.categories?.map((c) => c.name));
+```
+
 [Full source: `contact-lookup.ts`](https://github.com/nicastelo/whatsmeow-node/blob/main/ts/examples/contact-lookup.ts)
+
+---
+
+## Bots
+
+List the AI bots available to your account and fetch their profiles.
+
+```typescript
+const bots = await client.getBotListV2();
+const profiles = await client.getBotProfiles(bots);
+for (const p of profiles) {
+  console.log(`${p.name} (${p.jid}): ${p.description}`);
+}
+```

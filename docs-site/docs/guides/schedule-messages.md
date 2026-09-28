@@ -167,7 +167,7 @@ client.on("message", async ({ info, message }) => {
       extendedTextMessage: {
         text: `Reminder: ${reminder}`,
         contextInfo: {
-          mentionedJid: [info.sender],
+          mentionedJID: [info.sender],
         },
       },
     });
@@ -224,7 +224,7 @@ client.on("message", async ({ info, message }) => {
       extendedTextMessage: {
         text: `Reminder: ${reminder}`,
         contextInfo: {
-          mentionedJid: [info.sender],
+          mentionedJID: [info.sender],
         },
       },
     });
