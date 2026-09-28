@@ -20,7 +20,7 @@ import Head from '@docusaurus/Head';
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/es/pair-whatsapp.png",
       "step": [
         {"@type": "HowToStep", "name": "Vinculación por QR Code", "text": "Llama a getQRChannel() y luego connect(). Escucha el evento qr y muestra el código con qrcode-terminal."},
-        {"@type": "HowToStep", "name": "Vinculación por número telefónico", "text": "Llama primero a connect(), luego a pairCode(phoneNumber). El usuario ingresa el código de 8 dígitos en WhatsApp."},
+        {"@type": "HowToStep", "name": "Vinculación por número telefónico", "text": "Llama primero a connect(), luego a pairCode(phoneNumber). El usuario ingresa el código de 8 caracteres en WhatsApp."},
         {"@type": "HowToStep", "name": "Persistencia de sesión", "text": "La sesión se almacena en la base de datos. En la siguiente ejecución, init() devuelve el JID almacenado y omites la vinculación."},
         {"@type": "HowToStep", "name": "Elegir un almacén", "text": "Usa SQLite (session.db) para desarrollo o PostgreSQL para producción."}
       ]
@@ -96,7 +96,7 @@ Los QR codes expiran y se actualizan automáticamente. Si el usuario no escanea 
 
 ## Método 2: Vinculación por Número Telefónico
 
-En lugar de escanear un QR, el usuario ingresa un código de 8 dígitos en WhatsApp. Útil para servidores sin pantalla o cuando la visualización de QR en terminal no es práctica.
+En lugar de escanear un QR, el usuario ingresa un código de 8 caracteres en WhatsApp. Útil para servidores sin pantalla o cuando la visualización de QR en terminal no es práctica.
 
 ```typescript
 const client = createClient({ store: "session.db" });
@@ -208,8 +208,8 @@ main().catch(console.error);
 Llamar a `pairCode()` antes de `connect()` fallará. El flujo de vinculación por número telefónico requiere una conexión WebSocket activa a los servidores de WhatsApp.
 :::
 
-:::warning Elimina el `+` de los números telefónicos
-Los números telefónicos no deben incluir el prefijo `+`. Pasa `"5512345678"`, no `"+5512345678"`.
+:::warning Usa el formato internacional
+Pasa el número completo con su código de país, p. ej. `"5512345678"`. Los caracteres que no son dígitos, como `+`, espacios y guiones, se eliminan automáticamente, pero un número que empieza con `0` (formato local) se rechaza.
 :::
 
 :::warning Revocación de sesión

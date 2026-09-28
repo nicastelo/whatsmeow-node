@@ -36,14 +36,14 @@ Escucha mensajes entrantes y responde con mensajes citados y @menciones.
 
 ### Citar un mensaje
 
-Para citar un mensaje, establece `contextInfo.stanzaId` con el ID del mensaje original y `contextInfo.participant` con el JID del remitente:
+Para citar un mensaje, establece `contextInfo.stanzaID` con el ID del mensaje original y `contextInfo.participant` con el JID del remitente:
 
 ```typescript
 await client.sendRawMessage(info.chat, {
   extendedTextMessage: {
     text: "This is a reply to your message!",
     contextInfo: {
-      stanzaId: info.id,           // ID of the message we're replying to
+      stanzaID: info.id,           // ID of the message we're replying to
       participant: info.sender,     // Who sent the original
       quotedMessage: {
         conversation: text,         // Original message content (shown in quote bubble)
@@ -55,14 +55,14 @@ await client.sendRawMessage(info.chat, {
 
 ### @Mencionar usuarios
 
-Incluye JIDs en `mentionedJid` y usa `@<número>` en el cuerpo del texto:
+Incluye JIDs en `mentionedJID` y usa `@<número>` en el cuerpo del texto:
 
 ```typescript
 await client.sendRawMessage(info.chat, {
   extendedTextMessage: {
     text: `Hey @${info.sender.split("@")[0]}, you were mentioned!`,
     contextInfo: {
-      mentionedJid: [info.sender],
+      mentionedJID: [info.sender],
     },
   },
 });
@@ -79,14 +79,18 @@ await client.sendRawMessage(info.chat, {
   extendedTextMessage: {
     text: `Mentioning everyone: ${mentions}`,
     contextInfo: {
-      mentionedJid: participantJids,
+      mentionedJID: participantJids,
     },
   },
 });
 ```
 
 :::info
-Citar y mencionar se pueden combinar en un solo mensaje incluyendo tanto `stanzaId`/`participant`/`quotedMessage` como `mentionedJid` en `contextInfo`.
+Citar y mencionar se pueden combinar en un solo mensaje incluyendo tanto `stanzaID`/`participant`/`quotedMessage` como `mentionedJID` en `contextInfo`.
+:::
+
+:::warning
+Los campos de mensajes raw deben usar exactamente la capitalización protobuf de whatsmeow — `stanzaID` y `mentionedJID`, **no** `stanzaId` / `mentionedJid`. Los nombres de campo desconocidos se rechazan con un error `ERR_INVALID_ARGS`.
 :::
 
 [Código fuente completo: `reply-and-mentions.ts`](https://github.com/nicastelo/whatsmeow-node/blob/main/ts/examples/reply-and-mentions.ts)

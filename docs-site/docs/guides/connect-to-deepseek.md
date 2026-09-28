@@ -22,7 +22,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "step": [
         {"@type": "HowToStep", "name": "Set Up Both Clients", "text": "Initialize WhatsmeowClient with createClient() and OpenAI client pointing to DeepSeek's base URL."},
         {"@type": "HowToStep", "name": "Handle Incoming Messages", "text": "Listen for the message event, skip own messages, show typing, and extract text."},
-        {"@type": "HowToStep", "name": "Send to DeepSeek", "text": "Call openai.chat.completions.create() with the deepseek-chat model and send the response back via sendMessage."},
+        {"@type": "HowToStep", "name": "Send to DeepSeek", "text": "Call openai.chat.completions.create() with the deepseek-flash model and send the response back via sendMessage."},
         {"@type": "HowToStep", "name": "Add Conversation History", "text": "Store message history per user JID in a Map and pass it to DeepSeek for multi-turn conversations."}
       ]
     })}
@@ -93,7 +93,7 @@ client.on("message", async ({ info, message }) => {
 ```typescript
 async function askDeepSeek(userJid: string, userMessage: string): Promise<string> {
   const response = await openai.chat.completions.create({
-    model: "deepseek-chat",
+    model: "deepseek-flash",
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: userMessage },
@@ -105,7 +105,7 @@ async function askDeepSeek(userJid: string, userMessage: string): Promise<string
 ```
 
 :::info
-DeepSeek also offers `deepseek-reasoner` for complex reasoning tasks. Swap the model name to try it.
+DeepSeek also offers `deepseek-v4-pro` for complex reasoning tasks. Swap the model name to try it.
 :::
 
 ## Step 4: Add Conversation History
@@ -127,7 +127,7 @@ async function askDeepSeek(userJid: string, userMessage: string): Promise<string
   }
 
   const response = await openai.chat.completions.create({
-    model: "deepseek-chat",
+    model: "deepseek-flash",
     messages: [{ role: "system", content: SYSTEM_PROMPT }, ...history],
   });
 
@@ -168,7 +168,7 @@ async function askDeepSeek(userJid: string, userMessage: string): Promise<string
   }
 
   const response = await openai.chat.completions.create({
-    model: "deepseek-chat",
+    model: "deepseek-flash",
     messages: [{ role: "system", content: SYSTEM_PROMPT }, ...history],
   });
 

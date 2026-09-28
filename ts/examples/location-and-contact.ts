@@ -70,7 +70,7 @@ async function main() {
   //   name             — location name shown in the chat bubble
   //   address          — address text shown below the name
   //   comment          — optional caption
-  //   url              — optional link (e.g. Google Maps URL)
+  //   URL              — optional link (e.g. Google Maps URL)
 
   console.log(`\n1. Sending location to ${jid}...`);
   const locationResp = await client.sendRawMessage(jid, {

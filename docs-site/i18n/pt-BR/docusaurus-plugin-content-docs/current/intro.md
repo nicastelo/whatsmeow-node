@@ -36,8 +36,8 @@ Fazemos a ponte com o Node.js atraves de uma camada fina de IPC: um binario Go p
 
 - **`npm install` e pronto** — binarios pre-compilados para macOS, Linux e Windows. Nenhuma toolchain Go necessaria.
 - **~10-20 MB de memoria** — um unico binario Go, nao um navegador ou um processo Node.js pesado.
-- **Tipagem completa** — 100 metodos, eventos tipados, erros tipados. Seu editor conhece a API.
-- **Ampla cobertura da API** — 100 de 126 metodos upstream encapsulados: mensagens, grupos, newsletters, midia, enquetes, presenca, privacidade, criptografia, bots e mais.
+- **Tipagem completa** — 100+ metodos, eventos tipados, erros tipados. Seu editor conhece a API.
+- **Ampla cobertura da API** — 106 de 136 metodos upstream encapsulados: mensagens, grupos, newsletters, midia, enquetes, presenca, privacidade, criptografia, bots e mais.
 - **Confiavel** — quando o WhatsApp muda algo, o whatsmeow se adapta. Voce herda essa estabilidade.
 
 ## Como funciona

@@ -2,9 +2,11 @@ export { WhatsmeowClient } from "./client.js";
 export { WhatsmeowError, TimeoutError, ProcessExitedError } from "./errors.js";
 export type {
   JID,
+  Bytes,
   MessageInfo,
   SendResponse,
   ContextInfo,
+  HistorySyncConversation,
   TextMessage,
   ExtendedTextMessage,
   MessageContent,

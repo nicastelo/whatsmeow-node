@@ -148,10 +148,10 @@ async function main() {
       message = {
         audioMessage: {
           ...sharedFields,
-          // Set ptt=true to send as a voice note (push-to-talk).
+          // Set PTT=true to send as a voice note (push-to-talk).
           // Voice notes appear with the blue microphone icon and play inline.
-          // Set ptt=false (or omit) to send as a regular audio file.
-          ptt: true,
+          // Set PTT=false (or omit) to send as a regular audio file.
+          PTT: true,
           // Optional audio-specific fields:
           // seconds: 15,                    // duration in seconds
         },

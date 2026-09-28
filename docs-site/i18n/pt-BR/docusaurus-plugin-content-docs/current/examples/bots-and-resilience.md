@@ -33,6 +33,11 @@ Um bot completo que ecoa mensagens, reenvia imagens, trata comandos e rejeita ch
 client.on("message", async ({ info, message }) => {
   if (info.isFromMe) return; // Skip own messages to avoid loops
 
+  const text =
+    (message.conversation as string | undefined) ??
+    (message.extendedTextMessage as { text?: string } | undefined)?.text;
+  if (!text) return;
+
   // Mark as read (blue ticks)
   await client.markRead([info.id], info.chat, info.sender);
 
@@ -51,7 +56,7 @@ client.on("message", async ({ info, message }) => {
     extendedTextMessage: {
       text: text,
       contextInfo: {
-        stanzaId: info.id,
+        stanzaID: info.id,
         participant: info.sender,
         quotedMessage: { conversation: text },
       },
@@ -136,14 +141,25 @@ client.on("keep_alive_restored", () => {
   console.log("Keep-alive restored");
 });
 
-// Typed error handling
-client.on("error", (err) => {
-  if (err instanceof WhatsmeowError) {
-    console.error(`[${err.code}] ${err.message}`);
-  } else {
-    console.error(err);
-  }
+// Account temporarily banned by WhatsApp
+client.on("temporary_ban", ({ code, expire }) => {
+  console.error(`Temporary ban: ${code} (expires in ${expire})`);
 });
+
+// The Go subprocess failed to spawn or crashed
+client.on("error", (err) => console.error("Process error:", err));
+client.on("exit", ({ code }) => console.error(`Go process exited (code ${code})`));
+
+// Failed commands reject with a typed WhatsmeowError
+try {
+  await client.sendMessage(jid, { conversation: "Hello" });
+} catch (err) {
+  if (err instanceof WhatsmeowError) {
+    console.error(`[${err.code}] ${err.message}`); // e.g. ERR_SEND, ERR_TIMEOUT
+  } else {
+    throw err;
+  }
+}
 ```
 
 :::info

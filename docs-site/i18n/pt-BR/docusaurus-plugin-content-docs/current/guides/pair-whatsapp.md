@@ -20,7 +20,7 @@ import Head from '@docusaurus/Head';
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/pair-whatsapp.png",
       "step": [
         {"@type": "HowToStep", "name": "Pareamento por QR Code", "text": "Chame getQRChannel() e depois connect(). Escute o evento qr e renderize o código com qrcode-terminal."},
-        {"@type": "HowToStep", "name": "Pareamento por Número de Telefone", "text": "Chame connect() primeiro, depois pairCode(phoneNumber). O usuário digita o código de 8 dígitos no WhatsApp."},
+        {"@type": "HowToStep", "name": "Pareamento por Número de Telefone", "text": "Chame connect() primeiro, depois pairCode(phoneNumber). O usuário digita o código de 8 caracteres no WhatsApp."},
         {"@type": "HowToStep", "name": "Persistência de Sessão", "text": "A sessão é armazenada no banco de dados. Na próxima execução, init() retorna o JID armazenado e você pula o pareamento."},
         {"@type": "HowToStep", "name": "Escolher um Store", "text": "Use SQLite (session.db) para desenvolvimento ou PostgreSQL para produção."}
       ]
@@ -96,7 +96,7 @@ Os QR codes expiram e são atualizados automaticamente. Se o usuário não escan
 
 ## Método 2: Pareamento por Número de Telefone
 
-Em vez de escanear um QR, o usuário digita um código de 8 dígitos no WhatsApp. Útil para servidores headless ou quando a renderização de QR no terminal não é prática.
+Em vez de escanear um QR, o usuário digita um código de 8 caracteres no WhatsApp. Útil para servidores headless ou quando a renderização de QR no terminal não é prática.
 
 ```typescript
 const client = createClient({ store: "session.db" });
@@ -208,8 +208,8 @@ main().catch(console.error);
 Chamar `pairCode()` antes de `connect()` vai falhar. O fluxo de pareamento por número de telefone requer uma conexão WebSocket ativa com os servidores do WhatsApp.
 :::
 
-:::warning Remova o `+` dos números de telefone
-Números de telefone não devem incluir o prefixo `+`. Passe `"5512345678"`, não `"+5512345678"`.
+:::warning Use o formato internacional
+Passe o número completo com o código do país, ex. `"5512345678"`. Caracteres que não são dígitos, como `+`, espaços e hífens, são removidos automaticamente, mas um número começando com `0` (formato local) é rejeitado.
 :::
 
 :::warning Revogação de sessão

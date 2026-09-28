@@ -179,7 +179,7 @@ client.on("message", async ({ info, message }) => {
   if (!text) return;
 
   try {
-    const { conversationId } = await getOrCreateContact(info.sender, info.pushName);
+    const { conversationId } = await getOrCreateContact(info.chat, info.pushName);
 
     await chatwootAPI(`/conversations/${conversationId}/messages`, "POST", {
       content: text,
@@ -194,8 +194,8 @@ client.on("message", async ({ info, message }) => {
 app.post("/chatwoot/webhook", async (req, res) => {
   const { event, message_type, conversation, content } = req.body;
 
-  // Only handle outgoing messages from agents
-  if (event !== "message_created" || message_type !== "outgoing") {
+  // Only handle outgoing messages from agents (skip private notes)
+  if (event !== "message_created" || message_type !== "outgoing" || req.body.private) {
     return res.sendStatus(200);
   }
 

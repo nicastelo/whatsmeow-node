@@ -146,7 +146,7 @@ client.on("message", async ({ info, message }) => {
       extendedTextMessage: {
         text: text,
         contextInfo: {
-          stanzaId: info.id,
+          stanzaID: info.id,
           participant: info.sender,
           quotedMessage: { conversation: text },
         },

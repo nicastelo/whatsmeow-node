@@ -7,6 +7,7 @@ import { GoProcess } from "./process.js";
 import type {
   ClientOptions,
   JID,
+  Bytes,
   MessageContent,
   SendResponse,
   InitResult,
@@ -189,9 +190,9 @@ export class WhatsmeowClient extends EventEmitter {
 
   async downloadMedia(msg: {
     directPath: string;
-    mediaKey: number[];
-    fileSha256: number[];
-    fileEncSha256: number[];
+    mediaKey: Bytes;
+    fileSha256: Bytes;
+    fileEncSha256: Bytes;
     mediaType?: string;
   }): Promise<string> {
     const result = (await this.proc.send("downloadMedia", msg)) as { path: string };
@@ -542,7 +543,7 @@ export class WhatsmeowClient extends EventEmitter {
   async deleteMedia(
     mediaType: MediaType,
     directPath: string,
-    encFileHash: number[],
+    encFileHash: Bytes,
     encHandle = "",
   ): Promise<void> {
     await this.proc.send("deleteMedia", { mediaType, directPath, encFileHash, encHandle });
@@ -668,12 +669,12 @@ export class WhatsmeowClient extends EventEmitter {
 
   async sendMediaRetryReceipt(
     info: { chat: JID; sender: JID; id: string; timestamp?: number },
-    mediaKey: number[],
+    mediaKey: Bytes,
   ): Promise<void> {
     await this.proc.send("sendMediaRetryReceipt", { info, mediaKey });
   }
 
-  async sendHistorySyncServerErrorReceipt(msgID: string, mediaKey: number[]): Promise<void> {
+  async sendHistorySyncServerErrorReceipt(msgID: string, mediaKey: Bytes): Promise<void> {
     await this.proc.send("sendHistorySyncServerErrorReceipt", { msgID, mediaKey });
   }
 
@@ -689,9 +690,9 @@ export class WhatsmeowClient extends EventEmitter {
 
   async downloadMediaWithPath(opts: {
     directPath: string;
-    encFileHash: number[];
-    fileHash: number[];
-    mediaKey: number[];
+    encFileHash: Bytes;
+    fileHash: Bytes;
+    mediaKey: Bytes;
     mediaType: MediaType;
     mmsType?: string;
   }): Promise<string> {
@@ -836,14 +837,19 @@ function resolveBinary(): string {
     // not found — fall through to platform package
   }
 
-  // Try platform-specific npm package
+  // Try platform-specific npm package. On Linux, npm installs either the glibc
+  // or the -musl package depending on the host libc; both binaries are static.
   const require = createRequire(import.meta.url);
   const pkgName = `@whatsmeow-node/${process.platform}-${process.arch}`;
-  try {
-    return require.resolve(`${pkgName}/bin/${BINARY_NAME}`);
-  } catch {
-    throw new Error(
-      `Could not find whatsmeow-node binary. Install ${pkgName} or set binaryPath option.`,
-    );
+  const candidates = process.platform === "linux" ? [pkgName, `${pkgName}-musl`] : [pkgName];
+  for (const candidate of candidates) {
+    try {
+      return require.resolve(`${candidate}/bin/${BINARY_NAME}`);
+    } catch {
+      // not installed — try next candidate
+    }
   }
+  throw new Error(
+    `Could not find whatsmeow-node binary. Install ${candidates.join(" or ")} or set binaryPath option.`,
+  );
 }

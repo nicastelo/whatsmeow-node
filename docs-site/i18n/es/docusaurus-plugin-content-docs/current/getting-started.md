@@ -55,7 +55,7 @@ await client.sendMessage(jid, {
   extendedTextMessage: {
     text: "This is a reply",
     contextInfo: {
-      stanzaId: originalMessageId,
+      stanzaID: originalMessageId,
       participant: originalSenderJid,
       quotedMessage: { conversation: "the original text" },
     },
@@ -123,7 +123,6 @@ const filePath = await client.downloadMediaWithPath({
   mediaKey: msg.imageMessage.mediaKey,
   fileHash: msg.imageMessage.fileSHA256,
   encFileHash: msg.imageMessage.fileEncSHA256,
-  fileLength: msg.imageMessage.fileLength,
   mediaType: "image",
 });
 ```

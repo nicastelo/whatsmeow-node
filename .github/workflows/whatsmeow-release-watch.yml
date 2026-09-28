@@ -258,28 +258,39 @@ jobs:
         continue-on-error: true
         env:
           E2E_SESSION_KEY: ${{ secrets.E2E_SESSION_KEY }}
+          # Disabled while the E2E WhatsApp session is expired; set to "true" after re-pairing.
+          E2E_ENABLED: "false"
         run: |
+          if [ "$E2E_ENABLED" != "true" ]; then
+            echo "e2e_status=disabled" >> "$GITHUB_OUTPUT"
+            echo "E2E disabled"
+            exit 0
+          fi
           if [ -z "$E2E_SESSION_KEY" ] || [ ! -f .e2e-session.db.enc ]; then
             echo "e2e_status=skipped" >> "$GITHUB_OUTPUT"
             echo "E2E skipped: session not configured"
             exit 0
           fi
-          openssl enc -aes-256-cbc -d -pbkdf2 \
+          if ! openssl enc -aes-256-cbc -d -pbkdf2 \
             -in .e2e-session.db.enc -out ts/e2e-session.db \
-            -pass "pass:$E2E_SESSION_KEY"
+            -pass "pass:$E2E_SESSION_KEY"; then
+            echo "e2e_status=fail" >> "$GITHUB_OUTPUT"
+            echo "E2E failed: could not decrypt session" | tee e2e-output.txt
+            exit 0
+          fi
           cd ts
+          set +e -o pipefail
           E2E_BINARY_PATH="$GITHUB_WORKSPACE/whatsmeow-node" \
           E2E_SESSION_DB="$GITHUB_WORKSPACE/ts/e2e-session.db" \
           npm run test:e2e 2>&1 | tee ../e2e-output.txt
-          echo "e2e_status=pass" >> "$GITHUB_OUTPUT"
-
-      - name: Record E2E failure
-        if: steps.e2e.outcome == 'failure'
-        run: |
-          if [ -f ts/.e2e-session-expired ]; then
+          rc=$?
+          set -e
+          if [ -f .e2e-session-expired ]; then
             echo "e2e_status=expired" >> "$GITHUB_OUTPUT"
-          else
+          elif [ "$rc" -ne 0 ]; then
             echo "e2e_status=fail" >> "$GITHUB_OUTPUT"
+          else
+            echo "e2e_status=pass" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Open or update tracking issue

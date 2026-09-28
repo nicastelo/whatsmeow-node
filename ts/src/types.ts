@@ -1,6 +1,9 @@
 // ── JID ────────────────────────────────────────────
 export type JID = string; // e.g. "5989...@s.whatsapp.net" or "1234@g.us"
 
+/** Binary field: base64 string (as received in message events) or byte array. */
+export type Bytes = string | number[];
+
 // ── Messages ───────────────────────────────────────
 export interface MessageInfo {
   id: string;
@@ -17,10 +20,20 @@ export interface SendResponse {
   timestamp: number;
 }
 
+/** Field names must match the waE2E proto JSON names exactly (e.g. `stanzaID`, not `stanzaId`). */
+export interface HistorySyncConversation {
+  id: JID;
+  name: string;
+  unreadCount: number;
+  /** Messages parsed into the same shape as live `message` events. */
+  messages: { info: MessageInfo; message: Record<string, unknown> }[];
+}
+
 export interface ContextInfo {
-  stanzaId?: string;
+  stanzaID?: string;
   participant?: JID;
   quotedMessage?: Record<string, unknown>;
+  mentionedJID?: JID[];
 }
 
 export interface TextMessage {
@@ -219,9 +232,12 @@ export interface NewsletterUploadResponse {
 
 // ── Stickers ───────────────────────────────────────
 export interface StickerPackItem {
-  "media-key": number[];
-  "enc-file-hash": number[];
-  "file-hash": number[];
+  /** base64 */
+  "media-key": string;
+  /** base64 */
+  "enc-file-hash": string;
+  /** base64 */
+  "file-hash": string;
   "direct-path": string;
   url: string;
   "file-size": number;
@@ -231,7 +247,8 @@ export interface StickerPackItem {
   emojis: string[];
   "accessibility-text": string;
   handle: string;
-  "sticker-hash-without-meta": number[];
+  /** base64 */
+  "sticker-hash-without-meta": string;
   "preview-webp-id": string;
 }
 
@@ -344,7 +361,12 @@ export interface WhatsmeowEvents {
   "call:accept": { from: JID; callId: string };
   "call:terminate": { from: JID; callId: string; reason: string };
   identity_change: { jid: JID; timestamp: number };
-  history_sync: { type: string };
+  history_sync: {
+    type: string;
+    chunkOrder: number;
+    progress: number;
+    conversations: HistorySyncConversation[];
+  };
   qr: { code: string };
   "qr:timeout": null;
   "qr:error": { event: string };

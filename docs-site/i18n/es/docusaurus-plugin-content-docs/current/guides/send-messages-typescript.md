@@ -109,7 +109,7 @@ client.on("message", async ({ info, message }) => {
     extendedTextMessage: {
       text: `You said: "${text}"`,
       contextInfo: {
-        stanzaId: info.id,
+        stanzaID: info.id,
         participant: info.sender,
         quotedMessage: { conversation: text },
       },
@@ -120,14 +120,14 @@ client.on("message", async ({ info, message }) => {
 
 ## @Mencionar Usuarios
 
-Incluye los JID en `mentionedJid` y usa `@<número>` en el texto:
+Incluye los JID en `mentionedJID` y usa `@<número>` en el texto:
 
 ```typescript
 await client.sendRawMessage(groupJid, {
   extendedTextMessage: {
     text: `Hey @${memberJid.split("@")[0]}, check this out!`,
     contextInfo: {
-      mentionedJid: [memberJid],
+      mentionedJID: [memberJid],
     },
   },
 });
@@ -143,7 +143,7 @@ const mentions = jids.map((j) => `@${j.split("@")[0]}`).join(" ");
 await client.sendRawMessage(groupJid, {
   extendedTextMessage: {
     text: `Attention: ${mentions}`,
-    contextInfo: { mentionedJid: jids },
+    contextInfo: { mentionedJID: jids },
   },
 });
 ```
@@ -173,7 +173,7 @@ await client.sendRawMessage(recipient, {
 Otros tipos de multimedia siguen el mismo patrón — `videoMessage`, `audioMessage`, `documentMessage`, `stickerMessage`.
 
 :::warning Casing de campos proto
-Los campos de respuesta de upload usan el casing exacto de protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **no** `url`, `fileSha256`. Un casing incorrecto falla silenciosamente.
+Los campos de respuesta de upload usan el casing exacto de protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **no** `url`, `fileSha256`. Lo mismo aplica a los campos de `contextInfo` (`stanzaID`, `mentionedJID`). Un casing incorrecto se rechaza con un error `unknown field`.
 :::
 
 ## Enviar una Encuesta
@@ -250,7 +250,7 @@ client.on("message", async ({ info, message }) => {
     extendedTextMessage: {
       text: `Echo: ${text}`,
       contextInfo: {
-        stanzaId: info.id,
+        stanzaID: info.id,
         participant: info.sender,
         quotedMessage: { conversation: text },
       },

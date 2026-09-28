@@ -25,6 +25,12 @@ await client.sendPresence("available");
 await client.sendPresence("unavailable");
 ```
 
+### Definir seu texto "Recado"
+
+```typescript
+await client.setStatusMessage("Available for support 9am–5pm");
+```
+
 ### Mostrar indicadores de digitacao
 
 ```typescript

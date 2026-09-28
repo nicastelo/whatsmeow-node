@@ -98,8 +98,8 @@ client.on("message", async ({ info, message }) => {
   if (!pollUpdate) return;
 
   // Get the poll message ID from the poll update
-  const pollKey = pollUpdate.pollCreationMessageKey as { id?: string } | undefined;
-  const pollId = pollKey?.id;
+  const pollKey = pollUpdate.pollCreationMessageKey as { ID?: string } | undefined;
+  const pollId = pollKey?.ID;
   if (!pollId) return;
 
   try {
@@ -225,8 +225,8 @@ client.on("message", async ({ info, message }) => {
   // Handle poll votes
   const pollUpdate = message.pollUpdateMessage as Record<string, unknown> | undefined;
   if (pollUpdate) {
-    const pollKey = pollUpdate.pollCreationMessageKey as { id?: string } | undefined;
-    const pollId = pollKey?.id;
+    const pollKey = pollUpdate.pollCreationMessageKey as { ID?: string } | undefined;
+    const pollId = pollKey?.ID;
     if (!pollId) return;
 
     const poll = polls.get(pollId);

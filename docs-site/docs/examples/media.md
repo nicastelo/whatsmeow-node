@@ -83,7 +83,7 @@ await client.sendRawMessage(jid, {
 await client.sendRawMessage(jid, {
   audioMessage: {
     ...sharedFields,
-    ptt: true,  // true = voice note (blue mic icon), false = audio file
+    PTT: true,  // true = voice note (blue mic icon), false = audio file
     // seconds: 15,
   },
 });
@@ -158,3 +158,15 @@ client.on("message", async ({ info, message }) => {
 :::
 
 [Full source: `sticker-download.ts`](https://github.com/nicastelo/whatsmeow-node/blob/main/ts/examples/sticker-download.ts)
+
+---
+
+## Fetch a Sticker Pack
+
+Look up a sticker pack's metadata and sticker list by its ID (for example, `stickerPackID` from an incoming `stickerPackMessage`).
+
+```typescript
+const pack = await client.fetchStickerPack(packId);
+console.log(`${pack.name} by ${pack.publisher} — ${pack.stickers.length} stickers`);
+```
+

@@ -67,7 +67,7 @@ npm install @whatsmeow-node/whatsmeow-node
 O binário correto para o seu SO e arquitetura é instalado automaticamente via dependência opcional.
 
 :::info
-Plataformas suportadas: macOS (arm64, x64), Linux (arm64, x64), Windows (x64). Veja [Instalação](/docs/installation) para detalhes.
+Plataformas suportadas: macOS (arm64, x64), Linux (arm64, x64), Windows (arm64, x64). Veja [Instalação](/docs/installation) para detalhes.
 :::
 
 ## Passo 2: Criar o Client

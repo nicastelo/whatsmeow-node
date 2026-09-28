@@ -105,7 +105,7 @@ await client.sendRawMessage(info.chat, {
   extendedTextMessage: {
     text: "I got your message!",
     contextInfo: {
-      stanzaId: info.id,
+      stanzaID: info.id,
       participant: info.sender,
       quotedMessage: { conversation: text },
     },
@@ -238,7 +238,7 @@ client.on("message", async ({ info, message }) => {
       extendedTextMessage: {
         text: text,
         contextInfo: {
-          stanzaId: info.id,
+          stanzaID: info.id,
           participant: info.sender,
           quotedMessage: { conversation: text },
         },

@@ -12,7 +12,7 @@ keywords: [preguntas frecuentes whatsmeow-node, preguntas bot whatsapp, faq what
 
 ### ¿Qué es whatsmeow-node?
 
-whatsmeow-node es un cliente TypeScript/Node.js para WhatsApp Web. Envuelve a [whatsmeow](https://github.com/tulir/whatsmeow), una librería de Go que implementa el protocolo multi-dispositivo de WhatsApp Web. Obtienes la confiabilidad de whatsmeow con la experiencia de desarrollo de TypeScript — 100 métodos async tipados, eventos tipados y errores tipados.
+whatsmeow-node es un cliente TypeScript/Node.js para WhatsApp Web. Envuelve a [whatsmeow](https://github.com/tulir/whatsmeow), una librería de Go que implementa el protocolo multi-dispositivo de WhatsApp Web. Obtienes la confiabilidad de whatsmeow con la experiencia de desarrollo de TypeScript — 100+ métodos async tipados, eventos tipados y errores tipados.
 
 ### ¿Cómo funciona internamente?
 
@@ -81,7 +81,7 @@ Se dispara el evento `logged_out` con la razón. La sesión se revoca permanente
 
 ### ¿Qué puede hacer whatsmeow-node?
 
-100 de 126 métodos upstream de whatsmeow están envueltos. Las capacidades principales incluyen:
+106 de 136 métodos upstream de whatsmeow están envueltos. Las capacidades principales incluyen:
 
 - Enviar y recibir texto, imágenes, video, audio, documentos, stickers, contactos y ubicaciones
 - Crear, gestionar e interactuar con grupos y comunidades
@@ -90,7 +90,7 @@ Se dispara el evento `logged_out` con la razón. La sesión se revoca permanente
 - Manejar presencia (en línea/fuera de línea, indicadores de escritura)
 - Descargar y subir media
 - Gestionar configuraciones de privacidad y lista de bloqueo
-- Recibir y procesar datos de sincronización de historial
+- Recibir notificaciones de sincronización de historial y solicitar historial bajo demanda
 - Manejar llamadas (recibir ofertas, rechazar llamadas)
 - Gestionar mensajes temporales
 
@@ -112,7 +112,7 @@ WhatsApp ha restringido los mensajes interactivos (botones, listas, catálogos d
 
 ### ¿Puede leer el historial de mensajes?
 
-whatsmeow-node recibe datos de sincronización de historial cuando un dispositivo se empareja por primera vez. Escucha los eventos `history_sync` para capturar mensajes pasados. No puedes solicitar historial bajo demanda — WhatsApp lo envía durante la sincronización inicial.
+WhatsApp envía datos de sincronización de historial cuando un dispositivo se empareja por primera vez, y puedes solicitar mensajes anteriores bajo demanda con `buildHistorySyncRequest()` + `sendPeerMessage()`. Las conversaciones sincronizadas llegan en el evento `history_sync`, con cada mensaje en la misma forma `{ info, message }` que los eventos `message` en vivo.
 
 ## Despliegue
 

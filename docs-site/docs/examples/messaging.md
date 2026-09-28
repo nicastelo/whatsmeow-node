@@ -36,14 +36,14 @@ Listen for incoming messages and reply with quoted messages and @mentions.
 
 ### Quoting a message
 
-To quote a message, set `contextInfo.stanzaId` to the original message ID and `contextInfo.participant` to the sender's JID:
+To quote a message, set `contextInfo.stanzaID` to the original message ID and `contextInfo.participant` to the sender's JID:
 
 ```typescript
 await client.sendRawMessage(info.chat, {
   extendedTextMessage: {
     text: "This is a reply to your message!",
     contextInfo: {
-      stanzaId: info.id,           // ID of the message we're replying to
+      stanzaID: info.id,           // ID of the message we're replying to
       participant: info.sender,     // Who sent the original
       quotedMessage: {
         conversation: text,         // Original message content (shown in quote bubble)
@@ -55,14 +55,14 @@ await client.sendRawMessage(info.chat, {
 
 ### @Mentioning users
 
-Include JIDs in `mentionedJid` and use `@<number>` in the text body:
+Include JIDs in `mentionedJID` and use `@<number>` in the text body:
 
 ```typescript
 await client.sendRawMessage(info.chat, {
   extendedTextMessage: {
     text: `Hey @${info.sender.split("@")[0]}, you were mentioned!`,
     contextInfo: {
-      mentionedJid: [info.sender],
+      mentionedJID: [info.sender],
     },
   },
 });
@@ -79,14 +79,18 @@ await client.sendRawMessage(info.chat, {
   extendedTextMessage: {
     text: `Mentioning everyone: ${mentions}`,
     contextInfo: {
-      mentionedJid: participantJids,
+      mentionedJID: participantJids,
     },
   },
 });
 ```
 
 :::info
-Quoting and mentioning can be combined in a single message by including both `stanzaId`/`participant`/`quotedMessage` and `mentionedJid` in `contextInfo`.
+Quoting and mentioning can be combined in a single message by including both `stanzaID`/`participant`/`quotedMessage` and `mentionedJID` in `contextInfo`.
+:::
+
+:::warning
+Raw message fields must use whatsmeow's protobuf casing exactly — `stanzaID` and `mentionedJID`, **not** `stanzaId` / `mentionedJid`. Unknown field names are rejected with an `ERR_INVALID_ARGS` error.
 :::
 
 [Full source: `reply-and-mentions.ts`](https://github.com/nicastelo/whatsmeow-node/blob/main/ts/examples/reply-and-mentions.ts)

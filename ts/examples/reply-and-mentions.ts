@@ -7,8 +7,8 @@
  *   3. Combining both — reply with mentions
  *
  * Both features use extendedTextMessage with contextInfo.
- * Quoting requires the original message's stanzaId + participant.
- * Mentions require listing mentioned JIDs in the mentionedJid array.
+ * Quoting requires the original message's stanzaID + participant.
+ * Mentions require listing mentioned JIDs in the mentionedJID array.
  *
  * Usage:
  *   npx tsx examples/reply-and-mentions.ts
@@ -48,7 +48,7 @@ client.on("message", async ({ info, message }) => {
 
   // ── Pattern 1: Reply with a quote ────────────────
   //
-  // To quote a message, set contextInfo.stanzaId to the original message ID
+  // To quote a message, set contextInfo.stanzaID to the original message ID
   // and contextInfo.participant to the original sender's JID.
   // The quotedMessage field contains the original message content for display.
 
@@ -57,7 +57,7 @@ client.on("message", async ({ info, message }) => {
       extendedTextMessage: {
         text: "This is a reply to your message!",
         contextInfo: {
-          stanzaId: info.id, // ID of the message we're replying to
+          stanzaID: info.id, // ID of the message we're replying to
           participant: info.sender, // Who sent the original message
           quotedMessage: {
             // The original message — shown in the quote bubble
@@ -72,7 +72,7 @@ client.on("message", async ({ info, message }) => {
 
   // ── Pattern 2: @mention users ────────────────────
   //
-  // To @mention someone, include their JID in the mentionedJid array
+  // To @mention someone, include their JID in the mentionedJID array
   // inside contextInfo, and put @<number> in the text body.
   // WhatsApp renders the mention as a clickable name.
 
@@ -82,7 +82,7 @@ client.on("message", async ({ info, message }) => {
         // Use @<number> in the text — WhatsApp replaces it with the contact name
         text: `Hey @${info.sender.split("@")[0]}, you were mentioned!`,
         contextInfo: {
-          mentionedJid: [info.sender], // Array of JIDs being mentioned
+          mentionedJID: [info.sender], // Array of JIDs being mentioned
         },
       },
     });
@@ -99,10 +99,10 @@ client.on("message", async ({ info, message }) => {
       extendedTextMessage: {
         text: `Replying to @${info.sender.split("@")[0]} with a quote!`,
         contextInfo: {
-          stanzaId: info.id,
+          stanzaID: info.id,
           participant: info.sender,
           quotedMessage: { conversation: text },
-          mentionedJid: [info.sender],
+          mentionedJID: [info.sender],
         },
       },
     });
@@ -126,7 +126,7 @@ client.on("message", async ({ info, message }) => {
         extendedTextMessage: {
           text: `Mentioning everyone: ${mentions}`,
           contextInfo: {
-            mentionedJid: participantJids,
+            mentionedJID: participantJids,
           },
         },
       });

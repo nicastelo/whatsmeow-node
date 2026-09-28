@@ -1,11 +1,9 @@
 name: E2E
 
+# Scheduled and PR runs are disabled while the E2E WhatsApp session is expired.
+# Re-pair, update .e2e-session.db.enc, then restore the schedule/pull_request triggers.
 on:
-  schedule:
-    - cron: "0 8 * * *" # Daily at 8am UTC
   workflow_dispatch: # Manual trigger
-  pull_request:
-    types: [labeled, synchronize]
 
 permissions:
   actions: write

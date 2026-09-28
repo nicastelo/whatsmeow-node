@@ -21,7 +21,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pair-whatsapp.png",
       "step": [
         {"@type": "HowToStep", "name": "QR Code Pairing", "text": "Call getQRChannel() then connect(). Listen for the qr event and render the code with qrcode-terminal."},
-        {"@type": "HowToStep", "name": "Phone Number Pairing", "text": "Call connect() first, then pairCode(phoneNumber). The user enters the 8-digit code in WhatsApp."},
+        {"@type": "HowToStep", "name": "Phone Number Pairing", "text": "Call connect() first, then pairCode(phoneNumber). The user enters the 8-character code in WhatsApp."},
         {"@type": "HowToStep", "name": "Session Persistence", "text": "The session is stored in the database. On next run, init() returns the stored JID and you skip pairing."},
         {"@type": "HowToStep", "name": "Choose a Store", "text": "Use SQLite (session.db) for development or PostgreSQL for production."}
       ]
@@ -97,7 +97,7 @@ QR codes expire and refresh automatically. If the user doesn't scan in time, a n
 
 ## Method 2: Phone Number Pairing
 
-Instead of scanning a QR, the user enters an 8-digit code in WhatsApp. Useful for headless servers or when terminal QR rendering isn't practical.
+Instead of scanning a QR, the user enters an 8-character code in WhatsApp. Useful for headless servers or when terminal QR rendering isn't practical.
 
 ```typescript
 const client = createClient({ store: "session.db" });
@@ -209,8 +209,8 @@ main().catch(console.error);
 Calling `pairCode()` before `connect()` will fail. The phone number pairing flow requires an active WebSocket connection to WhatsApp's servers.
 :::
 
-:::warning Strip the `+` from phone numbers
-Phone numbers must not include the `+` prefix. Pass `"5512345678"`, not `"+5512345678"`.
+:::warning Use international format
+Pass the full number with its country code, e.g. `"5512345678"`. Non-digit characters such as `+`, spaces, and dashes are stripped automatically, but a number starting with `0` (local format) is rejected.
 :::
 
 :::warning Session revocation

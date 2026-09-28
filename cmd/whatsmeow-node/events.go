@@ -164,9 +164,49 @@ func (a *App) eventHandler(evt interface{}) {
 
 	// ── History Sync ─────────────────────────────
 	case *events.HistorySync:
-		sendEvent("history_sync", map[string]interface{}{
-			"type": v.Data.GetSyncType().String(),
+		sendEvent("history_sync", a.serializeHistorySync(v))
+	}
+}
+
+// serializeHistorySync forwards the sync type plus every conversation's messages,
+// parsed into the same {info, message} shape as live "message" events.
+func (a *App) serializeHistorySync(v *events.HistorySync) map[string]interface{} {
+	a.mu.Lock()
+	client := a.client
+	a.mu.Unlock()
+
+	conversations := make([]map[string]interface{}, 0, len(v.Data.GetConversations()))
+	for _, conv := range v.Data.GetConversations() {
+		chatJID, err := types.ParseJID(conv.GetID())
+		if err != nil {
+			continue
+		}
+		messages := make([]map[string]interface{}, 0, len(conv.GetMessages()))
+		if client != nil {
+			for _, hmsg := range conv.GetMessages() {
+				evt, err := client.ParseWebMessage(chatJID, hmsg.GetMessage())
+				if err != nil {
+					continue
+				}
+				messages = append(messages, map[string]interface{}{
+					"info":    serializeMessageInfo(evt.Info),
+					"message": protoToMap(evt.Message),
+				})
+			}
+		}
+		conversations = append(conversations, map[string]interface{}{
+			"id":          chatJID.String(),
+			"name":        conv.GetName(),
+			"unreadCount": conv.GetUnreadCount(),
+			"messages":    messages,
 		})
+	}
+
+	return map[string]interface{}{
+		"type":          v.Data.GetSyncType().String(),
+		"chunkOrder":    v.Data.GetChunkOrder(),
+		"progress":      v.Data.GetProgress(),
+		"conversations": conversations,
 	}
 }
 

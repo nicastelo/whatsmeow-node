@@ -165,7 +165,7 @@ main().catch(console.error);
 ## Erros Comuns
 
 :::warning Casing dos campos proto
-Os campos da resposta de upload usam o casing exato do protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **não** `url`, `fileSha256`. Usar o casing errado vai falhar silenciosamente e o sticker não será entregue.
+Os campos da resposta de upload usam o casing exato do protobuf: `URL`, `fileSHA256`, `fileEncSHA256` — **não** `url`, `fileSha256`. Usar o casing errado é rejeitado com um erro `unknown field` e o sticker não é enviado.
 :::
 
 :::warning Mimetype errado
