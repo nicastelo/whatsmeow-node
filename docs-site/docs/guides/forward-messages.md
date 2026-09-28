@@ -302,4 +302,4 @@ WhatsApp media URLs expire after some time. If you save a message and try to for
 Forwarding many messages quickly will hit WhatsApp's rate limits. Space out sends, especially for bulk relay operations. See [Rate Limiting](/docs/rate-limiting).
 :::
 
-<RelatedGuides slugs={["build-a-bot", "download-media", "automate-group-messages"]} />
+<RelatedGuides slugs={["build-a-bot", "download-media", "automate-group-messages", "whatsapp-jids-and-lids"]} />

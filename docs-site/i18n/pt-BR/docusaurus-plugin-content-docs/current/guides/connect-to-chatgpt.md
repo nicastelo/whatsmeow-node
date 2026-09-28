@@ -2,7 +2,7 @@
 title: "Como Conectar o WhatsApp ao ChatGPT (OpenAI)"
 sidebar_label: Conectar ao ChatGPT
 sidebar_position: 13
-description: "Crie um chatbot de WhatsApp com ChatGPT usando whatsmeow-node e o SDK da OpenAI. Inclui histórico de conversas, indicadores de digitação e GPT-4.1."
+description: "Crie um chatbot de WhatsApp com ChatGPT usando whatsmeow-node e o SDK da OpenAI. Inclui histórico de conversas, indicadores de digitação e GPT-6 Astra."
 keywords: [conectar whatsapp chatgpt, bot whatsapp chatgpt, bot whatsapp openai nodejs, bot whatsapp gpt typescript, integração chatgpt whatsapp]
 ---
 
@@ -17,7 +17,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "@context": "https://schema.org",
       "@type": "HowTo",
       "name": "Como Conectar o WhatsApp ao ChatGPT (OpenAI)",
-      "description": "Crie um chatbot de WhatsApp com ChatGPT usando whatsmeow-node e o SDK da OpenAI. Inclui histórico de conversas, indicadores de digitação e GPT-4.1.",
+      "description": "Crie um chatbot de WhatsApp com ChatGPT usando whatsmeow-node e o SDK da OpenAI. Inclui histórico de conversas, indicadores de digitação e GPT-6 Astra.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/connect-to-chatgpt.png",
       "step": [
         {"@type": "HowToStep", "name": "Configurar os Dois Clients", "text": "Inicialize o WhatsmeowClient com createClient() e o client da OpenAI com new OpenAI()."},
@@ -32,7 +32,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "Como Conectar o WhatsApp ao ChatGPT (OpenAI)",
-      "description": "Crie um chatbot de WhatsApp com ChatGPT usando whatsmeow-node e o SDK da OpenAI. Inclui histórico de conversas, indicadores de digitação e GPT-4.1.",
+      "description": "Crie um chatbot de WhatsApp com ChatGPT usando whatsmeow-node e o SDK da OpenAI. Inclui histórico de conversas, indicadores de digitação e GPT-6 Astra.",
       "image": "https://nicastelo.github.io/whatsmeow-node/img/guides/pt-BR/connect-to-chatgpt.png",
       "author": {"@type": "Organization", "name": "whatsmeow-node", "url": "https://nicastelo.github.io/whatsmeow-node/"},
       "publisher": {"@type": "Organization", "name": "whatsmeow-node", "logo": {"@type": "ImageObject", "url": "https://nicastelo.github.io/whatsmeow-node/img/image.png"}}
@@ -45,7 +45,7 @@ import {RelatedGuides} from '@site/src/components/RelatedGuides';
 
 # Como Conectar o WhatsApp ao ChatGPT (OpenAI)
 
-Combine o whatsmeow-node com o SDK da OpenAI para criar um chatbot de WhatsApp com GPT-4.1. As mensagens chegam pelo WhatsApp, são enviadas para a OpenAI para gerar uma resposta, e a resposta volta para o usuário — com indicadores de digitação enquanto o modelo pensa.
+Combine o whatsmeow-node com o SDK da OpenAI para criar um chatbot de WhatsApp com GPT-6 Astra. As mensagens chegam pelo WhatsApp, são enviadas para a OpenAI para gerar uma resposta, e a resposta volta para o usuário — com indicadores de digitação enquanto o modelo pensa.
 
 ## Pré-requisitos
 
@@ -88,7 +88,7 @@ client.on("message", async ({ info, message }) => {
 ```typescript
 async function askChatGPT(userJid: string, userMessage: string): Promise<string> {
   const response = await openai.chat.completions.create({
-    model: "gpt-4.1",
+    model: "gpt-6-astra",
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: userMessage },
@@ -118,7 +118,7 @@ async function askChatGPT(userJid: string, userMessage: string): Promise<string>
   }
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4.1",
+    model: "gpt-6-astra",
     messages: [{ role: "system", content: SYSTEM_PROMPT }, ...history],
   });
 
@@ -156,7 +156,7 @@ async function askChatGPT(userJid: string, userMessage: string): Promise<string>
   }
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4.1",
+    model: "gpt-6-astra",
     messages: [{ role: "system", content: SYSTEM_PROMPT }, ...history],
   });
 

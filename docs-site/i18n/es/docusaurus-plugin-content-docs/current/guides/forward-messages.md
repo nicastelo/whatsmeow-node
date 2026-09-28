@@ -302,4 +302,4 @@ Las URLs de multimedia de WhatsApp expiran después de un tiempo. Si guardas un 
 Reenviar muchos mensajes rápidamente va a alcanzar los límites de tasa de WhatsApp. Espacia los envíos, especialmente para operaciones de relay masivo. Consulta [Límites de Tasa](/docs/rate-limiting).
 :::
 
-<RelatedGuides slugs={["build-a-bot", "download-media", "automate-group-messages"]} />
+<RelatedGuides slugs={["build-a-bot", "download-media", "automate-group-messages", "whatsapp-jids-and-lids"]} />

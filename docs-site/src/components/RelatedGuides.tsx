@@ -57,7 +57,7 @@ const GUIDES: Record<string, {title: string; description: string}> = {
   'connect-to-chatgpt': {
     title: 'Connect to ChatGPT',
     description:
-      'Build a WhatsApp chatbot powered by GPT-4.1 with the OpenAI SDK.',
+      'Build a WhatsApp chatbot powered by GPT-6 Astra with the OpenAI SDK.',
   },
   'connect-to-gemini': {
     title: 'Connect to Gemini',
@@ -113,6 +113,31 @@ const GUIDES: Record<string, {title: string; description: string}> = {
     title: 'Typebot Integration',
     description:
       'Connect Typebot flows to WhatsApp via whatsmeow-node — replace Evolution API.',
+  },
+  'whatsapp-jids-and-lids': {
+    title: 'JIDs, LIDs & Device IDs',
+    description:
+      'Decode JIDs, @lid senders and device suffixes — normalize, compare and build JIDs safely.',
+  },
+  'deploy-to-production': {
+    title: 'Deploy to Production',
+    description:
+      'Run your bot 24/7 with Docker, systemd, or PM2 — persistent sessions, graceful shutdown, health checks, and alerts.',
+  },
+  'transcribe-voice-notes': {
+    title: 'Transcribe Voice Notes',
+    description:
+      'Transcribe incoming voice notes with OpenAI speech-to-text and reply with the transcript.',
+  },
+  'triage-messages-with-jev': {
+    title: 'Triage with Jev',
+    description:
+      'Route, prioritize, and moderate WhatsApp messages with Jev — call an LLM only when a reply is needed.',
+  },
+  'archive-chat-history': {
+    title: 'Archive Chat History',
+    description:
+      'Save chat history and new messages to SQLite with history sync, upserts, and on-demand backfill.',
   },
 };
 

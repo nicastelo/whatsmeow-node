@@ -302,4 +302,4 @@ As URLs de mídia do WhatsApp expiram após algum tempo. Se você salvar uma men
 Encaminhar muitas mensagens rapidamente vai atingir os rate limits do WhatsApp. Espaçe os envios, especialmente para operações de relay em massa. Veja [Rate Limiting](/docs/rate-limiting).
 :::
 
-<RelatedGuides slugs={["build-a-bot", "download-media", "automate-group-messages"]} />
+<RelatedGuides slugs={["build-a-bot", "download-media", "automate-group-messages", "whatsapp-jids-and-lids"]} />

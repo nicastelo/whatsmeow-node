@@ -88,7 +88,7 @@ client.on("message", async ({ info, message }) => {
 ```typescript
 async function askGemini(userJid: string, userMessage: string): Promise<string> {
   const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-3.8-flash",
     contents: userMessage,
     config: {
       systemInstruction: SYSTEM_PROMPT,
@@ -112,7 +112,7 @@ function getChat(userJid: string): Chat {
   let chat = chats.get(userJid);
   if (!chat) {
     chat = ai.chats.create({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.8-flash",
       config: {
         systemInstruction: SYSTEM_PROMPT,
       },
@@ -148,7 +148,7 @@ function getChat(userJid: string): Chat {
   let chat = chats.get(userJid);
   if (!chat) {
     chat = ai.chats.create({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.8-flash",
       config: {
         systemInstruction: SYSTEM_PROMPT,
       },

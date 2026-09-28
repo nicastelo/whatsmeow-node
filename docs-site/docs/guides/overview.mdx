@@ -17,7 +17,7 @@ import {GuideCard, GuideSection} from '@site/src/components/GuideCard';
       "@type": "ItemList",
       "name": "whatsmeow-node Guides",
       "description": "Step-by-step WhatsApp bot tutorials for Node.js and TypeScript — build bots, send stickers, download media, and integrate with AI.",
-      "numberOfItems": 23,
+      "numberOfItems": 28,
       "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "How to Use whatsmeow in Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/whatsmeow-in-node"},
         {"@type": "ListItem", "position": 2, "name": "How to Build a WhatsApp Bot with Node.js", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/build-a-bot"},
@@ -41,7 +41,12 @@ import {GuideCard, GuideSection} from '@site/src/components/GuideCard';
         {"@type": "ListItem", "position": 20, "name": "How to Use whatsmeow-node with Whaticket", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-whaticket"},
         {"@type": "ListItem", "position": 21, "name": "How to Use whatsmeow-node with n8n", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-n8n"},
         {"@type": "ListItem", "position": 22, "name": "How to Use whatsmeow-node with Chatwoot", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-chatwoot"},
-        {"@type": "ListItem", "position": 23, "name": "How to Use whatsmeow-node with Typebot", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-typebot"}
+        {"@type": "ListItem", "position": 23, "name": "How to Use whatsmeow-node with Typebot", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/integrate-typebot"},
+        {"@type": "ListItem", "position": 24, "name": "Understanding WhatsApp JIDs, LIDs and Device IDs", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/whatsapp-jids-and-lids"},
+        {"@type": "ListItem", "position": 25, "name": "How to Deploy a WhatsApp Bot to Production", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/deploy-to-production"},
+        {"@type": "ListItem", "position": 26, "name": "How to Transcribe WhatsApp Voice Notes with AI", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/transcribe-voice-notes"},
+        {"@type": "ListItem", "position": 27, "name": "How to Triage WhatsApp Messages with Jev", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/triage-messages-with-jev"},
+        {"@type": "ListItem", "position": 28, "name": "How to Archive WhatsApp Chat History to a Database", "url": "https://nicastelo.github.io/whatsmeow-node/docs/guides/archive-chat-history"}
       ]
     })}
   </script>
@@ -69,6 +74,18 @@ Hands-on tutorials that walk you through common WhatsApp automation tasks with w
     description="Link a WhatsApp account via QR code or phone number code."
     to="pair-whatsapp"
     image="/img/guides/pair-whatsapp.png"
+  />
+  <GuideCard
+    title="JIDs, LIDs & Device IDs"
+    description="Decode JIDs, @lid senders and device suffixes — normalize, compare and build JIDs safely."
+    to="whatsapp-jids-and-lids"
+    image="/img/guides/whatsapp-jids-and-lids.png"
+  />
+  <GuideCard
+    title="Deploy to Production"
+    description="Run your bot 24/7 with Docker, systemd, or PM2 — persistent sessions, graceful shutdown, health checks, and alerts."
+    to="deploy-to-production"
+    image="/img/guides/deploy-to-production.png"
   />
 </GuideSection>
 
@@ -132,7 +149,7 @@ Hands-on tutorials that walk you through common WhatsApp automation tasks with w
   />
   <GuideCard
     title="Connect to ChatGPT (OpenAI)"
-    description="Build a WhatsApp chatbot powered by GPT-4.1 with the OpenAI SDK."
+    description="Build a WhatsApp chatbot powered by GPT-6 Astra with the OpenAI SDK."
     to="connect-to-chatgpt"
     image="/img/guides/connect-to-chatgpt.png"
   />
@@ -153,6 +170,18 @@ Hands-on tutorials that walk you through common WhatsApp automation tasks with w
     description="Run a local AI model — no API key, no cloud costs, full privacy."
     to="connect-to-ollama"
     image="/img/guides/connect-to-ollama.png"
+  />
+  <GuideCard
+    title="Transcribe Voice Notes"
+    description="Transcribe incoming voice notes with OpenAI speech-to-text and reply with the transcript."
+    to="transcribe-voice-notes"
+    image="/img/guides/transcribe-voice-notes.png"
+  />
+  <GuideCard
+    title="Triage with Jev"
+    description="Route, prioritize, and moderate WhatsApp messages with Jev — call an LLM only when a reply is needed."
+    to="triage-messages-with-jev"
+    image="/img/guides/triage-messages-with-jev.png"
   />
 </GuideSection>
 
@@ -180,6 +209,12 @@ Hands-on tutorials that walk you through common WhatsApp automation tasks with w
     description="Relay messages between chats — text, media, and any message type."
     to="forward-messages"
     image="/img/guides/forward-messages.png"
+  />
+  <GuideCard
+    title="Archive Chat History"
+    description="Save chat history and new messages to SQLite with history sync, upserts, and on-demand backfill."
+    to="archive-chat-history"
+    image="/img/guides/archive-chat-history.png"
   />
 </GuideSection>
 

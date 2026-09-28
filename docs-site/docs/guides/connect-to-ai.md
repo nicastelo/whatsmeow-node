@@ -93,14 +93,16 @@ client.on("message", async ({ info, message }) => {
 ```typescript
 async function askClaude(userJid: string, userMessage: string): Promise<string> {
   const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
+    output_config: { effort: "low" }, // faster replies for chat
     system: SYSTEM_PROMPT,
     messages: [{ role: "user", content: userMessage }],
   });
 
-  const block = response.content[0];
-  return block.type === "text" ? block.text : "I couldn't generate a response.";
+  // Thinking blocks can come first, so find the text block
+  const block = response.content.find((b): b is Anthropic.TextBlock => b.type === "text");
+  return block?.text ?? "I couldn't generate a response.";
 }
 ```
 
@@ -124,14 +126,16 @@ async function askClaude(userJid: string, userMessage: string): Promise<string> 
   }
 
   const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
+    output_config: { effort: "low" }, // faster replies for chat
     system: SYSTEM_PROMPT,
     messages: history,
   });
 
-  const block = response.content[0];
-  const reply = block.type === "text" ? block.text : "I couldn't generate a response.";
+  // Thinking blocks can come first, so find the text block
+  const block = response.content.find((b): b is Anthropic.TextBlock => b.type === "text");
+  const reply = block?.text ?? "I couldn't generate a response.";
 
   // Store the assistant's reply
   history.push({ role: "assistant", content: reply });
@@ -166,14 +170,16 @@ async function askClaude(userJid: string, userMessage: string): Promise<string> 
   }
 
   const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
+    output_config: { effort: "low" }, // faster replies for chat
     system: SYSTEM_PROMPT,
     messages: history,
   });
 
-  const block = response.content[0];
-  const reply = block.type === "text" ? block.text : "I couldn't generate a response.";
+  // Thinking blocks can come first, so find the text block
+  const block = response.content.find((b): b is Anthropic.TextBlock => b.type === "text");
+  const reply = block?.text ?? "I couldn't generate a response.";
 
   history.push({ role: "assistant", content: reply });
   conversations.set(userJid, history);

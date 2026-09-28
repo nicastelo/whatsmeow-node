@@ -254,4 +254,4 @@ Chatwoot needs to reach your bridge's webhook endpoint. If running in Docker, us
 This example skips group messages (`info.isGroup`). If you need group support, you'll need to map group JIDs to Chatwoot conversations differently.
 :::
 
-<RelatedGuides slugs={["integrate-whaticket", "integrate-n8n", "send-notifications", "build-a-bot"]} />
+<RelatedGuides slugs={["integrate-whaticket", "integrate-n8n", "send-notifications", "build-a-bot", "whatsapp-jids-and-lids"]} />

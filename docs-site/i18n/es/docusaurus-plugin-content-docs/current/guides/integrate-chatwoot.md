@@ -254,4 +254,4 @@ Chatwoot necesita alcanzar el endpoint de webhook de tu puente. Si corres en Doc
 Este ejemplo omite los mensajes de grupo (`info.isGroup`). Si necesitas soporte de grupos, tendrás que mapear los JID de grupo a conversaciones de Chatwoot de forma diferente.
 :::
 
-<RelatedGuides slugs={["integrate-whaticket", "integrate-n8n", "send-notifications", "build-a-bot"]} />
+<RelatedGuides slugs={["integrate-whaticket", "integrate-n8n", "send-notifications", "build-a-bot", "whatsapp-jids-and-lids"]} />
